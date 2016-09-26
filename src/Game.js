@@ -13,6 +13,12 @@ class Game {
         
         this.font = this.renderer.setFontTexture('img/ascii-rl-font.png');
         
+        // For party colors test
+        this.colors = [];
+        for (var i=0;i<200;i++) {
+            this.colors.push([(Math.random()*255) << 0, (Math.random()*255) << 0, (Math.random()*255) << 0]);
+        }
+        
         this.createSimpleMap();
         
         this.createStats();
@@ -63,8 +69,8 @@ class Game {
         if (this.font.ready){
             // Random characters colors party test!
             /*for (var i=0;i<500;i++) {
-                this.renderer.plot((Math.random() * 85) << 0, (Math.random() * 30) << 0, this.renderer.getTile(this.colors[(Math.random() *255) << 0], this.colors[(Math.random() *255) << 0], (Math.random() * 78) << 0));
-            }*/
+                this.renderer.plot((Math.random() * 85) << 0, (Math.random() * 30) << 0, this.renderer.getTile(this.colors[(Math.random() *200) << 0], this.colors[(Math.random() *200) << 0], (Math.random() * 78) << 0));
+            }/**/
             
             this.renderer.render();
         }
