@@ -181,6 +181,14 @@ class Renderer {
         return tile;
     }
     
+    plotCharacter(x, y, tile, surface = this.mainSurface) {
+        var pI = (y * this.resolution[0] + x + 256) * 4;
+        
+        surface.content.table[pI + 1] = (tile & (255 << 16)) >> 16;
+        surface.content.table[pI + 2] = (tile & (255 << 8)) >> 8;
+        surface.updated = false;
+    }
+    
     plot(x, y, tile, surface = this.mainSurface) {
         var pI = (y * this.resolution[0] + x + 256) * 4;
         
