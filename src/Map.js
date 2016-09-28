@@ -1,6 +1,7 @@
 'use strict';
 
 var Prefabs = require('./Prefabs');
+var Player = require('./Player');
 
 class Map {
     constructor(game) {
@@ -8,7 +9,8 @@ class Map {
         this.renderer = game.renderer;
         
         this.map = new Uint8Array(85 * 30 * 4);
-        this.player = 0;
+        this.player = new Player(10, 10, this);
+        this.instances = [this.player];
         
         this.createMap();
     }
@@ -47,8 +49,10 @@ class Map {
     render() {
         this.copyMapIntoTexture();
         
-        this.player += 0.1;
-        this.renderer.plotCharacter(this.player << 0, 10, Prefabs.PLAYER);
+        for (var i=0,ins;ins=this.instances[i];i++){
+            ins.update();
+            this.renderer.plotCharacter(ins.x, ins.y, ins.tile);
+        }
     }
 }
 

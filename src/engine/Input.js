@@ -2,7 +2,12 @@
 
 var Input = {
     keyCodes: new Uint8ClampedArray(255),
-    keys: {},
+    keys: {
+        LEFT: 37,
+        UP: 38,
+        RIGHT: 39,
+        DOWN: 40
+    },
     
     kdListeners: [],
     kuListeners: [],
@@ -25,11 +30,11 @@ var Input = {
         };
     },
     
-    addKeyDownListener: (callback) => {
+    addKeyDownListener: function(callback) {
         this.kdListeners.push(callback);
     },
     
-    addKeyUpListener: (callback) => {
+    addKeyUpListener: function(callback) {
         this.kuListeners.push(callback);
     }
 };
