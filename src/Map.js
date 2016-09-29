@@ -8,7 +8,8 @@ class Map {
         this.game = game;
         this.renderer = game.renderer;
         
-        this.map = new Uint8Array(85 * 30 * 4);
+        this.map = [];
+        this.view = [0, 0];
         this.player = new Player(10, 10, this);
         this.instances = [this.player];
         
@@ -17,8 +18,9 @@ class Map {
     
     createMap() {
         var map = require('./TestWorld');
-        var ind = 0;
         for (var y=0;y<30;y++) {
+            this.map[y] = new Uint32Array(85);
+            
             for (var x=0;x<85;x++) {
                 var t = map[y][x];
                 var tile = Prefabs.TILES.BLANK;
@@ -32,18 +34,36 @@ class Map {
                 }else if (t == 4){
                     tile = Prefabs.TILES.WALL;
                 }
-                
-                this.map[ind++] = (tile & (255 << 24)) >> 24;
-                this.map[ind++] = (tile & (255 << 16)) >> 16;
-                this.map[ind++] = (tile & (255 << 8)) >> 8;
-                this.map[ind++] = (tile & 255);
+
+                this.map[y][x] = tile;
             }
         }
     }
     
     copyMapIntoTexture() {
-        this.renderer.mainSurface.content.table.set(this.map, 256 * 4);
-        this.renderer.mainSurface.updated = false;
+        var xs = this.view[0],
+            ys = this.view[1],
+            xe = xs + 85,
+            ye = ys + 15;
+        
+        for (var y=ys;y<ye;y++) {
+            for (var x=xs;x<xe;x++) {
+                this.renderer.plot(x - xs, y - ys, this.map[y][x]);
+            }
+        }
+    }
+    
+    updateView() {
+        this.view[0] = Math.max(this.player.x - 42, 0);
+        this.view[1] = Math.max(this.player.y - 7, 0);
+        
+        if (this.view[0] + 85 > this.map[0].length){
+            this.view[0] = this.map[0].length - 85;
+        }
+        
+        if (this.view[1] + 15 > this.map.length){
+            this.view[1] = this.map.length - 15;
+        }
     }
     
     render() {
@@ -51,7 +71,7 @@ class Map {
         
         for (var i=0,ins;ins=this.instances[i];i++){
             ins.update();
-            this.renderer.plotCharacter(ins.x, ins.y, ins.tile);
+            this.renderer.plotCharacter(ins.x - this.view[0], ins.y - this.view[1], ins.tile);
         }
     }
 }

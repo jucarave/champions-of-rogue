@@ -15,12 +15,7 @@ class Player {
             UP: 0,
             LEFT: 0,
             DOWN: 0,
-            RIGHT: 0,
-            
-            UL: 0,
-            UR: 0,
-            DL: 0,
-            DR: 0
+            RIGHT: 0
         };
         
         Input.addKeyDownListener((keyCode, stat) => { this.handleKeyEvent(keyCode, stat); });
@@ -52,19 +47,23 @@ class Player {
                 break;
                 
             case Input.keys.Q:
-                key = 'UL';
+                this.handleKeyEvent(Input.keys.LEFT, stat);
+                key = 'UP';
                 break;
                 
             case Input.keys.E:
-                key = 'UR';
+                this.handleKeyEvent(Input.keys.RIGHT, stat);
+                key = 'UP';
                 break;
                 
             case Input.keys.Z:
-                key = 'DL';
+                this.handleKeyEvent(Input.keys.LEFT, stat);
+                key = 'DOWN';
                 break;
                 
             case Input.keys.C:
-                key = 'DR';
+                this.handleKeyEvent(Input.keys.RIGHT, stat);
+                key = 'DOWN';
                 break;
         }
         
@@ -86,31 +85,17 @@ class Player {
         if (this.keys.UP == 1) {
             yTo = -1;
             this.keys.UP = 2;
-        }else if (this.keys.LEFT == 1) {
-            xTo = -1;
-            this.keys.LEFT = 2;
         }else if (this.keys.DOWN == 1) {
             yTo = +1;
             this.keys.DOWN = 2;
+        }
+        
+        if (this.keys.LEFT == 1) {
+            xTo = -1;
+            this.keys.LEFT = 2;
         }else if (this.keys.RIGHT == 1) {
             xTo = +1;
             this.keys.RIGHT = 2;
-        }else if (this.keys.UL == 1) {
-            xTo = -1;
-            yTo = -1;
-            this.keys.UL = 2;
-        }else if (this.keys.UR == 1) {
-            xTo = +1;
-            yTo = -1;
-            this.keys.UR = 2;
-        }else if (this.keys.DL == 1) {
-            xTo = -1;
-            yTo = +1;
-            this.keys.DL = 2;
-        }else if (this.keys.DR == 1) {
-            xTo = +1;
-            yTo = +1;
-            this.keys.DR = 2;
         }
         
         if (xTo != 0 || yTo != 0){

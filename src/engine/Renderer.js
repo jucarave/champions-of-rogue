@@ -224,7 +224,7 @@ class Renderer {
         }
         
         this.updateTime();
-        gl.uniform1f(shader.uniforms.uTime, this.time);
+        gl.uniform1f(shader.uniforms.uTime, this.time % 1300.0);
         
         gl.uniform4fv(shader.uniforms.uResolution, this.resolution);
         gl.uniform4fv(shader.uniforms.uFontRes, this.fontResolution);

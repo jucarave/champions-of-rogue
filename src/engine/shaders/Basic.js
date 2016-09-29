@@ -63,10 +63,10 @@ module.exports = {
         void main(void) {
             vec4 tile = getTile(int(vUV.x), int(vUV.y));
             
-            int effect = int(tile.a * 255.0);
-            vec4 back = getColor(floor(tile.r * 255.0));
-            vec4 front = getColor(floor(tile.g * 255.0));
-            vec4 chara = getChara(floor(tile.b * 255.0), effect);
+            int effect = int(tile.a * 255.0 + 0.5);
+            vec4 back = getColor(floor(tile.r * 255.0 + 0.5));
+            vec4 front = getColor(floor(tile.g * 255.0 + 0.5));
+            vec4 chara = getChara(floor(tile.b * 255.0 + 0.5), effect);
             
             chara.rgb = front.rgb;
             
