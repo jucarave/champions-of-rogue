@@ -2,6 +2,7 @@
 
 var Prefabs = require('./Prefabs');
 var Player = require('./Player');
+var Tiles = require('./Tiles');
 
 class Map {
     constructor(game) {
@@ -18,6 +19,7 @@ class Map {
     
     createMap() {
         var map = require('./TestWorld');
+        
         for (var y=0;y<30;y++) {
             this.map[y] = new Uint32Array(85);
             
@@ -40,10 +42,20 @@ class Map {
         }
     }
     
+    isSolid(x, y) {
+        var chara = (this.map[y][x] & (255 << 8)) >> 8;
+        
+        if (chara == Tiles.HASH) {
+            return true;
+        }
+        
+        return false;
+    }
+    
     copyMapIntoTexture() {
         var xs = this.view[0],
             ys = this.view[1],
-            xe = xs + 85,
+            xe = xs + 60,
             ye = ys + 15;
         
         for (var y=ys;y<ye;y++) {
@@ -54,11 +66,11 @@ class Map {
     }
     
     updateView() {
-        this.view[0] = Math.max(this.player.x - 42, 0);
+        this.view[0] = Math.max(this.player.x - 30, 0);
         this.view[1] = Math.max(this.player.y - 7, 0);
         
-        if (this.view[0] + 85 > this.map[0].length){
-            this.view[0] = this.map[0].length - 85;
+        if (this.view[0] + 60 > this.map[0].length){
+            this.view[0] = this.map[0].length - 60;
         }
         
         if (this.view[1] + 15 > this.map.length){
@@ -69,7 +81,7 @@ class Map {
     render() {
         this.copyMapIntoTexture();
         
-        for (var i=0,ins;ins=this.instances[i];i++){
+        for (var i=0,ins;ins=this.instances[i];i++) {
             ins.update();
             this.renderer.plotCharacter(ins.x - this.view[0], ins.y - this.view[1], ins.tile);
         }

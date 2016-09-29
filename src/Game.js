@@ -9,6 +9,7 @@ var Map = require('./Map');
 class Game {
     constructor() {
         this.renderer = new Renderer(850, 480, document.getElementById("divGame"));
+        this.resolution = [85, 30];
         
         this.font = this.renderer.setFontTexture('img/ascii-rl-font.png');
         Prefabs.init(this.renderer);

@@ -11,6 +11,8 @@ class Player {
         this.y = y;
         this.tile = Prefabs.PLAYER;
         
+        this.moveWait = 4;
+        
         this.keys = {
             UP: 0,
             LEFT: 0,
@@ -68,14 +70,19 @@ class Player {
         }
         
         if (key == null){ return; }
-        if (stat == 1 && this.keys[key] == 2 ){ return; }
+        if (stat == 1 && this.keys[key] >= 2){ 
+            this.keys[key] -= 1; 
+            return; 
+        }
         
         this.keys[key] = stat;
     }
     
     moveTo(xTo, yTo) {
-        this.x += xTo;
-        this.y += yTo;
+        if (!this.map.isSolid(this.x + xTo, this.y + yTo)){
+            this.x += xTo;
+            this.y += yTo;
+        }
     }
     
     checkMovement() {
@@ -84,18 +91,18 @@ class Player {
             
         if (this.keys.UP == 1) {
             yTo = -1;
-            this.keys.UP = 2;
+            this.keys.UP = this.moveWait;
         }else if (this.keys.DOWN == 1) {
             yTo = +1;
-            this.keys.DOWN = 2;
+            this.keys.DOWN = this.moveWait;
         }
         
         if (this.keys.LEFT == 1) {
             xTo = -1;
-            this.keys.LEFT = 2;
+            this.keys.LEFT = this.moveWait;
         }else if (this.keys.RIGHT == 1) {
             xTo = +1;
-            this.keys.RIGHT = 2;
+            this.keys.RIGHT = this.moveWait;
         }
         
         if (xTo != 0 || yTo != 0){
@@ -105,6 +112,7 @@ class Player {
     
     update() {
         this.checkMovement();
+        this.map.updateView();
     }
 }
 
