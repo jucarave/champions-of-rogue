@@ -14,6 +14,8 @@ class Map {
         this.player = new Player(10, 10, this);
         this.instances = [this.player];
         
+        this.mapPosition = [0, 2];
+        
         this.createMap();
     }
     
@@ -56,25 +58,26 @@ class Map {
         var xs = this.view[0],
             ys = this.view[1],
             xe = xs + 60,
-            ye = ys + 15;
+            ye = ys + 23,
+            mp = this.mapPosition;
         
         for (var y=ys;y<ye;y++) {
             for (var x=xs;x<xe;x++) {
-                this.renderer.plot(x - xs, y - ys, this.map[y][x]);
+                this.renderer.plot(x - xs + mp[0], y - ys + mp[1], this.map[y][x]);
             }
         }
     }
     
     updateView() {
         this.view[0] = Math.max(this.player.x - 30, 0);
-        this.view[1] = Math.max(this.player.y - 7, 0);
+        this.view[1] = Math.max(this.player.y - 11, 0);
         
         if (this.view[0] + 60 > this.map[0].length){
             this.view[0] = this.map[0].length - 60;
         }
         
-        if (this.view[1] + 15 > this.map.length){
-            this.view[1] = this.map.length - 15;
+        if (this.view[1] + 23 > this.map.length){
+            this.view[1] = this.map.length - 23;
         }
     }
     
@@ -83,7 +86,7 @@ class Map {
         
         for (var i=0,ins;ins=this.instances[i];i++) {
             ins.update();
-            this.renderer.plotCharacter(ins.x - this.view[0], ins.y - this.view[1], ins.tile);
+            this.renderer.plotCharacter(ins.x - this.view[0] + this.mapPosition[0], ins.y - this.view[1] + this.mapPosition[1], ins.tile);
         }
     }
 }

@@ -200,6 +200,17 @@ class Renderer {
         surface.updated = false;
     }
     
+    clearRect(x, y, w, h, surface = this.mainSurface) {
+        w = x + w;
+        h = y + h;
+        
+        for (var i=x;i<w;i++) {
+            for (var j=y;j<h;j++) {
+                this.plot(i, j, 0, surface);
+            }
+        }
+    }
+    
     updateSurface(surface) {
         var gl = this.gl;
         
