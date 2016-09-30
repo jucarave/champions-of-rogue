@@ -64,7 +64,7 @@ class Map {
     copyMapIntoTexture() {
         var xs = this.view[0],
             ys = this.view[1],
-            xe = xs + 65,
+            xe = xs + 60,
             ye = ys + 23,
             mp = this.mapPosition,
             tile;
@@ -158,7 +158,10 @@ class Map {
         
         for (var i=0,ins;ins=this.instances[i];i++) {
             ins.update();
-            this.renderer.plotCharacter(ins.x - this.view[0] + this.mapPosition[0], ins.y - this.view[1] + this.mapPosition[1], ins.tile.light);
+            
+            if (this.map[ins.y][ins.x].visible >= 2){
+                this.renderer.plotCharacter(ins.x - this.view[0] + this.mapPosition[0], ins.y - this.view[1] + this.mapPosition[1], ins.tile.light);
+            }
         }
     }
 }

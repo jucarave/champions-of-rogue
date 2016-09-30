@@ -31,6 +31,8 @@ class Game {
         this.console.addMessage("Hello adventurer! wellcome to the world of Champions of Rogue.");
         this.console.addMessage("Press the keys 'QWEADZXC' to move", [255, 0, 0]);
         
+        this.playerStats.render(this.renderer);
+        
         this.loopGame();
     }
     
@@ -45,7 +47,6 @@ class Game {
         
         if (this.font.ready){
             this.map.render();
-            this.playerStats.render(this.renderer);
             this.renderer.render();
         }
         
