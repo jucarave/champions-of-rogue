@@ -25,7 +25,7 @@ class Console {
         this.render();
     }
     
-    getTile(chara, color) {
+    static getTile(renderer, chara, color, backColor=Colors.BLACK) {
         var tile = chara;
         
         if (tile == "!"){ tile = "EXCLA"; }else
@@ -41,16 +41,18 @@ class Console {
         if (tile == "("){ tile = "PAREO"; }else
         if (tile == ")"){ tile = "PAREC"; }else
         if (tile == "'"){ tile = "QUOTS"; }else
-        if (tile == '"'){ tile = "QUOTD"; }
+        if (tile == '"'){ tile = "QUOTD"; }else
+        if (tile == "/"){ tile = "SLASH"; }else
+        if (tile >= "0" && tile <= "9"){ tile = "N" + tile; }
         
-        return this.renderer.getTile(Colors.BLACK, color, Tiles[tile]);
+        return renderer.getTile(backColor, color, Tiles[tile]);
     }
     
     render() {
         var length = this.messages.length - 1;
         for (var i=0,m;m=this.messages[length - i];i++) {
             for (var j=0,c;c=m.text[j];j++){
-                this.renderer.plot(this.consolePosition[0] + j, this.consolePosition[1] + this.maxMessages - i, this.getTile(c, m.color));
+                this.renderer.plot(this.consolePosition[0] + j, this.consolePosition[1] + this.maxMessages - i, Console.getTile(this.renderer, c, m.color));
             }
         }
     }

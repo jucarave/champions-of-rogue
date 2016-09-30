@@ -15,15 +15,23 @@ class Game {
         this.font = this.renderer.setFontTexture('img/ascii-rl-font.png');
         Prefabs.init(this.renderer);
         
+        this.playerStats = null;
+        this.map = null;
+        this.console = null;
+        
+        this.createStats();
+        this.newGame();
+    }
+    
+    newGame() {
+        this.playerStats = require('./Stats');
         this.map = new Map(this);
         
         this.console = new Console(this);
         this.console.addMessage("Hello adventurer! wellcome to the world of Champions of Rogue.");
         this.console.addMessage("Press the keys 'QWEADZXC' to move", [255, 0, 0]);
         
-        this.createStats();
-        
-        this.drawScene();
+        this.loopGame();
     }
     
     createStats() {
@@ -32,17 +40,18 @@ class Game {
         document.body.appendChild( this.stats.dom );
     }
     
-    drawScene() {
+    loopGame() {
         this.stats.begin();
         
         if (this.font.ready){
             this.map.render();
+            this.playerStats.render(this.renderer);
             this.renderer.render();
         }
         
         this.stats.end();
         
-        requestAnimationFrame(() => { this.drawScene(); });
+        requestAnimationFrame(() => { this.loopGame(); });
     }
 }
 

@@ -4,6 +4,13 @@ var Effects = require('./engine/Effects');
 var Colors = require('./Colors');
 var Tiles = require('./Tiles');
 
+function getTile(renderer, backColor, frontColor, tile, effect) {
+    return {
+        light: renderer.getTile(backColor, frontColor, tile, effect),
+        dark: renderer.getTile(backColor.multiply(0.1, 0.1, 0.5), frontColor.multiply(0.1, 0.1, 0.5), tile, effect)
+    };
+}
+
 module.exports = {
     TILES: {},
     
@@ -11,18 +18,18 @@ module.exports = {
         var t = this.TILES;
         
         // Blank
-        t.BLANK = renderer.getTile(Colors.BLACK, Colors.BLACK, Tiles.BLANK, Effects.NONE);
+        t.BLANK = getTile(renderer, Colors.BLACK, Colors.BLACK, Tiles.BLANK, Effects.NONE);
         
         // Walls
-        t.WALL = renderer.getTile(Colors.GRAY, Colors.WHITE, Tiles.HASH, Effects.NONE);
+        t.WALL = getTile(renderer, Colors.GRAY, Colors.WHITE, Tiles.HASH, Effects.NONE);
         
         // Floors
-        t.FLOOR = renderer.getTile(Colors.BLACK, Colors.WHITE, Tiles.DOT_C, Effects.NONE);
-        t.WATER = renderer.getTile(Colors.AQUA, Colors.WHITE, Tiles.WATER, Effects.WATER);
-        t.WATER_DEEP = renderer.getTile(Colors.BLUE, Colors.WHITE, Tiles.WATRD, Effects.WATER);
+        t.FLOOR = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.DOT_C, Effects.NONE);
+        t.WATER = getTile(renderer, Colors.AQUA, Colors.WHITE, Tiles.WATER, Effects.WATER);
+        t.WATER_DEEP = getTile(renderer, Colors.BLUE, Colors.WHITE, Tiles.WATRD, Effects.WATER);
         
         // Player
         
-        this.PLAYER = renderer.getTile(Colors.BLACK, Colors.WHITE, Tiles.PLAYR, Effects.NONE);
+        this.PLAYER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.PLAYR, Effects.NONE);
     }
 };

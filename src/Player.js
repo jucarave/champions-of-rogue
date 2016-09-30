@@ -82,6 +82,8 @@ class Player {
         if (!this.map.isSolid(this.x + xTo, this.y + yTo)){
             this.x += xTo;
             this.y += yTo;
+            
+            this.map.updateFOV(this.x, this.y);
         }
     }
     
