@@ -14,9 +14,11 @@ function getTile(renderer, backColor, frontColor, tile, effect, solid=false) {
 
 module.exports = {
     TILES: {},
+    ITEMS: {},
     
     init: function(renderer) {
         var t = this.TILES;
+        var i = this.ITEMS;
         
         // Blank
         t.BLANK = getTile(renderer, Colors.BLACK, Colors.BLACK, Tiles.BLANK, Effects.NONE);
@@ -29,8 +31,10 @@ module.exports = {
         t.WATER = getTile(renderer, Colors.AQUA, Colors.WHITE, Tiles.WATER, Effects.WATER);
         t.WATER_DEEP = getTile(renderer, Colors.BLUE, Colors.WHITE, Tiles.WATRD, Effects.WATER);
         
-        // Player
+        // Items
+        i.RED_POTION = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.EXCLA);
         
+        // Player
         this.PLAYER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.PLAYR, Effects.NONE);
     }
 };

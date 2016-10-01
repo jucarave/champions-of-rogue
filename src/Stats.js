@@ -3,7 +3,11 @@
 var Colors = require('./Colors');
 var Console = require('./Console');
 
+var MAX_INVENTORY = 10;
+
 module.exports = {
+    game: null,
+    
     name: 'KRAM',
     class: 'ROGUE',
     
@@ -28,6 +32,32 @@ module.exports = {
     },
     
     statsPosition: [60, 0, 25, 25, 73],
+    
+    pickItem: function(item) {
+        if (this.inventory.length == MAX_INVENTORY){
+            this.game.console.addMessage("Inventory full!", [255, 0, 0]);
+            return false;
+        }
+        
+        var added = false;
+        if (item.def.stackable) {
+            for (var i=0,inv;inv=this.inventory[i];i++) {
+                if (inv.def.code == item.def.code) {
+                    inv.amount += 1;
+                    added = true;
+                    i = this.inventory.length;
+                }
+            }
+        }
+        
+        if (!added) {
+            this.inventory.push(item);
+        }
+        
+        this.game.console.addMessage(item.def.name + " picked!", [255, 255, 0]);
+        
+        return true;
+    },
     
     renderText: function(renderer, x, y, text, color=Colors.WHITE, backColor=Colors.BLACK) {
         for (var i=0,t;t=text[i];i++) {

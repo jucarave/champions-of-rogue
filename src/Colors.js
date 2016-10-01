@@ -9,7 +9,7 @@ class Color extends Array {
         this[2] = b;
     }
     
-    multiply(vr, vg, vb) {
+    multiply(vr, vg=vr, vb=vr) {
         var r = (this[0] * vr) << 0,
             g = (this[1] * vg) << 0,
             b = (this[2] * vb) << 0;

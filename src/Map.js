@@ -2,9 +2,12 @@
 
 'use strict';
 
+var Console = require('./Console');
 var Prefabs = require('./Prefabs');
-var Player = require('./Player');
 var Colors = require('./Colors');
+var Player = require('./Player');
+var Item = require('./Item');
+var ItemFactory = require('./ItemFactory');
 
 class Map {
     constructor(game) {
@@ -14,15 +17,18 @@ class Map {
         this.graph = null;
         this.mousePath = null;
         this.mouseDown = 0;
+        this.mouseOn = [-1, -1];
         
         this.map = [];
         this.view = [0, 0];
-        this.player = new Player(10, 10, this);
-        this.instances = [this.player];
+        this.player = null;
+        this.instances = [];
         
         this.mapPosition = [0, 2];
         this.fovUpdated = false;
         this.fovDistance = 30;
+        
+        this.tileDescription = null;
         
         this.createMap();
         
@@ -69,6 +75,15 @@ class Map {
         }
         
         this.graph = new Graph(solidMap, {diagonal: true});
+        
+        this.player = new Player(10, 10, this);
+        this.instances.push(this.player);
+        
+        var item = new Item(13, 13, this, ItemFactory.getItem("redPotion"));
+        this.instances.push(item);
+        
+        item = new Item(15, 15, this, ItemFactory.getItem("redPotion"));
+        this.instances.push(item);
     }
     
     isSolid(x, y) {
@@ -90,6 +105,8 @@ class Map {
             this.mousePath.push(r.x);
             this.mousePath.push(r.y);
         }
+        
+        this.mouseOn = [x2, y2];
     }
     
     onMouseHandler(x, y, stat) {
@@ -192,8 +209,8 @@ class Map {
         this.view[0] = Math.max(this.player.x - 33, 0);
         this.view[1] = Math.max(this.player.y - 11, 0);
         
-        if (this.view[0] + 65 > this.map[0].length){
-            this.view[0] = this.map[0].length - 65;
+        if (this.view[0] + 60 > this.map[0].length){
+            this.view[0] = this.map[0].length - 60;
         }
         
         if (this.view[1] + 23 > this.map.length){
@@ -213,17 +230,40 @@ class Map {
         }
     }
     
+    renderDescription() {
+        this.renderer.clearRect(0,1,60,1);
+        
+        if (!this.tileDescription){ return; }
+        
+        var x = (30 - this.tileDescription.length / 2) << 0;
+        for (var i=0,c;c=this.tileDescription[i];i++) {
+            this.renderer.plot(x + i, 1, Console.getTile(this.renderer, c, Colors.WHITE, Colors.BLACK));
+        }
+    }
+    
     render() {
+        this.tileDescription = null;
+        
         this.copyMapIntoTexture();
         this.renderMousePath();
         
         for (var i=0,ins;ins=this.instances[i];i++) {
             ins.update();
             
+            if (ins.destroy) {
+                this.instances.splice(i, 1);
+                i--;
+                continue;
+            }
+            
             if (this.map[ins.y][ins.x].visible >= 2){
                 this.renderer.plotCharacter(ins.x - this.view[0] + this.mapPosition[0], ins.y - this.view[1] + this.mapPosition[1], ins.tile.light);
             }
         }
+        
+        this.renderer.plotCharacter(this.player.x - this.view[0] + this.mapPosition[0], this.player.y - this.view[1] + this.mapPosition[1], this.player.tile.light);
+        
+        this.renderDescription();
     }
 }
 

@@ -30,6 +30,8 @@ class Game {
     
     newGame() {
         this.playerStats = require('./Stats');
+        this.playerStats.game = this;
+        
         this.map = new Map(this);
         
         this.console = new Console(this);
@@ -62,6 +64,7 @@ class Game {
             this.map.onMouseMove(x - this.panels.map[0], y - this.panels.map[1]);
         }else{
             this.map.mousePath = null;
+            this.map.mouseOn = [-1, -1];
         }
     }
     

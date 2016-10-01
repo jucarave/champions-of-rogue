@@ -1,4 +1,4 @@
-Champsions of Rogue
+Champions of Rogue
 
 by Fedic
 

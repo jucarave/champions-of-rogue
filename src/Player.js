@@ -23,6 +23,8 @@ class Player {
         };
         
         Input.addKeyDownListener((keyCode, stat) => { this.handleKeyEvent(keyCode, stat); });
+        
+        this.destroy = false;
     }
     
     handleKeyEvent(keyCode, stat) {
