@@ -6,6 +6,7 @@ var Renderer = require('./engine/Renderer');
 var Prefabs = require('./Prefabs');
 var Map = require('./Map');
 var Console = require('./Console');
+var Input = require('./engine/Input');
 
 class Game {
     constructor() {
@@ -18,6 +19,10 @@ class Game {
         this.playerStats = null;
         this.map = null;
         this.console = null;
+        
+        this.panels = {
+            map: [0, 2, 60, 25]
+        };
         
         this.createStats();
         this.newGame();
@@ -33,6 +38,9 @@ class Game {
         
         this.playerStats.render(this.renderer);
         
+        Input.addMouseMoveListener((x, y) => { this.onMouseMove(x, y); });
+        Input.addMouseDownListener((x, y, stat) => { this.onMouseHandler(x, y, stat); });
+        
         this.loopGame();
     }
     
@@ -40,6 +48,30 @@ class Game {
         this.stats = new Stats();
         this.stats.showPanel(1);
         document.body.appendChild( this.stats.dom );
+    }
+    
+    isPointInPanel(x, y, panel) {
+        return (x >= panel[0] && y >= panel[1] && x < panel[2] && y < panel[3]);
+    }
+    
+    onMouseMove(x, y) {
+        x = (x / this.renderer.pixelSize[0]) << 0;
+        y = (y / this.renderer.pixelSize[1]) << 0;
+        
+        if (this.isPointInPanel(x, y, this.panels.map)) {
+            this.map.onMouseMove(x - this.panels.map[0], y - this.panels.map[1]);
+        }else{
+            this.map.mousePath = null;
+        }
+    }
+    
+    onMouseHandler(x, y, stat) {
+        x = (x / this.renderer.pixelSize[0]) << 0;
+        y = (y / this.renderer.pixelSize[1]) << 0;
+        
+        if (this.isPointInPanel(x, y, this.panels.map)) {
+            this.map.onMouseHandler(x - this.panels.map[0], y - this.panels.map[1], stat);
+        }
     }
     
     loopGame() {

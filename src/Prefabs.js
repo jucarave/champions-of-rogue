@@ -4,10 +4,11 @@ var Effects = require('./engine/Effects');
 var Colors = require('./Colors');
 var Tiles = require('./Tiles');
 
-function getTile(renderer, backColor, frontColor, tile, effect) {
+function getTile(renderer, backColor, frontColor, tile, effect, solid=false) {
     return {
         light: renderer.getTile(backColor, frontColor, tile, effect),
-        dark: renderer.getTile(backColor.multiply(0.1, 0.1, 0.5), frontColor.multiply(0.1, 0.1, 0.5), tile, effect)
+        dark: renderer.getTile(backColor.multiply(0.1, 0.1, 0.5), frontColor.multiply(0.1, 0.1, 0.5), tile, effect),
+        solid: solid
     };
 }
 
@@ -21,7 +22,7 @@ module.exports = {
         t.BLANK = getTile(renderer, Colors.BLACK, Colors.BLACK, Tiles.BLANK, Effects.NONE);
         
         // Walls
-        t.WALL = getTile(renderer, Colors.GRAY, Colors.WHITE, Tiles.HASH, Effects.NONE);
+        t.WALL = getTile(renderer, Colors.GRAY, Colors.WHITE, Tiles.HASH, Effects.NONE, true);
         
         // Floors
         t.FLOOR = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.DOT_C, Effects.NONE);

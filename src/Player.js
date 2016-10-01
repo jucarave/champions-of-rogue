@@ -11,6 +11,8 @@ class Player {
         this.y = y;
         this.tile = Prefabs.PLAYER;
         
+        this.movePath = null;
+        this.autoMoveDelay = 0;
         this.moveWait = 4;
         
         this.keys = {
@@ -21,7 +23,6 @@ class Player {
         };
         
         Input.addKeyDownListener((keyCode, stat) => { this.handleKeyEvent(keyCode, stat); });
-        Input.addKeyUpListener((keyCode, stat) => { this.handleKeyEvent(keyCode, stat); });
     }
     
     handleKeyEvent(keyCode, stat) {
@@ -112,8 +113,28 @@ class Player {
         }
     }
     
+    followPath() {
+        if (this.autoMoveDelay-- > 0){ return; }
+        
+        var xTo = this.movePath[0] - this.x;
+        var yTo = this.movePath[1] - this.y;
+        
+        this.moveTo(xTo, yTo);
+        this.autoMoveDelay = this.moveWait;
+        
+        this.movePath.splice(0, 2);
+        if (this.movePath.length == 0) {
+            this.movePath = null;
+        }
+    }
+    
     update() {
-        this.checkMovement();
+        if (this.movePath){
+            this.followPath();
+        }else{
+            this.checkMovement();
+        }
+        
         this.map.updateView();
     }
 }

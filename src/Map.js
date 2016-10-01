@@ -1,13 +1,19 @@
+/*globals astar Graph*/
+
 'use strict';
 
 var Prefabs = require('./Prefabs');
 var Player = require('./Player');
-var Tiles = require('./Tiles');
+var Colors = require('./Colors');
 
 class Map {
     constructor(game) {
         this.game = game;
         this.renderer = game.renderer;
+        
+        this.graph = null;
+        this.mousePath = null;
+        this.mouseDown = 0;
         
         this.map = [];
         this.view = [0, 0];
@@ -26,39 +32,80 @@ class Map {
     createMap() {
         var map = require('./TestWorld');
         
+        var solidMap = new Array(map[0].length);
+        for (var i=0;i<solidMap.length;i++) {
+            solidMap[i] = new Array(map.length);
+        }
+        
         for (var y=0,yl=map.length;y<yl;y++) {
             this.map[y] = new Array(map[y].length);
             
             for (var x=0,xl=map[y].length;x<xl;x++) {
                 var t = map[y][x];
                 var tile = Prefabs.TILES.BLANK;
+                var weight = 1;
                 
                 if (t == 1){
                     tile = Prefabs.TILES.FLOOR;
                 }else if (t == 2){
                     tile = Prefabs.TILES.WATER;
+                    weight = 1.5;
                 }else if (t == 3){
                     tile = Prefabs.TILES.WATER_DEEP;
+                    weight = 2;
                 }else if (t == 4){
                     tile = Prefabs.TILES.WALL;
+                    weight = 0;
                 }
-
+                
                 this.map[y][x] = {
                     tile: tile,
                     visible: 0
                 };
+                
+                
+                solidMap[x][y] = weight;
             }
         }
+        
+        this.graph = new Graph(solidMap, {diagonal: true});
     }
     
     isSolid(x, y) {
-        var chara = (this.map[y][x].tile.light & (255 << 8)) >> 8;
+        return this.map[y][x].tile.solid;
+    }
+    
+    onMouseMove(x, y) {
+        var x1 = this.player.x,
+            y1 = this.player.y,
+            x2 = x + this.view[0],
+            y2 = y + this.view[1];
         
-        if (chara == Tiles.HASH) {
-            return true;
+        var start = this.graph.grid[x1][y1];
+        var end = this.graph.grid[x2][y2];
+        var result = astar.search(this.graph, start, end, { heuristic: astar.heuristics.diagonal });
+        
+        this.mousePath = [];
+        for (var i=0,r;r=result[i];i++) {
+            this.mousePath.push(r.x);
+            this.mousePath.push(r.y);
         }
+    }
+    
+    onMouseHandler(x, y, stat) {
+        if (this.mouseDown == 2 && stat == 1) return;
         
-        return false;
+        this.mouseDown = stat;
+        if (this.mouseDown == 1) {
+            this.mouseDown = 2;
+            
+            if (this.player.movePath) return;
+            
+            this.onMouseMove(x, y);
+            if (this.mousePath.length > 0){
+                this.player.movePath = this.mousePath.slice(0, this.mousePath.length);
+            }
+        }
     }
     
     copyMapIntoTexture() {
@@ -138,6 +185,7 @@ class Map {
         }
         
         this.fovUpdated = true;
+        this.mousePath = null;
     }
     
     updateView() {
@@ -153,8 +201,21 @@ class Map {
         }
     }
     
+    renderMousePath() {
+        if (!this.mousePath) return;
+        if (this.player.movePath) return;
+        
+        for (var i=0,l=this.mousePath.length;i<l;i+=2) {
+            var tile = this.map[this.mousePath[i + 1]][this.mousePath[i]];
+            if (!tile.visible){ return; }
+            
+            this.renderer.plotBackground(this.mousePath[i] - this.view[0] + this.mapPosition[0], this.mousePath[i + 1] - this.view[1] + this.mapPosition[1], Colors.YELLOW);
+        }
+    }
+    
     render() {
         this.copyMapIntoTexture();
+        this.renderMousePath();
         
         for (var i=0,ins;ins=this.instances[i];i++) {
             ins.update();

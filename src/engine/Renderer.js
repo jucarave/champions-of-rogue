@@ -189,6 +189,14 @@ class Renderer {
         surface.updated = false;
     }
     
+    plotBackground(x, y, color, surface = this.mainSurface) {
+        var pI = (y * this.resolution[0] + x + 256) * 4,
+            cI = this.getColorIndex(color, surface);
+        
+        surface.content.table[pI] = cI;
+        surface.updated = false;
+    }
+    
     plot(x, y, tile, surface = this.mainSurface) {
         var pI = (y * this.resolution[0] + x + 256) * 4;
         
