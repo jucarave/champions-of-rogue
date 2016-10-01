@@ -24,7 +24,7 @@ class Map {
         this.player = null;
         this.instances = [];
         
-        this.mapPosition = [0, 2];
+        this.mapPosition = [0, 2, 60, 23];
         this.fovUpdated = false;
         this.fovDistance = 30;
         
@@ -128,8 +128,8 @@ class Map {
     copyMapIntoTexture() {
         var xs = this.view[0],
             ys = this.view[1],
-            xe = xs + 60,
-            ye = ys + 23,
+            xe = xs + this.mapPosition[2],
+            ye = ys + this.mapPosition[3],
             mp = this.mapPosition,
             tile;
         
@@ -209,12 +209,12 @@ class Map {
         this.view[0] = Math.max(this.player.x - 33, 0);
         this.view[1] = Math.max(this.player.y - 11, 0);
         
-        if (this.view[0] + 60 > this.map[0].length){
-            this.view[0] = this.map[0].length - 60;
+        if (this.view[0] + this.mapPosition[2] > this.map[0].length){
+            this.view[0] = this.map[0].length - this.mapPosition[2];
         }
         
-        if (this.view[1] + 23 > this.map.length){
-            this.view[1] = this.map.length - 23;
+        if (this.view[1] + this.mapPosition[3] > this.map.length){
+            this.view[1] = this.map.length - this.mapPosition[3];
         }
     }
     
@@ -222,20 +222,26 @@ class Map {
         if (!this.mousePath) return;
         if (this.player.movePath) return;
         
+        var x, y;
         for (var i=0,l=this.mousePath.length;i<l;i+=2) {
             var tile = this.map[this.mousePath[i + 1]][this.mousePath[i]];
             if (!tile.visible){ return; }
             
-            this.renderer.plotBackground(this.mousePath[i] - this.view[0] + this.mapPosition[0], this.mousePath[i + 1] - this.view[1] + this.mapPosition[1], Colors.YELLOW);
+            x = this.mousePath[i] - this.view[0] + this.mapPosition[0];
+            y = this.mousePath[i + 1] - this.view[1] + this.mapPosition[1];
+            
+            if (x < 0 || y < 0 || x >= this.mapPosition[2] + this.mapPosition[0] || y >= this.mapPosition[3] + this.mapPosition[1]){ continue; }
+            
+            this.renderer.plotBackground(x, y, Colors.YELLOW);
         }
     }
     
     renderDescription() {
-        this.renderer.clearRect(0,1,60,1);
+        this.renderer.clearRect(0,1,this.mapPosition[2],1);
         
         if (!this.tileDescription){ return; }
         
-        var x = (30 - this.tileDescription.length / 2) << 0;
+        var x = (this.mapPosition[2] / 2 - this.tileDescription.length / 2) << 0;
         for (var i=0,c;c=this.tileDescription[i];i++) {
             this.renderer.plot(x + i, 1, Console.getTile(this.renderer, c, Colors.WHITE, Colors.BLACK));
         }

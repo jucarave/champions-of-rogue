@@ -21,7 +21,7 @@ class Console {
             this.messages.splice(0, 1);
         }
         
-        this.renderer.clearRect(0, 26, 85, 4);
+        this.renderer.clearRect(0, 25, 85, 5);
         this.render();
     }
     

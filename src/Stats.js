@@ -55,6 +55,7 @@ module.exports = {
         }
         
         this.game.console.addMessage(item.def.name + " picked!", [255, 255, 0]);
+        this.render(this.game.renderer);
         
         return true;
     },
@@ -67,7 +68,7 @@ module.exports = {
     
     render: function(renderer) {
         var sp = this.statsPosition,
-            i, l;
+            i, l, inv, name;
         
         renderer.clearRect(sp[0], sp[1], sp[2], sp[3]);
         
@@ -113,6 +114,7 @@ module.exports = {
         this.renderText(renderer, sp[0], 6, "SPD: " + this.spd, Colors.WHITE, Colors.BLACK);
         this.renderText(renderer, (sp[0] + sp[2] / 2 - 1) << 0, 6, "GOLD: " + this.gold, Colors.YELLOW, Colors.BLACK);
         
+        // EQUIPMENT
         for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
             renderer.plot(i, 7, renderer.getTile(Colors.BLUE));
         }
@@ -129,5 +131,25 @@ module.exports = {
         
         equip = (this.equipment.amulet)? this.equipment.amulet : 'NO AMULET';
         this.renderText(renderer, sp[0], 11, equip, Colors.WHITE, Colors.BLACK);
+        
+        // INVENTORY
+        for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
+            renderer.plot(i, 12, renderer.getTile(Colors.BLUE));
+        }
+        this.renderText(renderer, sp[0] + 7, 12, "(I)NVENTORY", Colors.WHITE, Colors.BLUE);
+        
+        for (i=0,l=Math.min(7, this.inventory.length);i<l;i++) {
+            inv = this.inventory[i];
+            name = inv.def.name + ((inv.amount > 1)? ' (x' + inv.amount + ')' : '');
+            
+            this.renderText(renderer, sp[0], 13 + i, name, Colors.WHITE, Colors.BLACK);
+        }
+        
+        for (i=0;i<7;i++) {
+            name = " ";
+            if (i == 0){ name = "PAGEUP"; }else if (i == 6){ name = "PAGEDWN"}
+            
+            renderer.plot(84, 13 + i, Console.getTile(renderer, name, Colors.WHITE, Colors.GRAY));
+        }
     }
 };
