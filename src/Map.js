@@ -113,6 +113,22 @@ class Map {
         this.instances.push(item);
     }
     
+    getInstanceAt(x, y) {
+        for (var i=1,ins;ins=this.instances[i];i++) {
+            if (ins.x == x && ins.y == y) {
+                return ins;
+            }
+        }
+        
+        return null;
+    }
+    
+    createItem(x, y, item) {
+        var newItem = new Item(x, y, this, item);
+        newItem.playerOnTile = true;
+        this.instances.push(newItem);
+    }
+    
     isSolid(x, y) {
         return this.map[y][x].tile.solid;
     }

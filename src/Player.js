@@ -131,6 +131,8 @@ class Player {
     }
     
     update() {
+        if (this.map.game.itemDesc){ return; }
+        
         if (this.movePath){
             this.followPath();
         }else{

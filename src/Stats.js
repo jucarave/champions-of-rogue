@@ -35,6 +35,47 @@ module.exports = {
     statsPosition: [60, 0, 25, 25, 73],
     inventoryScroll: 0,
     mousePosition: null,
+    itemSelected: -1,
+    
+    dropItem: function(item) {
+        var map = this.game.map;
+        var player = map.player;
+        
+        var x = player.x;
+        var y = player.y;
+        
+        var nx, ny;
+        var tries = 0;
+        while (map.getInstanceAt(x, y)) {
+            nx = (player.x - 2 + Math.random() * 4) << 0;
+            ny = (player.y - 2 + Math.random() * 4) << 0;
+            
+            if (map.map[ny][nx].visible == 2 && !map.map[ny][nx].tile.solid) {
+                x = nx;
+                y = ny;
+            }
+            
+            if (tries++ == 20) {
+                this.game.console.addMessage("Can't drop it here!", [255, 0, 0]);
+                this.render(this.game.renderer);
+                return false;
+            }
+        }
+        
+        if (item.amount > 1) {
+            item.amount -= 1;
+        }else{
+            this.game.itemDesc = null;
+            this.inventory.splice(this.itemSelected, 1);
+        }
+        
+        map.createItem(x, y, ItemFactory.getItem(item.def.code));
+        
+        this.game.console.addMessage(item.def.name + " dropped", [0, 255, 255]);
+        this.render(this.game.renderer);
+        
+        return true;
+    },
     
     pickItem: function(item) {
         if (item.def.type == ItemFactory.types.GOLD){
@@ -97,8 +138,10 @@ module.exports = {
             
             this.render(this.game.renderer);
         }else if (y >= 1 && y<= 7) {
-            var item = this.inventory[y - 1 + this.inventoryScroll];
+            var index = y - 1 + this.inventoryScroll;
+            var item = this.inventory[index];
             if (item) {
+                this.itemSelected = index;
                 this.game.itemDesc = item;
             }
         }

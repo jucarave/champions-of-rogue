@@ -87,6 +87,7 @@ class Game {
         
         if (this.itemDesc && stat == 1) {
             if (this.isPointInPanel(x, y, this.panels.itemDesc)) {
+                this.onItemPanelAction(x - this.panels.itemDesc[0], y - this.panels.itemDesc[1]);
                 return;
             }else{
                 this.itemDesc = null;
@@ -101,6 +102,14 @@ class Game {
         
         if (this.isPointInPanel(x, y, this.panels.inventory)) {
             this.playerStats.onMouseHandler(x - this.panels.inventory[0], y - this.panels.inventory[1], stat);
+        }
+    }
+    
+    onItemPanelAction(x, y) {
+        if (y != 14) return;
+        
+        if (x >= 26 && x < 37) {
+            this.playerStats.dropItem(this.itemDesc);
         }
     }
     
