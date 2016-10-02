@@ -21,7 +21,8 @@ class Game {
         this.console = null;
         
         this.panels = {
-            map: [0, 2, 60, 25]
+            map: [0, 2, 60, 25],
+            inventory: [60, 12, 85, 20]
         };
         
         this.createStats();
@@ -63,8 +64,13 @@ class Game {
         if (this.isPointInPanel(x, y, this.panels.map)) {
             this.map.onMouseMove(x - this.panels.map[0], y - this.panels.map[1]);
         }else{
-            this.map.mousePath = null;
-            this.map.mouseOn = [-1, -1];
+            this.map.onMouseMove(null);
+        }
+        
+        if (this.isPointInPanel(x, y, this.panels.inventory)) {
+            this.playerStats.onMouseMove(x - this.panels.inventory[0], y - this.panels.inventory[1]);
+        }else{
+            this.playerStats.onMouseMove(null);
         }
     }
     
@@ -74,6 +80,10 @@ class Game {
         
         if (this.isPointInPanel(x, y, this.panels.map)) {
             this.map.onMouseHandler(x - this.panels.map[0], y - this.panels.map[1], stat);
+        }
+        
+        if (this.isPointInPanel(x, y, this.panels.inventory)) {
+            this.playerStats.onMouseHandler(x - this.panels.inventory[0], y - this.panels.inventory[1], stat);
         }
     }
     

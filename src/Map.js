@@ -17,7 +17,7 @@ class Map {
         this.graph = null;
         this.mousePath = null;
         this.mouseDown = 0;
-        this.mouseOn = [-1, -1];
+        this.mousePosition = [-1, -1];
         
         this.map = [];
         this.view = [0, 0];
@@ -84,6 +84,30 @@ class Map {
         
         item = new Item(15, 15, this, ItemFactory.getItem("redPotion"));
         this.instances.push(item);
+        
+        item = new Item(13, 15, this, ItemFactory.getItem("greenPotion"));
+        this.instances.push(item);
+        
+        item = new Item(13, 14, this, ItemFactory.getItem("bluePotion"));
+        this.instances.push(item);
+        
+        item = new Item(12, 16, this, ItemFactory.getItem("yellowPotion"));
+        this.instances.push(item);
+        
+        item = new Item(11, 16, this, ItemFactory.getItem("aquaPotion"));
+        this.instances.push(item);
+        
+        item = new Item(10, 17, this, ItemFactory.getItem("purplePotion"));
+        this.instances.push(item);
+        
+        item = new Item(11, 17, this, ItemFactory.getItem("whitePotion"));
+        this.instances.push(item);
+        
+        item = new Item(12, 17, this, ItemFactory.getItem("tanPotion"));
+        this.instances.push(item);
+        
+        item = new Item(13, 18, this, ItemFactory.getItem("orangePotion"));
+        this.instances.push(item);
     }
     
     isSolid(x, y) {
@@ -91,6 +115,12 @@ class Map {
     }
     
     onMouseMove(x, y) {
+        if (x == null) {
+            this.mousePath = null;
+            this.mousePosition = [-1, -1];
+            return;
+        }
+        
         var x1 = this.player.x,
             y1 = this.player.y,
             x2 = x + this.view[0],
@@ -106,7 +136,7 @@ class Map {
             this.mousePath.push(r.y);
         }
         
-        this.mouseOn = [x2, y2];
+        this.mousePosition = [x2, y2];
     }
     
     onMouseHandler(x, y, stat) {

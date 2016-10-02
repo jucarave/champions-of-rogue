@@ -32,6 +32,8 @@ module.exports = {
     },
     
     statsPosition: [60, 0, 25, 25, 73],
+    inventoryScroll: 0,
+    mousePosition: null,
     
     pickItem: function(item) {
         if (this.inventory.length == MAX_INVENTORY){
@@ -60,6 +62,29 @@ module.exports = {
         return true;
     },
     
+    onMouseMove: function(x, y) {
+        if (x == null) {
+            this.mousePosition = null;
+            this.render(this.game.renderer);
+            return;
+        }
+        
+        this.mousePosition = [x, y];
+        this.render(this.game.renderer);
+    },
+    
+    onMouseHandler: function(x, y, stat) {
+        if (stat == 0) return;
+        
+        if (x == 24) {
+            if (y == 1 && this.inventoryScroll > 0) {
+                this.inventoryScroll -= 1;
+            }else if (y == 7 && this.inventoryScroll + 7 < this.inventory.length) {
+                this.inventoryScroll += 1;
+            }
+        }
+    },
+    
     renderText: function(renderer, x, y, text, color=Colors.WHITE, backColor=Colors.BLACK) {
         for (var i=0,t;t=text[i];i++) {
             renderer.plot(x + i, y, Console.getTile(renderer, t, color, backColor));
@@ -68,12 +93,12 @@ module.exports = {
     
     render: function(renderer) {
         var sp = this.statsPosition,
-            i, l, inv, name;
+            i, j, l, inv, name;
         
         renderer.clearRect(sp[0], sp[1], sp[2], sp[3]);
         
         // Player Name
-        var name = this.name + " (" + this.class + ")";
+        name = this.name + " (" + this.class + ")";
         
         var x = (sp[4] - name.length / 2) << 0;
         var ni = 0;
@@ -136,13 +161,19 @@ module.exports = {
         for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
             renderer.plot(i, 12, renderer.getTile(Colors.BLUE));
         }
-        this.renderText(renderer, sp[0] + 7, 12, "(I)NVENTORY", Colors.WHITE, Colors.BLUE);
+        this.renderText(renderer, sp[0] + 8, 12, "INVENTORY", Colors.WHITE, Colors.BLUE);
         
         for (i=0,l=Math.min(7, this.inventory.length);i<l;i++) {
-            inv = this.inventory[i];
+            inv = this.inventory[i + this.inventoryScroll];
             name = inv.def.name + ((inv.amount > 1)? ' (x' + inv.amount + ')' : '');
             
-            this.renderText(renderer, sp[0], 13 + i, name, Colors.WHITE, Colors.BLACK);
+            var backColor = Colors.BLACK;
+            if (this.mousePosition && this.mousePosition[1]-1 == i && this.mousePosition[0] < 24) {
+                backColor = Colors.GRAY;
+                name = name + "                   ";
+            }
+            
+            this.renderText(renderer, sp[0], 13 + i, name, Colors.WHITE, backColor);
         }
         
         for (i=0;i<7;i++) {
@@ -151,5 +182,11 @@ module.exports = {
             
             renderer.plot(84, 13 + i, Console.getTile(renderer, name, Colors.WHITE, Colors.GRAY));
         }
+        
+        // SKILLS
+        for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
+            renderer.plot(i, 20, renderer.getTile(Colors.BLUE));
+        }
+        this.renderText(renderer, sp[0] + 9, 20, "SKILLS", Colors.WHITE, Colors.BLUE);
     }
 };

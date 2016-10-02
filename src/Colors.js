@@ -27,5 +27,7 @@ module.exports = {
     YELLOW: new Color(160, 160, 0),
     PURPLE: new Color(160, 0, 160),
     AQUA: new Color(0, 80, 200),
-    GRAY: new Color(122, 122, 122)
+    GRAY: new Color(122, 122, 122),
+    TAN: new Color(205, 133, 63),
+    ORANGE: new Color(255, 100, 0),
 };
