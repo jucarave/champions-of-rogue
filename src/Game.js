@@ -46,9 +46,6 @@ class Game {
         
         this.playerStats.render(this.renderer);
         
-        Input.addMouseMoveListener((x, y) => { this.onMouseMove(x, y); });
-        Input.addMouseDownListener((x, y, stat) => { this.onMouseHandler(x, y, stat); });
-        
         this.loopGame();
     }
     

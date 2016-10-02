@@ -22,9 +22,30 @@ class Player {
             RIGHT: 0
         };
         
+        this.mouse = {
+            x: -1,
+            y: 0,
+            stat: -1
+        };
+        
         Input.addKeyDownListener((keyCode, stat) => { this.handleKeyEvent(keyCode, stat); });
+        Input.addMouseMoveListener((x, y) => { this.onMouseMove(x, y); });
+        Input.addMouseDownListener((x, y, stat) => { this.onMouseHandler(x, y, stat); });
         
         this.destroy = false;
+    }
+    
+    onMouseMove(x, y) {
+        this.mouse.x = x;
+        this.mouse.y = y;
+    }
+    
+    onMouseHandler(x, y, stat) {
+        if (this.mouse.stat == 2 && stat == 1){ return; }
+            
+        this.mouse.x = x;
+        this.mouse.y = y;
+        this.mouse.stat = stat;
     }
     
     handleKeyEvent(keyCode, stat) {
@@ -130,7 +151,23 @@ class Player {
         }
     }
     
+    updateMouse() {
+        if (this.mouse.x == -1) { return; }
+        
+        this.map.game.onMouseMove(this.mouse.x, this.mouse.y);
+        if (this.mouse.stat != 2){
+            this.map.game.onMouseHandler(this.mouse.x, this.mouse.y, this.mouse.stat);
+            if (this.mouse.stat == 1){
+                this.mouse.stat = 2;
+            }
+        }
+        
+        this.mouse.x = -1;
+    }
+    
     update() {
+        this.updateMouse();
+        
         if (this.map.game.itemDesc){ return; }
         
         if (this.movePath){

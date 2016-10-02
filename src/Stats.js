@@ -226,7 +226,7 @@ module.exports = {
             var backColor = Colors.BLACK;
             if (this.mousePosition && this.mousePosition[1]-1 == i && this.mousePosition[0] < 24) {
                 backColor = Colors.GRAY;
-                name = name + "                   ";
+                name = name + ("                   ").substr(0, 24 - name.length);
             }
             
             Console.renderText(renderer, sp[0], 13 + i, name, Colors.WHITE, backColor);
