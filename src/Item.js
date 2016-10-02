@@ -31,7 +31,7 @@ class Item {
         if (this.map.map[this.y][this.x].visible == 2){
             p = this.map.mousePosition;
             if (p[0] == this.x && p[1] == this.y) {
-                this.map.tileDescription = this.item.def.desc;
+                this.map.tileDescription = this.item.def.name;
             }
         }
     }

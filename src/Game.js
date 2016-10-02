@@ -3,6 +3,7 @@
 'use strict';
 
 var Renderer = require('./engine/Renderer');
+var Colors = require('./Colors');
 var Prefabs = require('./Prefabs');
 var Map = require('./Map');
 var Console = require('./Console');
@@ -20,9 +21,13 @@ class Game {
         this.map = null;
         this.console = null;
         
+        this.panelTile = this.renderer.getTile(Colors.DARK_BLUE, Colors.WHITE, "");
+        this.itemDesc = null;
+        
         this.panels = {
             map: [0, 2, 60, 25],
-            inventory: [60, 12, 85, 20]
+            inventory: [60, 12, 85, 20],
+            itemDesc: [10, 4, 49, 20]
         };
         
         this.createStats();
@@ -58,6 +63,8 @@ class Game {
     }
     
     onMouseMove(x, y) {
+        if (this.itemDesc) return;
+        
         x = (x / this.renderer.pixelSize[0]) << 0;
         y = (y / this.renderer.pixelSize[1]) << 0;
         
@@ -78,6 +85,16 @@ class Game {
         x = (x / this.renderer.pixelSize[0]) << 0;
         y = (y / this.renderer.pixelSize[1]) << 0;
         
+        if (this.itemDesc && stat == 1) {
+            if (this.isPointInPanel(x, y, this.panels.itemDesc)) {
+                return;
+            }else{
+                this.itemDesc = null;
+                this.onMouseMove(x, y);
+                return;
+            }
+        }
+        
         if (this.isPointInPanel(x, y, this.panels.map)) {
             this.map.onMouseHandler(x - this.panels.map[0], y - this.panels.map[1], stat);
         }
@@ -87,11 +104,36 @@ class Game {
         }
     }
     
+    renderItemPanel() {
+        if (!this.itemDesc){ return; }
+        
+        for (var x=10;x<49;x++) {
+            for (var y=4;y<20;y++) {
+                this.renderer.plot(x, y, this.panelTile);
+            }
+        }
+        
+        var msg = this.itemDesc.def.desc;
+        msg = Console.formatText(msg, 38);
+        
+        var title = this.itemDesc.def.name + ((this.itemDesc.amount > 1)? " (x" + this.itemDesc.amount + ")" : "");
+        this.playerStats.renderText(this.renderer, (30 - title.length / 2) << 0, 5, title, Colors.WHITE, Colors.DARK_BLUE);
+        
+        for (var i=0,m;m=msg[i];i++) {
+            this.playerStats.renderText(this.renderer, 11, 7+i, m, Colors.WHITE, Colors.DARK_BLUE);
+        }
+        
+        this.playerStats.renderText(this.renderer, 12, 18, "    USE    ", Colors.WHITE, Colors.BLUE);
+        this.playerStats.renderText(this.renderer, 24, 18, "   THROW   ", Colors.WHITE, Colors.BLUE);
+        this.playerStats.renderText(this.renderer, 36, 18, "   DROP    ", Colors.WHITE, Colors.BLUE);
+    }
+    
     loopGame() {
         this.stats.begin();
         
         if (this.font.ready){
             this.map.render();
+            this.renderItemPanel();
             this.renderer.render();
         }
         

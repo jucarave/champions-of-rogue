@@ -38,9 +38,9 @@ module.exports = {
     
     pickItem: function(item) {
         if (item.def.type == ItemFactory.types.GOLD){
-            var msg = item.amount + "Gold piece";
+            var msg = "Picked " + item.amount + " Gold piece";
             if (item.amount > 1){ msg += "s"; }
-            this.game.console.addMessage(msg);
+            this.game.console.addMessage(msg, Colors.GOLD);
             
             this.gold += item.amount;
             this.render(this.game.renderer);
@@ -96,6 +96,11 @@ module.exports = {
             }
             
             this.render(this.game.renderer);
+        }else if (y >= 1 && y<= 7) {
+            var item = this.inventory[y - 1 + this.inventoryScroll];
+            if (item) {
+                this.game.itemDesc = item;
+            }
         }
     },
     
