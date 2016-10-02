@@ -3,7 +3,8 @@
 var Prefabs = require('./Prefabs');
 
 var types = {
-    POTION: 0
+    POTION: 0,
+    GOLD: 1
 };
 
 module.exports = {
@@ -18,17 +19,19 @@ module.exports = {
         purplePotion: { code: 'PURPLE_POTION', name: 'Purple potion', tile: null, type: types.POTION, desc: 'Purple potion, unknown effect', discovered: false, stackable: true },
         whitePotion: { code: 'WHITE_POTION', name: 'White potion', tile: null, type: types.POTION, desc: 'White potion, unknown effect', discovered: false, stackable: true },
         tanPotion: { code: 'TAN_POTION', name: 'Tan potion', tile: null, type: types.POTION, desc: 'Tan potion, unknown effect', discovered: false, stackable: true },
-        orangePotion: { code: 'ORANGE_POTION', name: 'Orange potion', tile: null, type: types.POTION, desc: 'Orange potion, unknown effect', discovered: false, stackable: true }
+        orangePotion: { code: 'ORANGE_POTION', name: 'Orange potion', tile: null, type: types.POTION, desc: 'Orange potion, unknown effect', discovered: false, stackable: true },
+        
+        gold: { code: 'GOLD', name: 'Gold piece', tile: null, type: types.GOLD, desc: 'X Gold piece', stackable: true}
     },
     
-    getItem: function(code) {
+    getItem: function(code, amount = 1) {
         if (!this.items[code]){ throw new Error("Invalid item code: [" + code + "]"); }
         
         var item = this.items[code];
         if (!item.tile){ item.tile = Prefabs.ITEMS[item.code]; }
         
         var ret = {
-            amount: 1,
+            amount: amount,
             def: item
         };
         

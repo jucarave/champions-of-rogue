@@ -31,6 +31,9 @@ module.exports = {
         t.WATER = getTile(renderer, Colors.AQUA, Colors.WHITE, Tiles.WATER, Effects.WATER);
         t.WATER_DEEP = getTile(renderer, Colors.BLUE, Colors.WHITE, Tiles.WATRD, Effects.WATER);
         
+        // Gold
+        i.GOLD = getTile(renderer, Colors.BLACK, Colors.GOLD, Tiles.MONEY, Effects.NONE);
+        
         // Items
         i.RED_POTION = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.EXCLA);
         i.GREEN_POTION = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.EXCLA);

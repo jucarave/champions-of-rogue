@@ -2,6 +2,7 @@
 
 var Colors = require('./Colors');
 var Console = require('./Console');
+var ItemFactory = require('./ItemFactory');
 
 var MAX_INVENTORY = 10;
 
@@ -36,6 +37,17 @@ module.exports = {
     mousePosition: null,
     
     pickItem: function(item) {
+        if (item.def.type == ItemFactory.types.GOLD){
+            var msg = item.amount + "Gold piece";
+            if (item.amount > 1){ msg += "s"; }
+            this.game.console.addMessage(msg);
+            
+            this.gold += item.amount;
+            this.render(this.game.renderer);
+        
+            return true;
+        }
+        
         if (this.inventory.length == MAX_INVENTORY){
             this.game.console.addMessage("Inventory full!", [255, 0, 0]);
             return false;
@@ -82,6 +94,8 @@ module.exports = {
             }else if (y == 7 && this.inventoryScroll + 7 < this.inventory.length) {
                 this.inventoryScroll += 1;
             }
+            
+            this.render(this.game.renderer);
         }
     },
     
@@ -137,7 +151,7 @@ module.exports = {
         this.renderText(renderer, (sp[0] + sp[2] / 2) << 0, 5, "DEF: " + this.def, Colors.WHITE, Colors.BLACK);
         
         this.renderText(renderer, sp[0], 6, "SPD: " + this.spd, Colors.WHITE, Colors.BLACK);
-        this.renderText(renderer, (sp[0] + sp[2] / 2 - 1) << 0, 6, "GOLD: " + this.gold, Colors.YELLOW, Colors.BLACK);
+        this.renderText(renderer, (sp[0] + sp[2] / 2 - 1) << 0, 6, "GOLD: " + this.gold, Colors.GOLD, Colors.BLACK);
         
         // EQUIPMENT
         for (i=sp[0],l=sp[0]+sp[2];i<l;i++){

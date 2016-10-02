@@ -108,6 +108,9 @@ class Map {
         
         item = new Item(13, 18, this, ItemFactory.getItem("orangePotion"));
         this.instances.push(item);
+        
+        item = new Item(12, 10, this, ItemFactory.getItem("gold", 33));
+        this.instances.push(item);
     }
     
     isSolid(x, y) {

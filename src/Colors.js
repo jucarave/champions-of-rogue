@@ -30,4 +30,5 @@ module.exports = {
     GRAY: new Color(122, 122, 122),
     TAN: new Color(205, 133, 63),
     ORANGE: new Color(255, 100, 0),
+    GOLD: new Color(255, 215, 0)
 };
