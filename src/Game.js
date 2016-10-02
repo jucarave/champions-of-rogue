@@ -117,15 +117,15 @@ class Game {
         msg = Console.formatText(msg, 38);
         
         var title = this.itemDesc.def.name + ((this.itemDesc.amount > 1)? " (x" + this.itemDesc.amount + ")" : "");
-        this.playerStats.renderText(this.renderer, (30 - title.length / 2) << 0, 5, title, Colors.WHITE, Colors.DARK_BLUE);
+        Console.renderText(this.renderer, (30 - title.length / 2) << 0, 5, title, Colors.WHITE, Colors.DARK_BLUE);
         
         for (var i=0,m;m=msg[i];i++) {
-            this.playerStats.renderText(this.renderer, 11, 7+i, m, Colors.WHITE, Colors.DARK_BLUE);
+            Console.renderText(this.renderer, 11, 7+i, m, Colors.WHITE, Colors.DARK_BLUE);
         }
         
-        this.playerStats.renderText(this.renderer, 12, 18, "    USE    ", Colors.WHITE, Colors.BLUE);
-        this.playerStats.renderText(this.renderer, 24, 18, "   THROW   ", Colors.WHITE, Colors.BLUE);
-        this.playerStats.renderText(this.renderer, 36, 18, "   DROP    ", Colors.WHITE, Colors.BLUE);
+        Console.renderText(this.renderer, 12, 18, "    USE    ", Colors.WHITE, Colors.BLUE);
+        Console.renderText(this.renderer, 24, 18, "   THROW   ", Colors.WHITE, Colors.BLUE);
+        Console.renderText(this.renderer, 36, 18, "   DROP    ", Colors.WHITE, Colors.BLUE);
     }
     
     loopGame() {

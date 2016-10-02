@@ -70,12 +70,16 @@ class Console {
         return renderer.getTile(backColor, color, Tiles[tile]);
     }
     
+    static renderText(renderer, x, y, text, color=Colors.WHITE, backColor=Colors.BLACK) {
+        for (var i=0,t;t=text[i];i++) {
+            renderer.plot(x + i, y, Console.getTile(renderer, t, color, backColor));
+        }
+    }
+    
     render() {
         var length = this.messages.length - 1;
         for (var i=0,m;m=this.messages[length - i];i++) {
-            for (var j=0,c;c=m.text[j];j++){
-                this.renderer.plot(this.consolePosition[0] + j, this.consolePosition[1] + this.maxMessages - i, Console.getTile(this.renderer, c, m.color));
-            }
+            Console.renderText(this.renderer, this.consolePosition[0], this.consolePosition[1] + this.maxMessages - i, m.text, m.color)
         }
     }
 }
