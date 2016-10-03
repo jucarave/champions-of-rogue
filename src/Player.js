@@ -102,12 +102,17 @@ class Player {
         this.keys[key] = stat;
     }
     
+    act() {
+        this.map.playerTurn = false;
+    }
+    
     moveTo(xTo, yTo) {
         if (!this.map.isSolid(this.x + xTo, this.y + yTo)){
             this.x += xTo;
             this.y += yTo;
             
             this.map.updateFOV(this.x, this.y);
+            this.act();
         }
     }
     
@@ -166,6 +171,8 @@ class Player {
     }
     
     update() {
+        if (!this.map.playerTurn){ return; }
+        
         this.updateMouse();
         
         if (this.map.game.itemDesc){ return; }

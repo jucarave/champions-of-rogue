@@ -1,6 +1,7 @@
 'use strict';
 
 var PlayerStats = require('./Stats');
+var ItemFactory = require('./ItemFactory');
 
 class Item {
     constructor(x, y, map, item) {
@@ -11,6 +12,11 @@ class Item {
         this.item = item;
         this.tile = item.def.tile;
         this.name = item.def.name;
+        
+        if (item.def.type == ItemFactory.types.GOLD) {
+            this.name = item.def.desc.replace("X", item.amount);
+            if (item.amount > 1){ this.name += "s"; }
+        }
         
         this.destroy = false;
         this.playerOnTile = false;
@@ -39,7 +45,7 @@ class Item {
             this.inShadow = false;
             p = this.map.mousePosition;
             if (p[0] == this.x && p[1] == this.y) {
-                this.map.tileDescription = this.item.def.name;
+                this.map.tileDescription = this.name;
             }
         }else if (this.map.map[this.y][this.x].visible <= 1){
             this.discovered = false;

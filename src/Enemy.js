@@ -26,11 +26,13 @@ class Enemy {
             this.inShadow = false;
             p = this.map.mousePosition;
             if (p[0] == this.x && p[1] == this.y) {
-                this.map.tileDescription = this.enemy.def.name;
+                this.map.tileDescription = this.name;
             }
         }else if (this.map.map[this.y][this.x].visible <= 1){
             this.discovered = false;
         }
+        
+        if (this.map.playerTurn){ return; }
     }
 }
 

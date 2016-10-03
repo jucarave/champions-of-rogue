@@ -31,6 +31,7 @@ class Map {
         this.fovUpdated = false;
         this.fovDistance = 30;
         
+        this.playerTurn = true;
         this.tileDescription = null;
         
         this.createMap();
@@ -303,6 +304,7 @@ class Map {
     }
     
     render() {
+        this.playerTurn = true;
         this.tileDescription = null;
         
         this.copyMapIntoTexture();

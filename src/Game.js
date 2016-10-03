@@ -7,7 +7,6 @@ var Colors = require('./Colors');
 var Prefabs = require('./Prefabs');
 var Map = require('./Map');
 var Console = require('./Console');
-var Input = require('./engine/Input');
 var Utils = require('./Utils');
 
 class Game {

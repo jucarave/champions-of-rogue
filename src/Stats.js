@@ -41,6 +41,8 @@ module.exports = {
     itemSelected: -1,
     
     useItem: function(item) {
+        if (!this.game.map.playerTurn) return;
+        
         if (item.amount > 1) {
             item.amount -= 1;
         }else{
@@ -50,9 +52,13 @@ module.exports = {
         
         var msg = ItemFactory.useItem(item.def, this);
         this.game.console.addMessage(msg, [255, 255, 255]);
+        
+        this.game.map.playerTurn = false;
     },
     
     dropItem: function(item) {
+        if (!this.game.map.playerTurn) return;
+        
         var map = this.game.map;
         var player = map.player;
         
@@ -88,6 +94,8 @@ module.exports = {
         
         this.game.console.addMessage(item.def.name + " dropped", [0, 255, 255]);
         this.render(this.game.renderer);
+        
+        this.game.map.playerTurn = false;
         
         return true;
     },
@@ -126,6 +134,8 @@ module.exports = {
         
         this.game.console.addMessage(item.def.name + " picked!", [255, 255, 0]);
         this.render(this.game.renderer);
+        
+        this.game.map.playerTurn = false;
         
         return true;
     },
