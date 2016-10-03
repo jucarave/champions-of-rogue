@@ -10,6 +10,8 @@ module.exports = {
     game: null,
     
     name: 'KRAM',
+    useName: 'You',
+    
     class: 'ROGUE',
     
     level: 1,
@@ -36,6 +38,18 @@ module.exports = {
     inventoryScroll: 0,
     mousePosition: null,
     itemSelected: -1,
+    
+    useItem: function(item) {
+        if (item.amount > 1) {
+            item.amount -= 1;
+        }else{
+            this.game.itemDesc = null;
+            this.inventory.splice(this.itemSelected, 1);
+        }
+        
+        var msg = ItemFactory.useItem(item.def, this);
+        this.game.console.addMessage(msg, [255, 255, 255]);
+    },
     
     dropItem: function(item) {
         var map = this.game.map;
@@ -127,7 +141,7 @@ module.exports = {
     },
     
     onMouseHandler: function(x, y, stat) {
-        if (stat == 0) return;
+        if (stat <= 0) return;
         
         if (x == 24) {
             if (y == 1 && this.inventoryScroll > 0) {

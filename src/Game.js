@@ -105,7 +105,9 @@ class Game {
     onItemPanelAction(x, y) {
         if (y != 14) return;
         
-        if (x >= 26 && x < 37) {
+        if (x >= 2 && x < 13) {
+            this.playerStats.useItem(this.itemDesc);
+        }else  if (x >= 26 && x < 37) {
             this.playerStats.dropItem(this.itemDesc);
         }
     }

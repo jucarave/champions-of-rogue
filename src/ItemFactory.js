@@ -1,6 +1,7 @@
 'use strict';
 
 var Prefabs = require('./Prefabs');
+var ItemEffects = require('./ItemEffects');
 
 var types = {
     POTION: 0,
@@ -22,6 +23,33 @@ module.exports = {
         orangePotion: { tileCode: 'ORANGE_POTION', name: 'Orange potion', tile: null, type: types.POTION, desc: 'Orange potion, unknown effect', discovered: false, stackable: true },
         
         gold: { tileCode: 'GOLD', name: 'Gold piece', tile: null, type: types.GOLD, desc: 'X Gold piece', stackable: true}
+    },
+    
+    potions: [
+        { name: 'Health Potion', desc: 'Restores 3D10 health points when drink.', effect: ItemEffects.items.hpPotion }
+    ],
+    
+    useItem: function(item, instance) {
+        var msg = null;
+        
+        if (item.type == types.POTION) {
+            msg = "";
+            if (!item.discovered) {
+                var index = (Math.random() * this.potions.length) << 0;
+                var potion = this.potions[index];
+                
+                item.name = potion.name;
+                item.desc = potion.desc;
+                item.effect = potion.effect;
+                item.discovered = true;
+                
+                msg = "It was a " + item.name + ". ";
+            }
+            
+            msg += ItemEffects.executeCommand(item.effect, {instance: instance});
+        }
+        
+        return msg;
     },
     
     getItem: function(code, amount = 1) {
