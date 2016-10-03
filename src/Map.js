@@ -10,6 +10,7 @@ var Item = require('./Item');
 var ItemFactory = require('./ItemFactory');
 var Enemy = require('./Enemy');
 var EnemyFactory = require('./EnemyFactory');
+var Utils = require('./Utils');
 
 class Map {
     constructor(game) {
@@ -307,6 +308,7 @@ class Map {
         this.copyMapIntoTexture();
         this.renderMousePath();
         
+        var discover = null;
         for (var i=0,ins;ins=this.instances[i];i++) {
             ins.update();
             
@@ -318,7 +320,25 @@ class Map {
             
             if (this.map[ins.y][ins.x].visible >= 2){
                 this.renderer.plotCharacter(ins.x - this.view[0] + this.mapPosition[0], ins.y - this.view[1] + this.mapPosition[1], ins.tile.light);
+                
+                if (ins.stopOnDiscover && !ins.inShadow && !ins.discovered) {
+                    ins.discovered = true;
+                    if (discover == null) {
+                        discover = "You see a " + ins.name;
+                    }else{
+                        discover += ", " + ins.name;
+                    }
+                }
             }
+        }
+        
+        if (discover != null) {
+            discover = Utils.formatText(discover + ".", 85);
+            for (var i=0,line;line=discover[i];i++){
+                this.game.console.addMessage(line, [255, 255, 255]);
+            }
+            
+            this.player.movePath = null;
         }
         
         this.renderer.plotCharacter(this.player.x - this.view[0] + this.mapPosition[0], this.player.y - this.view[1] + this.mapPosition[1], this.player.tile.light);
