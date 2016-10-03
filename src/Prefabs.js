@@ -15,10 +15,12 @@ function getTile(renderer, backColor, frontColor, tile, effect, solid=false) {
 module.exports = {
     TILES: {},
     ITEMS: {},
+    ENEMIES: {},
     
     init: function(renderer) {
         var t = this.TILES;
         var i = this.ITEMS;
+        var e = this.ENEMIES;
         
         // Blank
         t.BLANK = getTile(renderer, Colors.BLACK, Colors.BLACK, Tiles.BLANK, Effects.NONE);
@@ -44,6 +46,9 @@ module.exports = {
         i.PURPLE_POTION = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.EXCLA);
         i.TAN_POTION = getTile(renderer, Colors.BLACK, Colors.TAN, Tiles.EXCLA);
         i.ORANGE_POTION = getTile(renderer, Colors.BLACK, Colors.ORANGE, Tiles.EXCLA);
+        
+        // Enemies
+        e.KOBOLD = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.k);
         
         // Player
         this.PLAYER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.PLAYR, Effects.NONE);

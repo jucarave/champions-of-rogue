@@ -8,6 +8,8 @@ var Colors = require('./Colors');
 var Player = require('./Player');
 var Item = require('./Item');
 var ItemFactory = require('./ItemFactory');
+var Enemy = require('./Enemy');
+var EnemyFactory = require('./EnemyFactory');
 
 class Map {
     constructor(game) {
@@ -111,6 +113,9 @@ class Map {
         
         item = new Item(12, 10, this, ItemFactory.getItem("gold", 33));
         this.instances.push(item);
+        
+        var enemy = new Enemy(17, 14, this, EnemyFactory.getEnemy("kobold"));
+        this.instances.push(enemy);
     }
     
     getInstanceAt(x, y) {

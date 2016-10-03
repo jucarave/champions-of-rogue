@@ -1,5 +1,7 @@
 'use strict';
 
+var Utils = require('./Utils');
+
 var ins = {
     LITERAL: 0x00,
     DICE: 0x01,
@@ -10,18 +12,6 @@ var ins = {
     SET_INSTANCE_HEALTH: 0x06,
     RETURN_MSG: 0x07
 };
-
-function rollDice(value) {
-    var a = parseInt(value.substring(0, value.indexOf('D')), 10);
-    var b = parseInt(value.substring(value.indexOf('D') + 1), 10);
-    
-    var ret = 0;
-    for (var i=0;i<a;i++) {
-        ret += ((Math.random() * (b - 1)) << 0) + 1;
-    }
-    
-    return ret;
-}
 
 module.exports = {
     instructions: ins,
@@ -41,7 +31,7 @@ module.exports = {
                     break;
                 
                 case ins.DICE:
-                    stack.push(rollDice(copy.shift()));
+                    stack.push(Utils.rollDice(copy.shift()));
                     break;
                     
                 case ins.SUM:
@@ -53,7 +43,7 @@ module.exports = {
                     break;
                     
                 case ins.GET_INSTANCE_USE_NAME:
-                    stack.push(params.instance.useName);
+                    stack.push(params.instance.useName || params.instance.name);
                     break;
                     
                 case ins.GET_INSTANCE_HEALTH:
@@ -79,6 +69,6 @@ module.exports = {
     },
     
     items: {
-        hpPotion: [ ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.GET_INSTANCE_HEALTH, ins.DICE, '3D10', ins.STORE_VAL, ins.SUM, ins.SET_INSTANCE_HEALTH, ins.RETURN_MSG, "%s0 recovered %s1 health points." ]
+        hpPotion: [ ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.GET_INSTANCE_HEALTH, ins.DICE, '2D10+10', ins.STORE_VAL, ins.SUM, ins.SET_INSTANCE_HEALTH, ins.RETURN_MSG, "%s0 recovered %s1 health points." ]
     }
 };
