@@ -298,7 +298,7 @@ class Map {
         
         var x = (this.mapPosition[2] / 2 - this.tileDescription.length / 2) << 0;
         for (var i=0,c;c=this.tileDescription[i];i++) {
-            this.renderer.plot(x + i, 1, Console.getTile(this.renderer, c, Colors.WHITE, Colors.BLACK));
+            this.renderer.plot(x + i, 1, Utils.getTile(this.renderer, c, Colors.WHITE, Colors.BLACK));
         }
     }
     

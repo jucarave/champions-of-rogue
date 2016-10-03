@@ -3,6 +3,7 @@
 var Colors = require('./Colors');
 var Console = require('./Console');
 var ItemFactory = require('./ItemFactory');
+var Utils = require('./Utils');
 
 var MAX_INVENTORY = 10;
 
@@ -176,11 +177,11 @@ module.exports = {
             var n = '';
             if (i >= x && ni < name.length){ n = name[ni++]; }
             
-            renderer.plot(i, 0, Console.getTile(renderer, n, Colors.WHITE, Colors.BLUE));
+            renderer.plot(i, 0, Utils.getTile(renderer, n, Colors.WHITE, Colors.BLUE));
         }
         
         // Dungeon Depth
-        Console.renderText(renderer, sp[0], 1, "LEVEL: " + this.level);
+        Utils.renderText(renderer, sp[0], 1, "LEVEL: " + this.level);
         
         // Health Points
         var hp = ((this.hp[0] / this.hp[1] * sp[2]) << 0) + sp[0];
@@ -188,7 +189,7 @@ module.exports = {
             renderer.plot(i, 2, renderer.getTile(Colors.GREEN));
         }
         
-        Console.renderText(renderer, sp[0], 2, "HP: " + this.hp[0] + "/" + this.hp[1], Colors.WHITE, Colors.GREEN);
+        Utils.renderText(renderer, sp[0], 2, "HP: " + this.hp[0] + "/" + this.hp[1], Colors.WHITE, Colors.GREEN);
         
         // Magic Points
         var mp = ((this.mp[0] / this.mp[1] * sp[2]) << 0) + sp[0];
@@ -199,39 +200,39 @@ module.exports = {
         for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
             renderer.plot(i, 4, renderer.getTile(Colors.BLACK));
         }
-        Console.renderText(renderer, sp[0], 4, "STATUS: FINE", Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, sp[0], 4, "STATUS: FINE", Colors.WHITE, Colors.BLACK);
         
-        Console.renderText(renderer, sp[0], 3, "MP: " + this.mp[0] + "/" + this.mp[1], Colors.WHITE, Colors.AQUA);
+        Utils.renderText(renderer, sp[0], 3, "MP: " + this.mp[0] + "/" + this.mp[1], Colors.WHITE, Colors.AQUA);
         
-        Console.renderText(renderer, sp[0], 5, "ATK: " + this.str, Colors.WHITE, Colors.BLACK);
-        Console.renderText(renderer, (sp[0] + sp[2] / 2) << 0, 5, "DEF: " + this.def, Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, sp[0], 5, "ATK: " + this.str, Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, (sp[0] + sp[2] / 2) << 0, 5, "DEF: " + this.def, Colors.WHITE, Colors.BLACK);
         
-        Console.renderText(renderer, sp[0], 6, "SPD: " + this.spd, Colors.WHITE, Colors.BLACK);
-        Console.renderText(renderer, (sp[0] + sp[2] / 2 - 1) << 0, 6, "GOLD: " + this.gold, Colors.GOLD, Colors.BLACK);
+        Utils.renderText(renderer, sp[0], 6, "SPD: " + this.spd, Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, (sp[0] + sp[2] / 2 - 1) << 0, 6, "GOLD: " + this.gold, Colors.GOLD, Colors.BLACK);
         
         // EQUIPMENT
         for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
             renderer.plot(i, 7, renderer.getTile(Colors.BLUE));
         }
-        Console.renderText(renderer, sp[0] + 8, 7, "EQUIPMENT", Colors.WHITE, Colors.BLUE);
+        Utils.renderText(renderer, sp[0] + 8, 7, "EQUIPMENT", Colors.WHITE, Colors.BLUE);
         
         var equip = (this.equipment.rhand)? this.equipment.rhand : 'RIGHT HAND';
-        Console.renderText(renderer, sp[0], 8, equip, Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, sp[0], 8, equip, Colors.WHITE, Colors.BLACK);
         
         equip = (this.equipment.lhand)? this.equipment.lhand : 'LEFT HAND';
-        Console.renderText(renderer, sp[0], 9, equip, Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, sp[0], 9, equip, Colors.WHITE, Colors.BLACK);
         
         equip = (this.equipment.armor)? this.equipment.armor : 'NO ARMOR';
-        Console.renderText(renderer, sp[0], 10, equip, Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, sp[0], 10, equip, Colors.WHITE, Colors.BLACK);
         
         equip = (this.equipment.amulet)? this.equipment.amulet : 'NO AMULET';
-        Console.renderText(renderer, sp[0], 11, equip, Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, sp[0], 11, equip, Colors.WHITE, Colors.BLACK);
         
         // INVENTORY
         for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
             renderer.plot(i, 12, renderer.getTile(Colors.BLUE));
         }
-        Console.renderText(renderer, sp[0] + 8, 12, "INVENTORY", Colors.WHITE, Colors.BLUE);
+        Utils.renderText(renderer, sp[0] + 8, 12, "INVENTORY", Colors.WHITE, Colors.BLUE);
         
         for (i=0,l=Math.min(7, this.inventory.length);i<l;i++) {
             inv = this.inventory[i + this.inventoryScroll];
@@ -243,20 +244,20 @@ module.exports = {
                 name = name + ("                   ").substr(0, 24 - name.length);
             }
             
-            Console.renderText(renderer, sp[0], 13 + i, name, Colors.WHITE, backColor);
+            Utils.renderText(renderer, sp[0], 13 + i, name, Colors.WHITE, backColor);
         }
         
         for (i=0;i<7;i++) {
             name = " ";
             if (i == 0){ name = "PAGEUP"; }else if (i == 6){ name = "PAGEDWN"}
             
-            renderer.plot(84, 13 + i, Console.getTile(renderer, name, Colors.WHITE, Colors.GRAY));
+            renderer.plot(84, 13 + i, Utils.getTile(renderer, name, Colors.WHITE, Colors.GRAY));
         }
         
         // SKILLS
         for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
             renderer.plot(i, 20, renderer.getTile(Colors.BLUE));
         }
-        Console.renderText(renderer, sp[0] + 9, 20, "SKILLS", Colors.WHITE, Colors.BLUE);
+        Utils.renderText(renderer, sp[0] + 9, 20, "SKILLS", Colors.WHITE, Colors.BLUE);
     }
 };

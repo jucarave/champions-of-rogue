@@ -1,5 +1,8 @@
 'use strict';
 
+var Colors = require('./Colors');
+var Tiles = require('./Tiles');
+
 module.exports = {
     rollDice: function(value) {
         var array = value.split(/D\+/),
@@ -35,5 +38,34 @@ module.exports = {
         }
         
         return ret;
+    },
+    
+    getTile: function(renderer, chara, color, backColor=Colors.BLACK) {
+        var tile = chara;
+        
+        if (tile == "!"){ tile = "EXCLA"; }else
+        if (tile == "."){ tile = "POINT"; }else
+        if (tile == ":"){ tile = "COLON"; }else
+        if (tile == ","){ tile = "COMMA"; }else
+        if (tile == "?"){ tile = "QUEST"; }else
+        if (tile == "<"){ tile = "STRUP"; }else
+        if (tile == ">"){ tile = "STRDN"; }else
+        if (tile == "+"){ tile = "PLUS"; }else
+        if (tile == "-"){ tile = "MINUS"; }else
+        if (tile == "$"){ tile = "MONEY"; }else
+        if (tile == "("){ tile = "PAREO"; }else
+        if (tile == ")"){ tile = "PAREC"; }else
+        if (tile == "'"){ tile = "QUOTS"; }else
+        if (tile == '"'){ tile = "QUOTD"; }else
+        if (tile == "/"){ tile = "SLASH"; }else
+        if (tile >= "0" && tile <= "9"){ tile = "N" + tile; }
+        
+        return renderer.getTile(backColor, color, Tiles[tile]);
+    },
+    
+    renderText: function(renderer, x, y, text, color=Colors.WHITE, backColor=Colors.BLACK) {
+        for (var i=0,t;t=text[i];i++) {
+            renderer.plot(x + i, y, this.getTile(renderer, t, color, backColor));
+        }
     }
 };
