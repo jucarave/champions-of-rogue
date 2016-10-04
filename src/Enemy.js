@@ -26,6 +26,16 @@ class Enemy {
         this.movementBudget = 0.0;
     }
     
+    receiveDamage(dmg) {
+        this.enemy.hp[0] -= dmg;
+        if (this.enemy.hp[0] <= 0) {
+            this.destroy = true;
+            return true;
+        }
+        
+        return false;
+    }
+    
     moveTo(xTo, yTo) {
         var tile = this.map.getTileAt(this.x + xTo, this.y + yTo);
         var solid = (tile && tile.type == Prefabs.types.WALL);
@@ -83,6 +93,8 @@ class Enemy {
     }
     
     update() {
+        if (this.destroy) return;
+        
         this.inShadow = true;
         
         var p = this.map.player;

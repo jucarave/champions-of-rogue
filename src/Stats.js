@@ -140,6 +140,16 @@ module.exports = {
         return true;
     },
     
+    getStr: function() {
+        if (this.equipment.rhand) {
+            this.equipment.rhand.str;
+        }else if (this.equipment.lhand) {
+            this.equipment.lhand.str;
+        }
+        
+        return this.str;
+    },
+    
     onMouseMove: function(x, y) {
         if (x == null) {
             this.mousePosition = null;
@@ -214,7 +224,7 @@ module.exports = {
         
         Utils.renderText(renderer, sp[0], 3, "MP: " + this.mp[0] + "/" + this.mp[1], Colors.WHITE, Colors.AQUA);
         
-        Utils.renderText(renderer, sp[0], 5, "ATK: " + this.str, Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, sp[0], 5, "ATK: " + this.getStr(), Colors.WHITE, Colors.BLACK);
         Utils.renderText(renderer, (sp[0] + sp[2] / 2) << 0, 5, "DEF: " + this.def, Colors.WHITE, Colors.BLACK);
         
         Utils.renderText(renderer, sp[0], 6, "SPD: " + this.spd, Colors.WHITE, Colors.BLACK);

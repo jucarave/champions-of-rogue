@@ -1,7 +1,10 @@
 'use strict';
 
 var Prefabs = require('./Prefabs');
+var PlayerStats = require('./Stats');
 var Input = require('./engine/Input');
+var Utils = require('./Utils');
+var Colors = require('./Colors');
 
 class Player {
     constructor(x, y, map) {
@@ -106,14 +109,40 @@ class Player {
         this.map.playerTurn = false;
     }
     
-    moveTo(xTo, yTo) {
-        if (!this.map.isSolid(this.x + xTo, this.y + yTo)){
-            this.x += xTo;
-            this.y += yTo;
-            
-            this.map.updateFOV(this.x, this.y);
-            this.act();
+    attackTo(ins) {
+        var enemy = ins.enemy;
+        var missed = (Math.random() * 100) < enemy.def.luk;
+        var msg = "You attack the " + enemy.def.name;
+        
+        if (missed) {
+            return this.map.game.console.addMessage(msg + ", missed!", Colors.RED);
         }
+        
+        var str = Utils.rollDice(PlayerStats.getStr());
+        var def = Utils.rollDice(enemy.def.def);
+        var dmg = Math.max(str - def, 1);
+        
+        if (ins.receiveDamage(dmg)) {
+            this.map.game.console.addMessage("You killed the " + enemy.def.name, Colors.WHITE);
+        }else{
+            this.map.game.console.addMessage(msg + ", hit by " + dmg + " points", Colors.GREEN);
+        }
+    }
+    
+    moveTo(xTo, yTo) {
+        if (this.map.isSolid(this.x + xTo, this.y + yTo)){ return; }
+        
+        var ins = this.map.getInstanceAt(this.x + xTo, this.y + yTo);
+        if (ins && ins.enemy) {
+            this.attackTo(ins);
+            return;
+        }
+        
+        this.x += xTo;
+        this.y += yTo;
+        
+        this.map.updateFOV(this.x, this.y);
+        this.act();
     }
     
     checkMovement() {

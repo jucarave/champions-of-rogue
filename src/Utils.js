@@ -5,7 +5,7 @@ var Tiles = require('./Tiles');
 
 module.exports = {
     rollDice: function(value) {
-        var array = value.split(/D\+/),
+        var array = value.split(/[D\+*]/),
             a = parseInt(array[0], 10),
             b = parseInt(array[1], 10),
             c = parseInt(array[2], 10) || 0;
