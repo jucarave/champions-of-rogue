@@ -14,6 +14,11 @@ class Console {
         this.consolePosition = [0, 25];
     }
     
+    clear() {
+        this.messages = [];
+        this.render();
+    }
+    
     addMessage(text, color = Colors.WHITE) {
         this.messages.push({text: text, color: color});
         
@@ -21,11 +26,12 @@ class Console {
             this.messages.splice(0, 1);
         }
         
-        this.renderer.clearRect(0, 25, 85, 5);
         this.render();
     }
     
     render() {
+        this.renderer.clearRect(0, 25, 85, 5);
+        
         var length = this.messages.length - 1;
         for (var i=0,m;m=this.messages[length - i];i++) {
             Utils.renderText(this.renderer, this.consolePosition[0], this.consolePosition[1] + this.maxMessages - i, m.text, m.color)

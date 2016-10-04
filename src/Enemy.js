@@ -2,6 +2,8 @@
 
 var Prefabs = require('./Prefabs');
 var PlayerStats = require('./Stats');
+var Colors = require('./Colors');
+var Utils = require('./Utils');
 
 class Enemy {
     constructor(x, y, map, enemy) {
@@ -75,8 +77,36 @@ class Enemy {
         }
     }
     
+    checkAttack() {
+        if (Math.abs(this.target.x - this.x) > 1 || Math.abs(this.target.y - this.y) > 1) {
+            return false;
+        }
+        
+        var player = PlayerStats;
+        var missed = (Math.random() * 100) < player.luk;
+        var msg = this.enemy.def.name + " attacks you";
+        
+        if (missed) {
+            this.map.game.console.addMessage(msg + ", missed!", Colors.GREEN);
+            return false;
+        }
+        
+        var str = Utils.rollDice(this.enemy.def.str);
+        var def = Utils.rollDice(player.def);
+        var dmg = Math.max(str - def, 1);
+        
+        this.map.game.console.addMessage(msg + ", hit by " + dmg + " points", Colors.RED);
+        player.receiveDamage(dmg);
+        
+        return true;
+    }
+    
     updateMovement() {
         if (this.target) {
+            if (this.checkAttack()) {
+                return true;
+            }
+            
             if (this.target.x != this.targetLastPosition.x || this.target.y != this.targetLastPosition.y) {
                 this.targetLastPosition.x = this.target.x;
                 this.targetLastPosition.y = this.target.y;
@@ -90,6 +120,8 @@ class Enemy {
         }else{
             this.wander();
         }
+        
+        return false;
     }
     
     update() {
@@ -120,7 +152,7 @@ class Enemy {
         turns = turns << 0;
         
         for (var i=0;i<turns;i++) {
-            this.updateMovement();
+            if (this.updateMovement()){ return; }
         }
     }
 }

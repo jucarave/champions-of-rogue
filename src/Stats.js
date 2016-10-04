@@ -24,8 +24,11 @@ module.exports = {
     str: '3D5',
     def: '2D4',
     spd: 2,
+    luk: 38,
     
     gold: 0,
+    
+    dead: false,
     
     inventory: [],
     equipment: {
@@ -40,6 +43,19 @@ module.exports = {
     mousePosition: null,
     itemSelected: -1,
     
+    receiveDamage: function(dmg) {
+        this.hp[0] -= dmg;
+        if (this.hp[0] <= 0) {
+            this.hp[0] = 0;
+            this.dead = true;
+            
+            this.game.console.clear();
+            this.game.console.addMessage("You died", Colors.PURPLE);
+        }
+        
+        this.render(this.game.renderer);
+    },
+    
     useItem: function(item) {
         if (!this.game.map.playerTurn) return;
         
@@ -51,7 +67,7 @@ module.exports = {
         }
         
         var msg = ItemFactory.useItem(item.def, this);
-        this.game.console.addMessage(msg, [255, 255, 255]);
+        this.game.console.addMessage(msg, Colors.WHITE);
         
         this.game.map.playerTurn = false;
     },
@@ -77,7 +93,7 @@ module.exports = {
             }
             
             if (tries++ == 20) {
-                this.game.console.addMessage("Can't drop it here!", [255, 0, 0]);
+                this.game.console.addMessage("Can't drop it here!", Colors.RED);
                 this.render(this.game.renderer);
                 return false;
             }
@@ -92,7 +108,7 @@ module.exports = {
         
         map.createItem(x, y, ItemFactory.getItem(item.def.code));
         
-        this.game.console.addMessage(item.def.name + " dropped", [0, 255, 255]);
+        this.game.console.addMessage(item.def.name + " dropped", Colors.AQUA);
         this.render(this.game.renderer);
         
         this.game.map.playerTurn = false;
@@ -113,7 +129,7 @@ module.exports = {
         }
         
         if (this.inventory.length == MAX_INVENTORY){
-            this.game.console.addMessage("Inventory full!", [255, 0, 0]);
+            this.game.console.addMessage("Inventory full!", Colors.RED);
             return false;
         }
         
@@ -132,7 +148,7 @@ module.exports = {
             this.inventory.push(item);
         }
         
-        this.game.console.addMessage(item.def.name + " picked!", [255, 255, 0]);
+        this.game.console.addMessage(item.def.name + " picked!", Colors.YELLOW);
         this.render(this.game.renderer);
         
         this.game.map.playerTurn = false;
@@ -209,7 +225,7 @@ module.exports = {
             renderer.plot(i, 2, renderer.getTile(Colors.GREEN));
         }
         
-        Utils.renderText(renderer, sp[0], 2, "HP: " + this.hp[0] + "/" + this.hp[1], Colors.WHITE, Colors.GREEN);
+        Utils.renderText(renderer, sp[0], 2, "HP: " + this.hp[0] + "/" + this.hp[1], Colors.WHITE, null);
         
         // Magic Points
         var mp = ((this.mp[0] / this.mp[1] * sp[2]) << 0) + sp[0];
@@ -217,12 +233,12 @@ module.exports = {
             renderer.plot(i, 3, renderer.getTile(Colors.AQUA));
         }
         
+        Utils.renderText(renderer, sp[0], 3, "MP: " + this.mp[0] + "/" + this.mp[1], Colors.WHITE, null);
+        
         for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
             renderer.plot(i, 4, renderer.getTile(Colors.BLACK));
         }
-        Utils.renderText(renderer, sp[0], 4, "STATUS: FINE", Colors.WHITE, Colors.BLACK);
-        
-        Utils.renderText(renderer, sp[0], 3, "MP: " + this.mp[0] + "/" + this.mp[1], Colors.WHITE, Colors.AQUA);
+        Utils.renderText(renderer, sp[0], 4, "STATUS: FINE", Colors.WHITE, null);
         
         Utils.renderText(renderer, sp[0], 5, "ATK: " + this.getStr(), Colors.WHITE, Colors.BLACK);
         Utils.renderText(renderer, (sp[0] + sp[2] / 2) << 0, 5, "DEF: " + this.def, Colors.WHITE, Colors.BLACK);

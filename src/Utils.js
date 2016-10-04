@@ -65,7 +65,11 @@ module.exports = {
     
     renderText: function(renderer, x, y, text, color=Colors.WHITE, backColor=Colors.BLACK) {
         for (var i=0,t;t=text[i];i++) {
-            renderer.plot(x + i, y, this.getTile(renderer, t, color, backColor));
+            if (backColor == null) {
+                renderer.plotCharacter(x + i, y, this.getTile(renderer, t, color, backColor));
+            }else{
+                renderer.plot(x + i, y, this.getTile(renderer, t, color, backColor));
+            }
         }
     }
 };

@@ -154,6 +154,8 @@ class Renderer {
     }
     
     getColorIndex(color, surface) {
+        if (!color) return 0;
+        
         var c = color[0] + "," + color[1] + "," + color[2],
             cI = surface.content.colors.indexOf(c);
             

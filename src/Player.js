@@ -218,6 +218,7 @@ class Player {
     }
     
     update() {
+        if (PlayerStats.dead){ return; }
         if (!this.map.playerTurn){ return; }
         
         if (this.checkSkip()){ return; }
