@@ -144,13 +144,12 @@ class Player {
     followPath() {
         if (this.autoMoveDelay-- > 0){ return; }
         
-        var xTo = this.movePath[0] - this.x;
-        var yTo = this.movePath[1] - this.y;
+        var xTo = this.movePath.shift() - this.x;
+        var yTo = this.movePath.shift() - this.y;
         
         this.moveTo(xTo, yTo);
         this.autoMoveDelay = this.moveWait;
         
-        this.movePath.splice(0, 2);
         if (this.movePath.length == 0) {
             this.movePath = null;
         }

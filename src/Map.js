@@ -116,7 +116,7 @@ class Map {
         item = new Item(12, 10, this, ItemFactory.getItem("gold", 33));
         this.instances.push(item);
         
-        var enemy = new Enemy(17, 14, this, EnemyFactory.getEnemy("kobold"));
+        var enemy = new Enemy(23, 10, this, EnemyFactory.getEnemy("kobold"));
         this.instances.push(enemy);
     }
     
@@ -144,6 +144,20 @@ class Map {
         return this.map[y][x].tile;
     }
     
+    getPath(x1, y1, x2, y2) {
+        var start = this.graph.grid[x1][y1];
+        var end = this.graph.grid[x2][y2];
+        var result = astar.search(this.graph, start, end, { heuristic: astar.heuristics.diagonal });
+        
+        var ret = [];
+        for (var i=0,r;r=result[i];i++) {
+            ret.push(r.x);
+            ret.push(r.y);
+        }
+        
+        return ret;
+    }
+    
     onMouseMove(x, y) {
         if (x == null) {
             this.mousePath = null;
@@ -156,15 +170,7 @@ class Map {
             x2 = x + this.view[0],
             y2 = y + this.view[1];
         
-        var start = this.graph.grid[x1][y1];
-        var end = this.graph.grid[x2][y2];
-        var result = astar.search(this.graph, start, end, { heuristic: astar.heuristics.diagonal });
-        
-        this.mousePath = [];
-        for (var i=0,r;r=result[i];i++) {
-            this.mousePath.push(r.x);
-            this.mousePath.push(r.y);
-        }
+        this.mousePath = this.getPath(x1, y1, x2, y2);
         
         this.mousePosition = [x2, y2];
     }
