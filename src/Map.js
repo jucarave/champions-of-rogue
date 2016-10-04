@@ -137,7 +137,11 @@ class Map {
     }
     
     isSolid(x, y) {
-        return this.map[y][x].tile.solid;
+        return (this.map[y][x].tile.type == Prefabs.types.WALL);
+    }
+    
+    getTileAt(x, y) {
+        return this.map[y][x].tile;
     }
     
     onMouseMove(x, y) {

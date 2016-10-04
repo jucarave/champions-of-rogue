@@ -5,7 +5,7 @@ var Utils = require('./Utils');
 
 module.exports = {
     enemies: {
-        kobold: { tileCode: 'KOBOLD', name: 'Kobold', hp: '1D6+6', str: '2D4', def: '1D5', spd: 2, tile: null }
+        kobold: { tileCode: 'KOBOLD', name: 'Kobold', hp: '1D6+6', str: '2D4', def: '1D5', spd: 2, tile: null, canSwim: false }
     },
     
     getEnemy: function(code) {
