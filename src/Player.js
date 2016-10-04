@@ -22,7 +22,9 @@ class Player {
             UP: 0,
             LEFT: 0,
             DOWN: 0,
-            RIGHT: 0
+            RIGHT: 0,
+            
+            REST: 0
         };
         
         this.mouse = {
@@ -94,6 +96,11 @@ class Player {
                 this.handleKeyEvent(Input.keys.RIGHT, stat);
                 key = 'DOWN';
                 break;
+                
+            case Input.keys.S:
+            case Input.keys.SPACE:
+                key = 'REST';
+                break;
         }
         
         if (key == null){ return; }
@@ -127,6 +134,8 @@ class Player {
         }else{
             this.map.game.console.addMessage(msg + ", hit by " + dmg + " points", Colors.GREEN);
         }
+        
+        this.act();
     }
     
     moveTo(xTo, yTo) {
@@ -198,8 +207,20 @@ class Player {
         this.mouse.x = -1;
     }
     
+    checkSkip() {
+        if (this.keys.REST == 1) {
+            this.keys.REST = this.moveWait;
+            this.act();
+            return true;
+        }
+        
+        return false;
+    }
+    
     update() {
         if (!this.map.playerTurn){ return; }
+        
+        if (this.checkSkip()){ return; }
         
         this.updateMouse();
         
