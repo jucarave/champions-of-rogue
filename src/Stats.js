@@ -21,12 +21,17 @@ module.exports = {
     
     str: '3D5',
     def: '2D4',
+    
+    strAdd: 0,
+    defAdd: 0,
     spd: 2,
     luk: 38,
     
     gold: 0,
     
     blind: false,
+    paralyzed: false,
+    invisible: false,
     dead: false,
     
     inventory: [],
@@ -44,11 +49,18 @@ module.exports = {
     
     updateStatus: function() {
         this.blind = false;
+        this.paralyzed = false;
+        this.invisible = false;
+        
         for (var i=0,st;st=this.status[i];i++) {
             if (st.type == 'poison') {
                 this.receiveDamage(Utils.rollDice(st.value));
             }else if (st.type == 'blind' && st.duration[0] > 1) {
                 this.blind = true;
+            }else if (st.type == 'paralysis' && st.duration[0] > 1) {
+                this.paralyzed = true;
+            }else if (st.type == 'invisible' && st.duration[0] > 1) {
+                this.invisible = true;
             }
             
             st.duration[0] -= 1;
@@ -175,13 +187,29 @@ module.exports = {
     },
     
     getStr: function() {
-        if (this.equipment.rhand) {
-            this.equipment.rhand.str;
-        }else if (this.equipment.lhand) {
-            this.equipment.lhand.str;
+        var val = this.str;
+        if (this.equipment.weapon) {
+            val = this.equipment.weapon;
         }
         
-        return this.str;
+        if (this.strAdd > 0){
+            val += "+" + this.strAdd;
+        }
+        
+        return val;
+    },
+    
+    getDef: function() {
+        var val = this.def;
+        if (this.equipment.armor) {
+            val = this.equipment.armor;
+        }
+        
+        if (this.defAdd > 0){
+            val += "+" + this.defAdd;
+        }
+        
+        return val;
     },
     
     onMouseMove: function(x, y) {
@@ -229,7 +257,9 @@ module.exports = {
         for (var j=0,st;st=this.status[j];j++) {
             var color = Colors.BLACK;
             if (st.type == 'poison') { color = Colors.PURPLE; }else
-            if (st.type == 'blind') { color = Colors.TAN; }
+            if (st.type == 'blind') { color = Colors.TAN; }else
+            if (st.type == 'paralysis') { color = Colors.GOLD; }else
+            if (st.type == 'invisible') { color = Colors.GRAY; }
             
             var start = l * j;
             var end = Math.floor(start + l * (st.duration[0] / st.duration[1]));
@@ -287,7 +317,7 @@ module.exports = {
         this.renderStatus(renderer);
         
         Utils.renderText(renderer, sp[0], 5, "ATK: " + this.getStr(), Colors.WHITE, Colors.BLACK);
-        Utils.renderText(renderer, (sp[0] + sp[2] / 2) << 0, 5, "DEF: " + this.def, Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, (sp[0] + sp[2] / 2) << 0, 5, "DEF: " + this.getDef(), Colors.WHITE, Colors.BLACK);
         
         Utils.renderText(renderer, sp[0], 6, "SPD: " + this.spd, Colors.WHITE, Colors.BLACK);
         Utils.renderText(renderer, (sp[0] + sp[2] / 2 - 1) << 0, 6, "GOLD: " + this.gold, Colors.GOLD, Colors.BLACK);

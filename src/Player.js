@@ -143,6 +143,11 @@ class Player {
     }
     
     moveTo(xTo, yTo) {
+        if (PlayerStats.paralyzed){
+            this.act();
+            return;
+        }
+        
         if (this.map.isSolid(this.x + xTo, this.y + yTo)){ return; }
         
         var ins = this.map.getInstanceAt(this.x + xTo, this.y + yTo);

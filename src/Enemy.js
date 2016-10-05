@@ -25,10 +25,14 @@ class Enemy {
         this.inShadow = true;
         this.stopOnDiscover = true;
         
+        this.attackedByPlayer = false;
+        
         this.movementBudget = 0.0;
     }
     
     receiveDamage(dmg) {
+        this.attackedByPlayer = true;
+        
         this.enemy.hp[0] -= dmg;
         if (this.enemy.hp[0] <= 0) {
             this.destroy = true;
@@ -92,7 +96,7 @@ class Enemy {
         }
         
         var str = Utils.rollDice(this.enemy.def.str);
-        var def = Utils.rollDice(player.def);
+        var def = Utils.rollDice(player.getDef());
         var dmg = Math.max(str - def, 1);
         
         this.map.game.console.addMessage(msg + ", hit by " + dmg + " points", Colors.RED);
@@ -133,7 +137,8 @@ class Enemy {
         
         if (this.map.map[this.y][this.x].visible == 2){
             this.inShadow = false;
-            if (!this.target && (Math.abs(p.x - this.x) <= this.enemy.def.viewDistance || Math.abs(p.y - this.y) <= this.enemy.def.viewDistance)) {
+            var playerInvisible = (PlayerStats.invisible && !this.attackedByPlayer);
+            if (!this.target && !playerInvisible && (Math.abs(p.x - this.x) <= this.enemy.def.viewDistance || Math.abs(p.y - this.y) <= this.enemy.def.viewDistance)) {
                 this.target = p;
             }
             

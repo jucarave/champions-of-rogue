@@ -12,7 +12,9 @@ var ins = {
     GET_INSTANCE_FULL_HEALTH: 0x06,
     SET_INSTANCE_HEALTH: 0x07,
     ADD_INSTANCE_STATUS: 0x08,
-    RETURN_MSG: 0x09
+    REMOVE_INSTANCE_STATUS: 0x09,
+    BOOST_INSTANCE_STAT: 0x0A,
+    RETURN_MSG: 0x0B
 };
 
 module.exports = {
@@ -84,6 +86,23 @@ module.exports = {
                     }
                     break;
                     
+                case ins.REMOVE_INSTANCE_STATUS:
+                    var type = stack.pop();
+                    for (var i=0,st;st=params.instance.status[i];i++) {
+                        if (st.type == type) {
+                            params.instance.status.splice(i, 1);
+                            break;
+                        }
+                    }
+                    break;
+                    
+                case ins.BOOST_INSTANCE_STAT:
+                    var val = stack.pop();
+                    var stat = stack.pop();
+                    
+                    params.instance[stat] += val;
+                    break;
+                    
                 case ins.RETURN_MSG:
                     msg = copy.shift();
                     msg = msg.replace(/\%s[0-9]+/g, function(m, v) {
@@ -101,7 +120,13 @@ module.exports = {
     items: {
         hpPotion: [ ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.GET_INSTANCE_HEALTH, ins.DICE, '2D10+10', ins.STORE_VAL, ins.SUM, ins.SET_INSTANCE_HEALTH, ins.RETURN_MSG, "%s0 recovered %s1 health points." ],
         lifePotion: [ ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.GET_INSTANCE_FULL_HEALTH, ins.SET_INSTANCE_HEALTH, ins.RETURN_MSG, "%s0 recovered all health points." ],
-        poisonPotion: [ ins.LITERAL, '1D3', ins.LITERAL, 10, ins.LITERAL, 'poison', ins.ADD_INSTANCE_STATUS ],
-        blindPotion: [ ins.DICE, '2D8+15', ins.LITERAL, 'blind', ins.ADD_INSTANCE_STATUS ],
+        poisonPotion: [ ins.LITERAL, '1D3', ins.LITERAL, 10, ins.LITERAL, 'poison', ins.ADD_INSTANCE_STATUS, ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.RETURN_MSG, "%s0 are poisoned" ],
+        blindPotion: [ ins.DICE, '2D8+15', ins.LITERAL, 'blind', ins.ADD_INSTANCE_STATUS, ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.RETURN_MSG, "%s0 are blinded" ],
+        paralysisPotion: [ ins.DICE, '1D10+10', ins.LITERAL, 'paralysis', ins.ADD_INSTANCE_STATUS, ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.RETURN_MSG, "%s0 are paralyzed" ],
+        invisibilityPotion: [ ins.DICE, '3D10+15', ins.LITERAL, 'invisible', ins.ADD_INSTANCE_STATUS, ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.RETURN_MSG, "%s0 are invisible" ],
+        curePotion: [ ins.LITERAL, 'poison', ins.REMOVE_INSTANCE_STATUS, ins.LITERAL, 'blind', ins.REMOVE_INSTANCE_STATUS, ins.LITERAL, 'paralysis', ins.REMOVE_INSTANCE_STATUS, ins.RETURN_MSG, "Status cured" ],
+        strengthPotion: [ ins.LITERAL, 'strAdd', ins.LITERAL, 3, ins.BOOST_INSTANCE_STAT, ins.RETURN_MSG, "Strength +3" ],
+        defensePotion: [ ins.LITERAL, 'defAdd', ins.LITERAL, 3, ins.BOOST_INSTANCE_STAT, ins.RETURN_MSG, "Defense +3" ],
+        speedPotion: [ ins.LITERAL, 'spd', ins.LITERAL, 1, ins.BOOST_INSTANCE_STAT, ins.RETURN_MSG, "Speed +1" ]
     }
 };

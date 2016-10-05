@@ -112,6 +112,12 @@ class Map {
         this.instances.push(item);
         item = new Item(this.player.x + 1, this.player.y - 1, this, ItemFactory.getItem("greenPotion"));
         this.instances.push(item);
+        item = new Item(this.player.x - 1, this.player.y, this, ItemFactory.getItem("bluePotion"));
+        this.instances.push(item);
+        item = new Item(this.player.x - 1, this.player.y - 1, this, ItemFactory.getItem("yellowPotion"));
+        this.instances.push(item);
+        item = new Item(this.player.x - 1, this.player.y - 2, this, ItemFactory.getItem("aquaPotion"));
+        this.instances.push(item);
         
         /*var item = new Item(13, 13, this, ItemFactory.getItem("redPotion"));
         this.instances.push(item);

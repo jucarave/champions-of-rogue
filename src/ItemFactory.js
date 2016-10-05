@@ -30,12 +30,12 @@ module.exports = {
         { name: 'Life Potion', desc: 'Restores all health points when drink.', effect: ItemEffects.items.lifePotion },
         { name: 'Poison Potion', desc: 'Poisons the consumer by 1D3 for 10 turns.', effect: ItemEffects.items.poisonPotion },
         { name: 'Blind Potion', desc: 'Blinds the consumer by 2D8+15 turns.', effect: ItemEffects.items.blindPotion },
-        // Strength potion
-        // Defense potion
-        // Speed potion
-        // Cure potion
-        // Invisibility potion
-        // Paralisis potion
+        { name: 'Paralysis Potion', desc: 'Paralyses the consumer by 2D10+10 turns.', effect: ItemEffects.items.paralysisPotion },
+        { name: 'Invisibility Potion', desc: 'Makes the consumer invisible by 3D10+15 except for enemies he attacks.', effect: ItemEffects.items.invisibilityPotion },
+        { name: 'Cure Potion', desc: 'Removes all damaging effects of the status.', effect: ItemEffects.items.curePotion },
+        { name: 'Strength Potion', desc: 'Adds +3 Damage to the attack.', effect: ItemEffects.items.strengthPotion },
+        { name: 'Defense Potion', desc: 'Adds +3 to the overall defense.', effect: ItemEffects.items.defensePotion },
+        { name: 'Speed Potion', desc: 'Adds +1 to the speed.', effect: ItemEffects.items.speedPotion },
     ],
     
     useItem: function(item, instance) {
