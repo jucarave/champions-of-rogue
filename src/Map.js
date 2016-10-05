@@ -11,11 +11,17 @@ var ItemFactory = require('./ItemFactory');
 var Enemy = require('./Enemy');
 var EnemyFactory = require('./EnemyFactory');
 var Utils = require('./Utils');
+var MapGenerator = require('./MapGenerator');
+var Stairs = require('./Stairs');
 
 class Map {
-    constructor(game) {
+    constructor(game, level = 1) {
         this.game = game;
         this.renderer = game.renderer;
+        
+        this.active = true;
+        
+        this.level = level;
         
         this.graph = null;
         this.mousePath = null;
@@ -26,6 +32,9 @@ class Map {
         this.view = [0, 0];
         this.player = null;
         this.instances = [];
+        
+        this.stairsUp = null;
+        this.stairsDown = null;
         
         this.mapPosition = [0, 2, 60, 23];
         this.fovUpdated = false;
@@ -40,7 +49,9 @@ class Map {
     }
     
     createMap() {
-        var map = require('./TestWorld');
+        MapGenerator.init(parseInt(this.game.gameSeed + "" + this.level, 10));
+        var newMap = MapGenerator.generateMap(this.level);
+        var map = newMap.map;
         
         var solidMap = new Array(map[0].length);
         for (var i=0;i<solidMap.length;i++) {
@@ -80,10 +91,23 @@ class Map {
         
         this.graph = new Graph(solidMap, {diagonal: true});
         
-        this.player = new Player(10, 10, this);
+        this.player = new Player(newMap.player.x, newMap.player.y, this);
         this.instances.push(this.player);
         
-        var item = new Item(13, 13, this, ItemFactory.getItem("redPotion"));
+        var ins;
+        if (newMap.stairsUp) {
+            ins = new Stairs(newMap.stairsUp.x, newMap.stairsUp.y, this, this.level - 1, Prefabs.TILES.STAIRS_UP);
+            this.stairsUp = ins;
+            this.instances.push(ins);
+        }
+        
+        if (newMap.stairsDown) {
+            ins = new Stairs(newMap.stairsDown.x, newMap.stairsDown.y, this, this.level + 1, Prefabs.TILES.STAIRS_DOWN);
+            this.stairsDown = ins;
+            this.instances.push(ins);
+        }
+        
+        /*var item = new Item(13, 13, this, ItemFactory.getItem("redPotion"));
         this.instances.push(item);
         
         item = new Item(15, 15, this, ItemFactory.getItem("redPotion"));
@@ -117,7 +141,7 @@ class Map {
         this.instances.push(item);
         
         var enemy = new Enemy(23, 10, this, EnemyFactory.getEnemy("kobold"));
-        this.instances.push(enemy);
+        this.instances.push(enemy);*/
     }
     
     getInstanceAt(x, y) {
@@ -341,6 +365,8 @@ class Map {
                         discover += ", " + ins.name;
                     }
                 }
+            }else if (ins.visibleInShadow && this.map[ins.y][ins.x].visible == 1) {
+                this.renderer.plotCharacter(ins.x - this.view[0] + this.mapPosition[0], ins.y - this.view[1] + this.mapPosition[1], ins.tile.dark);
             }
         }
         

@@ -18,6 +18,7 @@ class Game {
         Prefabs.init(this.renderer);
         
         this.playerStats = null;
+        this.maps = [];
         this.map = null;
         this.console = null;
         
@@ -30,6 +31,9 @@ class Game {
             itemDesc: [10, 4, 49, 20]
         };
         
+        this.gameSeed = Math.floor(Math.random() * 1500);
+        console.log("SEED: " + this.gameSeed);
+        
         this.createStats();
         this.newGame();
     }
@@ -39,6 +43,7 @@ class Game {
         this.playerStats.game = this;
         
         this.map = new Map(this);
+        this.maps = [this.map];
         
         this.console = new Console(this);
         this.console.addMessage("Hello adventurer! wellcome to the world of Champions of Rogue.");
@@ -109,6 +114,29 @@ class Game {
             this.playerStats.useItem(this.itemDesc);
         }else  if (x >= 26 && x < 37) {
             this.playerStats.dropItem(this.itemDesc);
+        }
+    }
+    
+    gotoLevel(level, dir) {
+        this.map.active = false;
+        
+        if (this.maps[level - 1]) {
+            this.map = this.maps[level - 1];
+        }else{
+            this.map = new Map(this, level);
+            this.maps[level - 1] = this.map;
+        }
+        
+        this.map.active = true;
+        
+        if (dir == 1) {
+            this.map.player.x = this.map.stairsUp.x;
+            this.map.player.y = this.map.stairsUp.y;
+            this.map.stairsUp.playerOnTile = true;
+        }else if (dir == 0) {
+            this.map.player.x = this.map.stairsDown.x;
+            this.map.player.y = this.map.stairsDown.y;
+            this.map.stairsDown.playerOnTile = true;
         }
     }
     

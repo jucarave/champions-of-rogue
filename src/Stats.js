@@ -15,8 +15,6 @@ module.exports = {
     
     class: 'ROGUE',
     
-    level: 1,
-    
     hp: [45, 80],
     mp: [18, 20],
     status: null,
@@ -217,7 +215,7 @@ module.exports = {
         }
         
         // Dungeon Depth
-        Utils.renderText(renderer, sp[0], 1, "LEVEL: " + this.level);
+        Utils.renderText(renderer, sp[0], 1, "LEVEL: " + this.game.map.level);
         
         // Health Points
         var hp = ((this.hp[0] / this.hp[1] * sp[2]) << 0) + sp[0];

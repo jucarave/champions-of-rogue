@@ -41,11 +41,13 @@ class Player {
     }
     
     onMouseMove(x, y) {
+        if (!this.map.active) return;
         this.mouse.x = x;
         this.mouse.y = y;
     }
     
     onMouseHandler(x, y, stat) {
+        if (!this.map.active) return;
         if (this.mouse.stat == 2 && stat == 1){ return; }
             
         this.mouse.x = x;
@@ -54,6 +56,7 @@ class Player {
     }
     
     handleKeyEvent(keyCode, stat) {
+        if (!this.map.active) return;
         var key = null;
         
         switch (keyCode) {
@@ -144,7 +147,8 @@ class Player {
         var ins = this.map.getInstanceAt(this.x + xTo, this.y + yTo);
         if (ins && ins.enemy) {
             this.attackTo(ins);
-            return;
+            this.movePath = null;
+            return false;
         }
         
         this.x += xTo;
@@ -152,6 +156,8 @@ class Player {
         
         this.map.updateFOV(this.x, this.y);
         this.act();
+        
+        return true;
     }
     
     checkMovement() {
@@ -185,7 +191,7 @@ class Player {
         var xTo = this.movePath.shift() - this.x;
         var yTo = this.movePath.shift() - this.y;
         
-        this.moveTo(xTo, yTo);
+        if (!this.moveTo(xTo, yTo)){ return; }
         this.autoMoveDelay = this.moveWait;
         
         if (this.movePath.length == 0) {
