@@ -117,6 +117,7 @@ class Player {
     
     act() {
         this.map.playerTurn = false;
+        PlayerStats.updateStatus();
     }
     
     attackTo(ins) {

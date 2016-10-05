@@ -15,9 +15,9 @@ module.exports = {
     
     class: 'ROGUE',
     
-    hp: [45, 80],
-    mp: [18, 20],
-    status: null,
+    hp: [80, 80],
+    mp: [20, 20],
+    status: [],
     
     str: '3D5',
     def: '2D4',
@@ -26,6 +26,7 @@ module.exports = {
     
     gold: 0,
     
+    blind: false,
     dead: false,
     
     inventory: [],
@@ -40,6 +41,25 @@ module.exports = {
     inventoryScroll: 0,
     mousePosition: null,
     itemSelected: -1,
+    
+    updateStatus: function() {
+        this.blind = false;
+        for (var i=0,st;st=this.status[i];i++) {
+            if (st.type == 'poison') {
+                this.receiveDamage(Utils.rollDice(st.value));
+            }else if (st.type == 'blind' && st.duration[0] > 1) {
+                this.blind = true;
+            }
+            
+            st.duration[0] -= 1;
+            if (st.duration[0] == 0) {
+                this.status.splice(i, 1);
+                i--;
+            }
+        }
+        
+        this.render(this.game.renderer);
+    },
     
     receiveDamage: function(dmg) {
         this.hp[0] -= dmg;
@@ -67,7 +87,7 @@ module.exports = {
         var msg = ItemFactory.useItem(item.def, this);
         this.game.console.addMessage(msg, Colors.WHITE);
         
-        this.game.map.playerTurn = false;
+        this.game.map.player.act();
     },
     
     dropItem: function(item) {
@@ -109,7 +129,7 @@ module.exports = {
         this.game.console.addMessage(item.def.name + " dropped", Colors.AQUA);
         this.render(this.game.renderer);
         
-        this.game.map.playerTurn = false;
+        this.game.map.player.act();
         
         return true;
     },
@@ -149,7 +169,7 @@ module.exports = {
         this.game.console.addMessage(item.def.name + " picked!", Colors.YELLOW);
         this.render(this.game.renderer);
         
-        this.game.map.playerTurn = false;
+        this.game.map.player.act();
         
         return true;
     },
@@ -196,6 +216,37 @@ module.exports = {
         }
     },
     
+    renderStatus: function(renderer) {
+        var sp = this.statsPosition,
+            length = this.status.length,
+            tabSize = sp[0] + sp[2];
+        
+        for (var i=sp[0],l=tabSize;i<l;i++){
+            renderer.plot(i, 4, renderer.getTile(Colors.BLACK));
+        }
+        
+        var l = Math.floor(sp[2] / length);
+        for (var j=0,st;st=this.status[j];j++) {
+            var color = Colors.BLACK;
+            if (st.type == 'poison') { color = Colors.PURPLE; }else
+            if (st.type == 'blind') { color = Colors.TAN; }
+            
+            var start = l * j;
+            var end = Math.floor(start + l * (st.duration[0] / st.duration[1]));
+            if (j == length - 1 && start+end != sp[2]){ end += 1; }
+            
+            for (i=start;i<end;i++) {
+                renderer.plot(i+sp[0], 4, renderer.getTile(color));
+            }
+        }
+        
+        var status = "FINE";
+        if (length == 1){ status = this.status[0].type.toUpperCase(); }else
+        if (length > 1){ status = "VARIOUS"; }
+        
+        Utils.renderText(renderer, sp[0], 4, "STATUS: " + status, Colors.WHITE, null);
+    },
+    
     render: function(renderer) {
         var sp = this.statsPosition,
             i, j, l, inv, name;
@@ -233,10 +284,7 @@ module.exports = {
         
         Utils.renderText(renderer, sp[0], 3, "MP: " + this.mp[0] + "/" + this.mp[1], Colors.WHITE, null);
         
-        for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
-            renderer.plot(i, 4, renderer.getTile(Colors.BLACK));
-        }
-        Utils.renderText(renderer, sp[0], 4, "STATUS: FINE", Colors.WHITE, null);
+        this.renderStatus(renderer);
         
         Utils.renderText(renderer, sp[0], 5, "ATK: " + this.getStr(), Colors.WHITE, Colors.BLACK);
         Utils.renderText(renderer, (sp[0] + sp[2] / 2) << 0, 5, "DEF: " + this.def, Colors.WHITE, Colors.BLACK);

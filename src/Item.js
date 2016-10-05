@@ -27,6 +27,10 @@ class Item {
     }
     
     update() {
+        if (this.item.def.discovered) {
+            this.name = this.item.def.name;
+        }
+        
         this.inShadow = true;
         
         var p = this.map.player;

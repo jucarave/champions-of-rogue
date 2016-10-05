@@ -9,8 +9,10 @@ var ins = {
     STORE_VAL: 0x03,
     GET_INSTANCE_USE_NAME: 0x04,
     GET_INSTANCE_HEALTH: 0x05,
-    SET_INSTANCE_HEALTH: 0x06,
-    RETURN_MSG: 0x07
+    GET_INSTANCE_FULL_HEALTH: 0x06,
+    SET_INSTANCE_HEALTH: 0x07,
+    ADD_INSTANCE_STATUS: 0x08,
+    RETURN_MSG: 0x09
 };
 
 module.exports = {
@@ -20,7 +22,7 @@ module.exports = {
         var copy = command.slice(0, command.length),
             stack = [],
             storedVals = [],
-            i, msg = null;
+            i, msg = "";
         
         while (copy.length > 0) {
             i = copy.shift();
@@ -50,8 +52,36 @@ module.exports = {
                     stack.push(params.instance.hp[0]);
                     break;
                     
+                case ins.GET_INSTANCE_FULL_HEALTH:
+                    stack.push(params.instance.hp[1]);
+                    break;
+                    
                 case ins.SET_INSTANCE_HEALTH:
                     params.instance.hp[0] = Math.min(stack.pop(), params.instance.hp[1]);
+                    break;
+                    
+                case ins.ADD_INSTANCE_STATUS:
+                    var type = stack.pop();
+                    var duration = stack.pop();
+                    var value = stack.pop() || 0;
+                    var found = false;
+                    
+                    for (var i=0,st;st=params.instance.status[i];i++) {
+                        if (st.type == type) {
+                            duration = Math.max(duration, st.duration[1]);
+                            st.duration = [duration, duration];
+                            found = true;
+                            i = params.instance.status.length;
+                        }
+                    }
+                    
+                    if (!found){
+                        params.instance.status.push({
+                            type: type,
+                            duration: [duration, duration],
+                            value: value
+                        });
+                    }
                     break;
                     
                 case ins.RETURN_MSG:
@@ -69,6 +99,9 @@ module.exports = {
     },
     
     items: {
-        hpPotion: [ ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.GET_INSTANCE_HEALTH, ins.DICE, '2D10+10', ins.STORE_VAL, ins.SUM, ins.SET_INSTANCE_HEALTH, ins.RETURN_MSG, "%s0 recovered %s1 health points." ]
+        hpPotion: [ ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.GET_INSTANCE_HEALTH, ins.DICE, '2D10+10', ins.STORE_VAL, ins.SUM, ins.SET_INSTANCE_HEALTH, ins.RETURN_MSG, "%s0 recovered %s1 health points." ],
+        lifePotion: [ ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.GET_INSTANCE_FULL_HEALTH, ins.SET_INSTANCE_HEALTH, ins.RETURN_MSG, "%s0 recovered all health points." ],
+        poisonPotion: [ ins.LITERAL, '1D3', ins.LITERAL, 10, ins.LITERAL, 'poison', ins.ADD_INSTANCE_STATUS ],
+        blindPotion: [ ins.DICE, '2D8+15', ins.LITERAL, 'blind', ins.ADD_INSTANCE_STATUS ],
     }
 };

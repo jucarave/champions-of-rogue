@@ -13,6 +13,7 @@ var EnemyFactory = require('./EnemyFactory');
 var Utils = require('./Utils');
 var MapGenerator = require('./MapGenerator');
 var Stairs = require('./Stairs');
+var PlayerStats = require('./Stats');
 
 class Map {
     constructor(game, level = 1) {
@@ -106,6 +107,11 @@ class Map {
             this.stairsDown = ins;
             this.instances.push(ins);
         }
+        
+        var item = new Item(this.player.x + 1, this.player.y, this, ItemFactory.getItem("redPotion"));
+        this.instances.push(item);
+        item = new Item(this.player.x + 1, this.player.y - 1, this, ItemFactory.getItem("greenPotion"));
+        this.instances.push(item);
         
         /*var item = new Item(13, 13, this, ItemFactory.getItem("redPotion"));
         this.instances.push(item);
@@ -370,13 +376,17 @@ class Map {
             }
         }
         
-        if (discover != null) {
+        if (discover != null && !PlayerStats.blind) {
             discover = Utils.formatText(discover + ".", 85);
             for (var i=0,line;line=discover[i];i++){
                 this.game.console.addMessage(line, [255, 255, 255]);
             }
             
             this.player.movePath = null;
+        }
+        
+        if (PlayerStats.blind) {
+            this.renderer.clearRect(this.mapPosition[0], this.mapPosition[1], this.mapPosition[2], this.mapPosition[3]);
         }
         
         this.renderer.plotCharacter(this.player.x - this.view[0] + this.mapPosition[0], this.player.y - this.view[1] + this.mapPosition[1], this.player.tile.light);

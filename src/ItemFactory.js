@@ -26,7 +26,16 @@ module.exports = {
     },
     
     potions: [
-        { name: 'Health Potion', desc: 'Restores 3D10 health points when drink.', effect: ItemEffects.items.hpPotion }
+        { name: 'Health Potion', desc: 'Restores 2D10+10 health points when drink.', effect: ItemEffects.items.hpPotion },
+        { name: 'Life Potion', desc: 'Restores all health points when drink.', effect: ItemEffects.items.lifePotion },
+        { name: 'Poison Potion', desc: 'Poisons the consumer by 1D3 for 10 turns.', effect: ItemEffects.items.poisonPotion },
+        { name: 'Blind Potion', desc: 'Blinds the consumer by 2D8+15 turns.', effect: ItemEffects.items.blindPotion },
+        // Strength potion
+        // Defense potion
+        // Speed potion
+        // Cure potion
+        // Invisibility potion
+        // Paralisis potion
     ],
     
     useItem: function(item, instance) {
@@ -37,6 +46,7 @@ module.exports = {
             if (!item.discovered) {
                 var index = (Math.random() * this.potions.length) << 0;
                 var potion = this.potions[index];
+                this.potions.splice(index, 1);
                 
                 item.name = potion.name;
                 item.desc = potion.desc;

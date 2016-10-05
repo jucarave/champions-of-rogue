@@ -12,7 +12,7 @@ module.exports = {
         
         var ret = c;
         for (var i=0;i<a;i++) {
-            ret += ((Math.random() * (b - 1)) << 0) + 1;
+            ret += (Math.round(Math.random() * (b - 1))) + 1;
         }
         
         return ret;
