@@ -27,7 +27,7 @@ class Game {
         
         this.panels = {
             map: [0, 2, 60, 25],
-            inventory: [60, 12, 85, 20],
+            inventory: [60, 0, 85, 20],
             itemDesc: [10, 4, 49, 20]
         };
         
@@ -75,7 +75,7 @@ class Game {
         }else{
             this.map.onMouseMove(null);
         }
-        
+
         if (this.isPointInPanel(x, y, this.panels.inventory)) {
             this.playerStats.onMouseMove(x - this.panels.inventory[0], y - this.panels.inventory[1]);
         }else{
@@ -160,7 +160,7 @@ class Game {
         }
         
         Utils.renderText(this.renderer, 12, 18, "    USE    ", Colors.WHITE, Colors.BLUE);
-        Utils.renderText(this.renderer, 24, 18, "   THROW   ", Colors.WHITE, Colors.BLUE);
+        //Utils.renderText(this.renderer, 24, 18, "   THROW   ", Colors.WHITE, Colors.BLUE);
         Utils.renderText(this.renderer, 36, 18, "   DROP    ", Colors.WHITE, Colors.BLUE);
     }
     

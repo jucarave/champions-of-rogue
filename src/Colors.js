@@ -31,5 +31,6 @@ module.exports = {
     TAN: new Color(205, 133, 63),
     ORANGE: new Color(255, 100, 0),
     GOLD: new Color(255, 215, 0),
-    DARK_BLUE: new Color(0, 0, 50)
+    DARK_BLUE: new Color(0, 0, 50),
+    BROWN: new Color(139, 69, 19)
 };

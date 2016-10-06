@@ -4,8 +4,10 @@ var Prefabs = require('./Prefabs');
 var ItemEffects = require('./ItemEffects');
 
 var types = {
-    POTION: 0,
-    GOLD: 1
+    POTION:     0,
+    GOLD:       1,
+    WEAPON:     2,
+    ARMOR:      3
 };
 
 module.exports = {
@@ -22,7 +24,11 @@ module.exports = {
         tanPotion: { tileCode: 'TAN_POTION', name: 'Tan potion', tile: null, type: types.POTION, desc: 'Tan potion, unknown effect', discovered: false, stackable: true },
         orangePotion: { tileCode: 'ORANGE_POTION', name: 'Orange potion', tile: null, type: types.POTION, desc: 'Orange potion, unknown effect', discovered: false, stackable: true },
         
-        gold: { tileCode: 'GOLD', name: 'Gold piece', tile: null, type: types.GOLD, desc: 'X Gold piece', stackable: true}
+        gold: { tileCode: 'GOLD', name: 'Gold piece', tile: null, type: types.GOLD, desc: 'X Gold piece', stackable: true},
+        
+        dagger: { tileCode: 'DAGGER', name: 'Dagger', tile: null, type: types.WEAPON, desc: 'Standard iron dagger, easy to handle.', str: '3D5', wear: '1D6' },
+        
+        leatherArmor: { tileCode: 'LEATHER_ARMOR', name: 'Leather armor', tile: null, type: types.ARMOR, desc: 'It\'s light and brings medium protection.', def: '2D6', wear: '1D5' },
     },
     
     potions: [
@@ -75,6 +81,10 @@ module.exports = {
             amount: amount,
             def: item
         };
+        
+        if (item.type == types.WEAPON || item.type == types.ARMOR) {
+            ret.status = Math.min(60 + Math.floor(Math.random() * 40) + 1, 100);
+        }
         
         return ret;
     }

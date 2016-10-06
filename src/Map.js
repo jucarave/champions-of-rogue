@@ -119,6 +119,9 @@ class Map {
         item = new Item(this.player.x - 1, this.player.y - 2, this, ItemFactory.getItem("aquaPotion"));
         this.instances.push(item);
         
+        item = new Item(this.player.x + 1, this.player.y - 2, this, ItemFactory.getItem("leatherArmor"));
+        this.instances.push(item);
+        
         /*var item = new Item(13, 13, this, ItemFactory.getItem("redPotion"));
         this.instances.push(item);
         
@@ -339,7 +342,7 @@ class Map {
     }
     
     renderDescription() {
-        this.renderer.clearRect(0,1,this.mapPosition[2],1);
+        this.renderer.clearRect(0,0,this.mapPosition[2],2);
         
         if (!this.tileDescription){ return; }
         

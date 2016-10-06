@@ -5,7 +5,7 @@ var Console = require('./Console');
 var ItemFactory = require('./ItemFactory');
 var Utils = require('./Utils');
 
-var MAX_INVENTORY = 10;
+var MAX_INVENTORY = 20;
 
 module.exports = {
     game: null,
@@ -19,8 +19,8 @@ module.exports = {
     mp: [20, 20],
     status: [],
     
-    str: '3D5',
-    def: '2D4',
+    str: '2D2',
+    def: '2D2',
     
     strAdd: 0,
     defAdd: 0,
@@ -36,8 +36,7 @@ module.exports = {
     
     inventory: [],
     equipment: {
-        rhand: null,
-        lhand: null,
+        weapon: null,
         armor: null,
         amulet: null
     },
@@ -86,17 +85,40 @@ module.exports = {
         this.render(this.game.renderer);
     },
     
+    equipItem: function(item, type) {
+        var ind = this.inventory.indexOf(item);
+        if (this.equipment[type]) {
+            this.inventory[ind] = this.equipment[type];
+        }else{
+            this.inventory.splice(ind, 1);
+        }
+        
+        this.equipment[type] = item;
+        
+        this.game.itemDesc = null;
+    },
+    
     useItem: function(item) {
         if (!this.game.map.playerTurn) return;
         
-        if (item.amount > 1) {
-            item.amount -= 1;
-        }else{
-            this.game.itemDesc = null;
-            this.inventory.splice(this.itemSelected, 1);
+        var msg = '';
+        if (item.def.stackable){
+            if (item.amount > 1) {
+                item.amount -= 1;
+            }else{
+                this.game.itemDesc = null;
+                this.inventory.splice(this.itemSelected, 1);
+            }
+            
+            msg = ItemFactory.useItem(item.def, this);
+        }else if (item.def.type == ItemFactory.types.WEAPON) {
+            this.equipItem(item, 'weapon');
+            msg = item.def.name + " equipped!";
+        }else if (item.def.type == ItemFactory.types.ARMOR) {
+            this.equipItem(item, 'armor');
+            msg = item.def.name + " equipped!";
         }
         
-        var msg = ItemFactory.useItem(item.def, this);
         this.game.console.addMessage(msg, Colors.WHITE);
         
         this.game.map.player.act();
@@ -189,7 +211,7 @@ module.exports = {
     getStr: function() {
         var val = this.str;
         if (this.equipment.weapon) {
-            val = this.equipment.weapon;
+            val = this.equipment.weapon.def.str;
         }
         
         if (this.strAdd > 0){
@@ -202,7 +224,7 @@ module.exports = {
     getDef: function() {
         var val = this.def;
         if (this.equipment.armor) {
-            val = this.equipment.armor;
+            val = this.equipment.armor.def.def;
         }
         
         if (this.defAdd > 0){
@@ -227,15 +249,26 @@ module.exports = {
         if (stat <= 0) return;
         
         if (x == 24) {
-            if (y == 1 && this.inventoryScroll > 0) {
+            if (y == 13 && this.inventoryScroll > 0) {
                 this.inventoryScroll -= 1;
-            }else if (y == 7 && this.inventoryScroll + 7 < this.inventory.length) {
+            }else if (y == 19 && this.inventoryScroll + 7 < this.inventory.length) {
                 this.inventoryScroll += 1;
             }
             
             this.render(this.game.renderer);
-        }else if (y >= 1 && y<= 7) {
-            var index = y - 1 + this.inventoryScroll;
+        }else if (y >= 9 && y <= 10) {
+            if (this.inventory.length >= MAX_INVENTORY) {
+                this.game.console.addMessage("Can't remove, Inventory full!", Colors.RED);
+                return;
+            }
+            
+            var type = (y == 9)? 'weapon' : 'armor';
+            this.game.console.addMessage(this.equipment[type].def.name + " removed", Colors.YELLOW);
+            this.inventory.push(this.equipment[type]);
+            this.equipment[type] = null;
+            
+        }else if (y >= 13 && y <= 19) {
+            var index = y - 13 + this.inventoryScroll;
             var item = this.inventory[index];
             if (item) {
                 this.itemSelected = index;
@@ -250,7 +283,7 @@ module.exports = {
             tabSize = sp[0] + sp[2];
         
         for (var i=sp[0],l=tabSize;i<l;i++){
-            renderer.plot(i, 4, renderer.getTile(Colors.BLACK));
+            renderer.plot(i, 3, renderer.getTile(Colors.BLACK));
         }
         
         var l = Math.floor(sp[2] / length);
@@ -266,7 +299,7 @@ module.exports = {
             if (j == length - 1 && start+end != sp[2]){ end += 1; }
             
             for (i=start;i<end;i++) {
-                renderer.plot(i+sp[0], 4, renderer.getTile(color));
+                renderer.plot(i+sp[0], 3, renderer.getTile(color));
             }
         }
         
@@ -274,12 +307,12 @@ module.exports = {
         if (length == 1){ status = this.status[0].type.toUpperCase(); }else
         if (length > 1){ status = "VARIOUS"; }
         
-        Utils.renderText(renderer, sp[0], 4, "STATUS: " + status, Colors.WHITE, null);
+        Utils.renderText(renderer, sp[0], 3, "STATUS: " + status, Colors.WHITE, null);
     },
     
     render: function(renderer) {
         var sp = this.statsPosition,
-            i, j, l, inv, name;
+            i, j, l, inv, name, backColor;
         
         renderer.clearRect(sp[0], sp[1], sp[2], sp[3]);
         
@@ -307,12 +340,12 @@ module.exports = {
         Utils.renderText(renderer, sp[0], 2, "HP: " + this.hp[0] + "/" + this.hp[1], Colors.WHITE, null);
         
         // Magic Points
-        var mp = ((this.mp[0] / this.mp[1] * sp[2]) << 0) + sp[0];
+        /*var mp = ((this.mp[0] / this.mp[1] * sp[2]) << 0) + sp[0];
         for (var i=sp[0];i<mp;i++){
             renderer.plot(i, 3, renderer.getTile(Colors.AQUA));
         }
         
-        Utils.renderText(renderer, sp[0], 3, "MP: " + this.mp[0] + "/" + this.mp[1], Colors.WHITE, null);
+        Utils.renderText(renderer, sp[0], 3, "MP: " + this.mp[0] + "/" + this.mp[1], Colors.WHITE, null);*/
         
         this.renderStatus(renderer);
         
@@ -324,21 +357,30 @@ module.exports = {
         
         // EQUIPMENT
         for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
-            renderer.plot(i, 7, renderer.getTile(Colors.BLUE));
+            renderer.plot(i, 8, renderer.getTile(Colors.BLUE));
         }
-        Utils.renderText(renderer, sp[0] + 8, 7, "EQUIPMENT", Colors.WHITE, Colors.BLUE);
+        Utils.renderText(renderer, sp[0] + 8, 8, "EQUIPMENT", Colors.WHITE, Colors.BLUE);
         
-        var equip = (this.equipment.rhand)? this.equipment.rhand : 'RIGHT HAND';
-        Utils.renderText(renderer, sp[0], 8, equip, Colors.WHITE, Colors.BLACK);
+        var equip = (this.equipment.weapon)? this.equipment.weapon.def.name + ' (' + this.equipment.weapon.status + '%)' : 'NO WEAPON';
+        backColor = Colors.BLACK;
+        if (this.equipment.weapon && this.mousePosition && this.mousePosition[1] == 9) {
+            backColor = Colors.GRAY;
+            equip = equip + ("                   ").substr(0, 25 - equip.length);
+        }
         
-        equip = (this.equipment.lhand)? this.equipment.lhand : 'LEFT HAND';
-        Utils.renderText(renderer, sp[0], 9, equip, Colors.WHITE, Colors.BLACK);
+        Utils.renderText(renderer, sp[0], 9, equip, Colors.WHITE, backColor);
         
-        equip = (this.equipment.armor)? this.equipment.armor : 'NO ARMOR';
-        Utils.renderText(renderer, sp[0], 10, equip, Colors.WHITE, Colors.BLACK);
+        equip = (this.equipment.armor)? this.equipment.armor.def.name + ' (' + this.equipment.armor.status + '%)' : 'NO ARMOR';
+        backColor = Colors.BLACK;
+        if (this.equipment.armor && this.mousePosition && this.mousePosition[1] == 10) {
+            backColor = Colors.GRAY;
+            equip = equip + ("                   ").substr(0, 25 - equip.length);
+        }
+            
+        Utils.renderText(renderer, sp[0], 10, equip, Colors.WHITE, backColor);
         
-        equip = (this.equipment.amulet)? this.equipment.amulet : 'NO AMULET';
-        Utils.renderText(renderer, sp[0], 11, equip, Colors.WHITE, Colors.BLACK);
+        //equip = (this.equipment.amulet)? this.equipment.amulet.def.name : 'NO AMULET';
+        //Utils.renderText(renderer, sp[0], 10, equip, Colors.WHITE, Colors.BLACK);
         
         // INVENTORY
         for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
@@ -350,8 +392,8 @@ module.exports = {
             inv = this.inventory[i + this.inventoryScroll];
             name = inv.def.name + ((inv.amount > 1)? ' (x' + inv.amount + ')' : '');
             
-            var backColor = Colors.BLACK;
-            if (this.mousePosition && this.mousePosition[1]-1 == i && this.mousePosition[0] < 24) {
+            backColor = Colors.BLACK;
+            if (this.mousePosition && this.mousePosition[1]-13 == i && this.mousePosition[0] < 24) {
                 backColor = Colors.GRAY;
                 name = name + ("                   ").substr(0, 24 - name.length);
             }

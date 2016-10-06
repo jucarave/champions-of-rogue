@@ -265,7 +265,11 @@ module.exports = {
         console.log("-----------------");
         
         var tries = 0;
-        while (roomsCreated < roomsTarget || tries++ >= 100) {
+        while (roomsCreated < roomsTarget) {
+            if (tries++ >= 100) {
+                break;
+            }
+            
             var r = this.rooms[(this.prng.random() * this.rooms.length) << 0];
             while (!r.hasSides()){
                 r = this.rooms[(this.prng.random() * this.rooms.length) << 0];

@@ -60,6 +60,12 @@ module.exports = {
         i.TAN_POTION = getTile(renderer, Colors.BLACK, Colors.TAN, Tiles.EXCLA);
         i.ORANGE_POTION = getTile(renderer, Colors.BLACK, Colors.ORANGE, Tiles.EXCLA);
         
+        // Weapons
+        i.DAGGER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.MINUS);
+        
+        // Armors
+        i.LEATHER_ARMOR = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles.SQBRO);
+        
         // Enemies
         e.KOBOLD = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.k);
         
