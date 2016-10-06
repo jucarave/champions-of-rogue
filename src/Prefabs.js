@@ -62,9 +62,17 @@ module.exports = {
         
         // Weapons
         i.DAGGER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.MINUS);
+        i.SWORD = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.SLASH);
+        i.LONG_SWORD = getTile(renderer, Colors.BLACK, Colors.AQUA, Tiles.SLASH);
+        i.MACE = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.UNDER);
+        i.SPEAR = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles.SLASH);
+        i.AXE = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.MINUS);
         
         // Armors
         i.LEATHER_ARMOR = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles.SQBRO);
+        i.SCALE_MAIL = getTile(renderer, Colors.BLACK, Colors.GRAY, Tiles.SQBRO);
+        i.CHAIN_MAIL = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.SQBRO);
+        i.PLATE_ARMOR = getTile(renderer, Colors.BLACK, Colors.GOLD, Tiles.SQBRO);
         
         // Enemies
         e.KOBOLD = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.k);

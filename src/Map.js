@@ -119,7 +119,7 @@ class Map {
         item = new Item(this.player.x - 1, this.player.y - 2, this, ItemFactory.getItem("aquaPotion"));
         this.instances.push(item);
         
-        item = new Item(this.player.x + 1, this.player.y - 2, this, ItemFactory.getItem("leatherArmor"));
+        item = new Item(this.player.x + 1, this.player.y - 2, this, ItemFactory.getItem("plateArmor"));
         this.instances.push(item);
         
         /*var item = new Item(13, 13, this, ItemFactory.getItem("redPotion"));

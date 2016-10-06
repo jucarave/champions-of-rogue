@@ -27,8 +27,16 @@ module.exports = {
         gold: { tileCode: 'GOLD', name: 'Gold piece', tile: null, type: types.GOLD, desc: 'X Gold piece', stackable: true},
         
         dagger: { tileCode: 'DAGGER', name: 'Dagger', tile: null, type: types.WEAPON, desc: 'Standard iron dagger, easy to handle.', str: '3D5', wear: '1D6' },
+        shortSword: { tileCode: 'SWORD', name: 'Short sword', tile: null, type: types.WEAPON, desc: 'Pending description', str: '3D6', wear: '1D4' },
+        longSword: { tileCode: 'LONG_SWORD', name: 'Long sword', tile: null, type: types.WEAPON, desc: 'Pending description', str: '3D10', wear: '1D5' },
+        mace: { tileCode: 'MACE', name: 'Mace', tile: null, type: types.WEAPON, desc: 'Pending description', str: '4D8', wear: '1D6' },
+        spear: { tileCode: 'SPEAR', name: 'Spear', tile: null, type: types.WEAPON, desc: 'Pending description', str: '3D8', wear: '1D4' },
+        axe: { tileCode: 'AXE', name: 'Battle axe', tile: null, type: types.WEAPON, desc: 'Pending description', str: '5D5', wear: '1D4' },
         
         leatherArmor: { tileCode: 'LEATHER_ARMOR', name: 'Leather armor', tile: null, type: types.ARMOR, desc: 'It\'s light and brings medium protection.', def: '2D6', wear: '1D5' },
+        scaleMail: { tileCode: 'SCALE_MAIL', name: 'Scale mail', tile: null, type: types.ARMOR, desc: 'Pending description', def: '3D6', wear: '1D5' },
+        chainMail: { tileCode: 'CHAIN_MAIL', name: 'Chain mail', tile: null, type: types.ARMOR, desc: 'Pending description', def: '3D8', wear: '1D4' },
+        plateArmor: { tileCode: 'PLATE_ARMOR', name: 'Plate armor', tile: null, type: types.ARMOR, desc: 'Pending description', def: '4D8', wear: '1D3' }
     },
     
     potions: [
