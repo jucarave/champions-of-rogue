@@ -108,7 +108,19 @@ class Map {
             this.instances.push(ins);
         }
         
-        var item = new Item(this.player.x + 1, this.player.y, this, ItemFactory.getItem("redPotion"));
+        for (var i=0,ins;ins=newMap.instances[i];i++) {
+            var instance;
+            if (ins.type == "item"){ 
+                instance = new Item(ins.x, ins.y, this, ItemFactory.getItem(ins.code));
+            }else
+            if (ins.type == "enemy"){ 
+                instance = new Enemy(ins.x, ins.y, this, EnemyFactory.getEnemy(ins.code));
+            }
+            
+            this.instances.push(instance);
+        }
+        
+        /*var item = new Item(this.player.x + 1, this.player.y, this, ItemFactory.getItem("redPotion"));
         this.instances.push(item);
         item = new Item(this.player.x + 1, this.player.y - 1, this, ItemFactory.getItem("greenPotion"));
         this.instances.push(item);

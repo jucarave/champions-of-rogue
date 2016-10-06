@@ -15,7 +15,7 @@ module.exports = {
     
     class: 'ROGUE',
     
-    hp: [80, 80],
+    hp: [50, 50],
     mp: [20, 20],
     status: [],
     
@@ -45,6 +45,20 @@ module.exports = {
     inventoryScroll: 0,
     mousePosition: null,
     itemSelected: -1,
+    
+    wearWeapon: function() {
+        if (!this.equipment.weapon){ return; }
+        
+        var amount = Utils.rollDice(this.equipment.weapon.def.wear);
+        this.equipment.weapon.status -= amount;
+    },
+    
+    wearArmor: function() {
+        if (!this.equipment.armor){ return; }
+        
+        var amount = Utils.rollDice(this.equipment.armor.def.wear);
+        this.equipment.armor.status -= amount;
+    },
     
     updateStatus: function() {
         this.blind = false;
@@ -83,6 +97,7 @@ module.exports = {
         }
         
         this.render(this.game.renderer);
+        this.wearArmor();
     },
     
     equipItem: function(item, type) {

@@ -8,6 +8,7 @@ var Prefabs = require('./Prefabs');
 var Map = require('./Map');
 var Console = require('./Console');
 var Utils = require('./Utils');
+var ItemFactory = require('./ItemFactory');
 
 class Game {
     constructor() {
@@ -41,6 +42,8 @@ class Game {
     newGame() {
         this.playerStats = require('./Stats');
         this.playerStats.game = this;
+        this.playerStats.equipment.weapon = ItemFactory.getItem("dagger");
+        this.playerStats.equipment.armor = ItemFactory.getItem("leatherArmor");
         
         this.map = new Map(this);
         this.maps = [this.map];

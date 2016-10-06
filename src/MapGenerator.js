@@ -58,7 +58,7 @@ module.exports = {
         this.player = null;
         this.stairsUp = null;
         this.stairsDown = null;
-        this.instances = null;
+        this.instances = [];
     
         this.prng = new PRNG(seed);
         this.seed = this.prng.seed;
@@ -252,6 +252,74 @@ module.exports = {
       };
     },
     
+    isSolid: function(x, y) {
+        if (this.stairsDown && this.stairsDown.x == x && this.stairsDown.y == y){ return true; }
+        if (this.stairsUp && this.stairsUp.x == x && this.stairsUp.y == y){ return true; }
+        if (this.player && this.player.x == x && this.player.y == y){ return true; }
+        
+        for (var i=0,ins;ins=this.instances[i];i++) {
+            if (ins.x == x && ins.y == y){ return true; }
+        }
+        
+        return false;
+    },
+    
+    createInstances: function(level) {
+      var items, enemies, numItems, numEnemies, room, x, y;
+      if (level == 1) {
+          items = ["redPotion", "bluePotion", "greenPotion", "dagger", "shortSword", "leatherArmor"];
+          enemies = ["rat", "spider", "kobold"];
+          numItems = 5;
+          numEnemies = 7;
+      }
+      
+      for (var i=0;i<numItems;i++) {
+          room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
+          while (!room.room){
+            room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
+          }
+          
+          x = room.x + 1 + Math.floor(this.prng.random() * (room.w - 2));
+          y = room.y + 1 + Math.floor(this.prng.random() * (room.h - 2));
+          
+          if (this.isSolid(x, y)){
+              i--;
+              continue;
+          }
+          
+          var itemCode = items[Math.floor(this.prng.random() * items.length)];
+          this.instances.push({
+              x: x,
+              y: y,
+              type: 'item',
+              code: itemCode
+          });
+      }
+      
+      for (var i=0;i<numEnemies;i++) {
+          room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
+          while (!room.room){
+            room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
+          }
+          
+          x = room.x + 1 + Math.floor(this.prng.random() * (room.w - 2));
+          y = room.y + 1 + Math.floor(this.prng.random() * (room.h - 2));
+          
+          if (this.isSolid(x, y)){
+              i--;
+              continue;
+          }
+          
+          var enemyCode = enemies[Math.floor(this.prng.random() * enemies.length)];
+          this.instances.push({
+              x: x,
+              y: y,
+              type: 'enemy',
+              code: enemyCode
+          });
+      }
+    },
+    
     generateMap: function(level) {
         var size = [75 + 20 * level, 20 + 10 * level];
         this.map = this.createGrid(size);
@@ -259,10 +327,6 @@ module.exports = {
         
         var roomsTarget = 14 + level;
         var roomsCreated = 1;
-        
-        console.log(size);
-        console.log(roomsTarget);
-        console.log("-----------------");
         
         var tries = 0;
         while (roomsCreated < roomsTarget) {
@@ -302,6 +366,7 @@ module.exports = {
         
         this.createPlayerPosition(level);
         this.createStairs(level);
+        this.createInstances(level);
         
         this.renderOnMap();
         
@@ -309,7 +374,8 @@ module.exports = {
             map: this.map,
             player: this.player,
             stairsUp: this.stairsUp,
-            stairsDown: this.stairsDown
+            stairsDown: this.stairsDown,
+            instances: this.instances
         };
     }
 };

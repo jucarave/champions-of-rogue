@@ -75,6 +75,8 @@ module.exports = {
         i.PLATE_ARMOR = getTile(renderer, Colors.BLACK, Colors.GOLD, Tiles.SQBRO);
         
         // Enemies
+        e.RAT = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.r);
+        e.SPIDER = getTile(renderer, Colors.BLACK, Colors.GRAY, Tiles.s);
         e.KOBOLD = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.k);
         
         // Player

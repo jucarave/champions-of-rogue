@@ -139,6 +139,7 @@ class Player {
             this.map.game.console.addMessage(msg + ", hit by " + dmg + " points", Colors.GREEN);
         }
         
+        PlayerStats.wearWeapon();
         this.act();
     }
     
