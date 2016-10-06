@@ -119,56 +119,6 @@ class Map {
             
             this.instances.push(instance);
         }
-        
-        /*var item = new Item(this.player.x + 1, this.player.y, this, ItemFactory.getItem("redPotion"));
-        this.instances.push(item);
-        item = new Item(this.player.x + 1, this.player.y - 1, this, ItemFactory.getItem("greenPotion"));
-        this.instances.push(item);
-        item = new Item(this.player.x - 1, this.player.y, this, ItemFactory.getItem("bluePotion"));
-        this.instances.push(item);
-        item = new Item(this.player.x - 1, this.player.y - 1, this, ItemFactory.getItem("yellowPotion"));
-        this.instances.push(item);
-        item = new Item(this.player.x - 1, this.player.y - 2, this, ItemFactory.getItem("aquaPotion"));
-        this.instances.push(item);
-        
-        item = new Item(this.player.x + 1, this.player.y - 2, this, ItemFactory.getItem("plateArmor"));
-        this.instances.push(item);
-        
-        /*var item = new Item(13, 13, this, ItemFactory.getItem("redPotion"));
-        this.instances.push(item);
-        
-        item = new Item(15, 15, this, ItemFactory.getItem("redPotion"));
-        this.instances.push(item);
-        
-        item = new Item(13, 15, this, ItemFactory.getItem("greenPotion"));
-        this.instances.push(item);
-        
-        item = new Item(13, 14, this, ItemFactory.getItem("bluePotion"));
-        this.instances.push(item);
-        
-        item = new Item(12, 16, this, ItemFactory.getItem("yellowPotion"));
-        this.instances.push(item);
-        
-        item = new Item(11, 16, this, ItemFactory.getItem("aquaPotion"));
-        this.instances.push(item);
-        
-        item = new Item(10, 17, this, ItemFactory.getItem("purplePotion"));
-        this.instances.push(item);
-        
-        item = new Item(11, 17, this, ItemFactory.getItem("whitePotion"));
-        this.instances.push(item);
-        
-        item = new Item(12, 17, this, ItemFactory.getItem("tanPotion"));
-        this.instances.push(item);
-        
-        item = new Item(13, 18, this, ItemFactory.getItem("orangePotion"));
-        this.instances.push(item);
-        
-        item = new Item(12, 10, this, ItemFactory.getItem("gold", 33));
-        this.instances.push(item);
-        
-        var enemy = new Enemy(23, 10, this, EnemyFactory.getEnemy("kobold"));
-        this.instances.push(enemy);*/
     }
     
     getInstanceAt(x, y) {

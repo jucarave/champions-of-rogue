@@ -9,6 +9,7 @@ var Map = require('./Map');
 var Console = require('./Console');
 var Utils = require('./Utils');
 var ItemFactory = require('./ItemFactory');
+var MainMenu = require('./MainMenu');
 
 class Game {
     constructor() {
@@ -45,8 +46,8 @@ class Game {
         this.playerStats.equipment.weapon = ItemFactory.getItem("dagger");
         this.playerStats.equipment.armor = ItemFactory.getItem("leatherArmor");
         
-        this.map = new Map(this);
-        this.maps = [this.map];
+        this.map = new MainMenu(this);
+        this.maps = [];
         
         this.console = new Console(this);
         this.console.addMessage("Hello adventurer! wellcome to the world of Champions of Rogue.");
@@ -141,6 +142,9 @@ class Game {
             this.map.player.y = this.map.stairsDown.y;
             this.map.stairsDown.playerOnTile = true;
         }
+        
+        this.playerStats.render(this.renderer);
+        this.console.render(this.renderer);
     }
     
     renderItemPanel() {

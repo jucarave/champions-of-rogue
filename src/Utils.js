@@ -59,6 +59,8 @@ module.exports = {
         if (tile == '"'){ tile = "QUOTD"; }else
         if (tile == "/"){ tile = "SLASH"; }else
         if (tile == "%"){ tile = "PERCT"; }else
+        if (tile == "="){ tile = "EQUAL"; }else
+        if (tile == "#"){ tile = "HASH"; }else
         if (tile >= "0" && tile <= "9"){ tile = "N" + tile; }
         
         return renderer.getTile(backColor, color, Tiles[tile]);
