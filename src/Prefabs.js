@@ -78,6 +78,11 @@ module.exports = {
         e.RAT = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.r);
         e.SPIDER = getTile(renderer, Colors.BLACK, Colors.GRAY, Tiles.s);
         e.KOBOLD = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.k);
+        e.IMP = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.i);
+        e.GOBLIN = getTile(renderer, Colors.BLACK, Colors.AQUA, Tiles.g);
+        e.ZOMBIE = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.z);
+        e.OGRE = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles.o);
+        e.ROGUE = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.PLAYR);
         
         // Player
         this.PLAYER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.PLAYR, Effects.NONE);

@@ -21,10 +21,10 @@ class MainMenu {
             this.name += String.fromCharCode(keyCode);
         }else if (keyCode == 8 && this.name.length > 0) {
             this.name = this.name.substring(0, this.name.length - 1);
-        }else if (keyCode == 13) {
+        }else if (keyCode == 13 && this.name.length > 0) {
             PlayerStats.name = this.name;
             this.renderer.clearRect(0, 0, 85, 30);
-            this.game.gotoLevel(1);
+            this.game.gotoLevel(5);
         }
         
         if (this.name.length > 10) {
@@ -47,6 +47,16 @@ class MainMenu {
         Utils.renderText(this.renderer, 1, 8, "hidden within his fortress. Several lords and kings have appear thanks to this   ", Colors.GRAY, Colors.BLACK);
         Utils.renderText(this.renderer, 1, 9, "massive amount of fortune, but it was a matter of time before a new lord appear  ", Colors.GRAY, Colors.BLACK);
         Utils.renderText(this.renderer, 1,10, "and decided to take this fortune for himself, a new champion: 'Rogue'.", Colors.GRAY, Colors.BLACK);
+        
+        Utils.renderText(this.renderer, 1,12, "Rogue ruled the land for several years and grew an army and fortune but just like", Colors.GRAY, Colors.BLACK);
+        Utils.renderText(this.renderer, 1,13, "Ias before him he was destined to doom, defeated by the ones like him, several ", Colors.GRAY, Colors.BLACK);
+        Utils.renderText(this.renderer, 1,14, "new champions arrive to the fortress to steal gold and to challenge the current", Colors.GRAY, Colors.BLACK);
+        Utils.renderText(this.renderer, 1,15, "champion. ", Colors.GRAY, Colors.BLACK);
+        
+        Utils.renderText(this.renderer, 1,17, "Years have passed and a new champion: 'Sodi' has taken the place. You arrive at", Colors.GRAY, Colors.BLACK);
+        Utils.renderText(this.renderer, 1,18, "the doors of the fortress, the same which Rogue and many others crossed, will you", Colors.GRAY, Colors.BLACK);
+        Utils.renderText(this.renderer, 1,19, "defeat sodi and claim the title of champion? or will you perish along with the  ", Colors.GRAY, Colors.BLACK);
+        Utils.renderText(this.renderer, 1,20, "others before you.", Colors.GRAY, Colors.BLACK);
         
         Utils.renderText(this.renderer, 1,25, "===================================================================================", Colors.WHITE, Colors.BLACK);
         

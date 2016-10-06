@@ -10,6 +10,7 @@ var Console = require('./Console');
 var Utils = require('./Utils');
 var ItemFactory = require('./ItemFactory');
 var MainMenu = require('./MainMenu');
+var Input = require('./engine/Input');
 
 class Game {
     constructor() {
@@ -27,22 +28,28 @@ class Game {
         this.panelTile = this.renderer.getTile(Colors.DARK_BLUE, Colors.WHITE, "");
         this.itemDesc = null;
         
+        this.restartGame = false;
+        
         this.panels = {
             map: [0, 2, 60, 25],
             inventory: [60, 0, 85, 20],
             itemDesc: [10, 4, 49, 20]
         };
         
-        this.gameSeed = Math.floor(Math.random() * 1500);
-        console.log("SEED: " + this.gameSeed);
-        
         this.createStats();
         this.newGame();
     }
     
     newGame() {
+        this.restartGame = false;
+        
+        Input.clearListeners();
+        
+        this.gameSeed = Math.floor(Math.random() * 1500);
+        console.log("SEED: " + this.gameSeed);
+        
         this.playerStats = require('./Stats');
-        this.playerStats.game = this;
+        this.playerStats.initStats(this);
         this.playerStats.equipment.weapon = ItemFactory.getItem("dagger");
         this.playerStats.equipment.armor = ItemFactory.getItem("leatherArmor");
         
@@ -182,7 +189,11 @@ class Game {
         
         this.stats.end();
         
-        requestAnimationFrame(() => { this.loopGame(); });
+        if (this.restartGame) {
+            this.newGame();
+        }else{
+            requestAnimationFrame(() => { this.loopGame(); });
+        }
     }
 }
 

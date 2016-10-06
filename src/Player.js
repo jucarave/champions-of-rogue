@@ -56,6 +56,10 @@ class Player {
     }
     
     handleKeyEvent(keyCode, stat) {
+        if (PlayerStats.dead && keyCode == 13) {
+            this.map.game.restartGame = true;
+        }
+        
         if (!this.map.active) return;
         var key = null;
         

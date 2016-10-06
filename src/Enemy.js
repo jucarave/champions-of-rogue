@@ -50,6 +50,11 @@ class Enemy {
             solid = true;
         }
         
+        var ins = this.map.getInstanceAt(this.x + xTo, this.y + yTo);
+        if (ins && ins.enemy) {
+            solid = true;
+        }
+        
         if (!solid){
             this.x += xTo;
             this.y += yTo;

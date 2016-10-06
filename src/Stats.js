@@ -10,7 +10,7 @@ var MAX_INVENTORY = 20;
 module.exports = {
     game: null,
     
-    name: 'KRAM',
+    name: '',
     useName: 'You',
     
     class: 'ROGUE',
@@ -24,7 +24,7 @@ module.exports = {
     
     strAdd: 0,
     defAdd: 0,
-    spd: 2,
+    spd: 10,
     luk: 38,
     
     gold: 0,
@@ -41,6 +41,41 @@ module.exports = {
         amulet: null
     },
     
+    initStats: function(game){
+        this.game = game;
+        
+        this.name = '';
+        this.useName = 'You';
+        
+        this.class = 'ROGUE';
+        
+        this.hp = [50, 50];
+        this.mp = [20, 20];
+        this.status = [];
+        
+        this.str = '2D2';
+        this.def = '2D2';
+        
+        this.strAdd = 0;
+        this.defAdd = 0;
+        this.spd = 10;
+        this.luk = 38;
+        
+        this.gold = 0;
+        
+        this.blind = false;
+        this.paralyzed = false;
+        this.invisible = false;
+        this.dead = false;
+        
+        this.inventory = [];
+        this.equipment = {
+            weapon: null,
+            armor: null,
+            amulet: null
+        };
+    },
+    
     statsPosition: [60, 0, 25, 25, 73],
     inventoryScroll: 0,
     mousePosition: null,
@@ -51,6 +86,11 @@ module.exports = {
         
         var amount = Utils.rollDice(this.equipment.weapon.def.wear);
         this.equipment.weapon.status -= amount;
+        
+        if (this.equipment.weapon.status <= 0) {
+            this.game.console.addMessage(this.equipment.weapon.def.name + " destroyed", Colors.GOLD);
+            this.equipment.weapon = null;
+        }
     },
     
     wearArmor: function() {
@@ -58,6 +98,11 @@ module.exports = {
         
         var amount = Utils.rollDice(this.equipment.armor.def.wear);
         this.equipment.armor.status -= amount;
+        
+        if (this.equipment.armor.status <= 0) {
+            this.game.console.addMessage(this.equipment.armor.def.name + " destroyed", Colors.GOLD);
+            this.equipment.armor = null;
+        }
     },
     
     updateStatus: function() {
@@ -93,7 +138,7 @@ module.exports = {
             this.dead = true;
             
             this.game.console.clear();
-            this.game.console.addMessage("You died", Colors.PURPLE);
+            this.game.console.addMessage("You died, press enter to restart", Colors.PURPLE);
         }
         
         this.render(this.game.renderer);
@@ -424,9 +469,9 @@ module.exports = {
         }
         
         // SKILLS
-        for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
+        /*for (i=sp[0],l=sp[0]+sp[2];i<l;i++){
             renderer.plot(i, 20, renderer.getTile(Colors.BLUE));
         }
-        Utils.renderText(renderer, sp[0] + 9, 20, "SKILLS", Colors.WHITE, Colors.BLUE);
+        Utils.renderText(renderer, sp[0] + 9, 20, "SKILLS", Colors.WHITE, Colors.BLUE);*/
     }
 };

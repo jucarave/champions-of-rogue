@@ -265,15 +265,47 @@ module.exports = {
     },
     
     createInstances: function(level) {
-      var items, enemies, numItems, numEnemies, room, x, y;
+      var items, enemies, numItems, numEnemies, gold, room, x, y;
       if (level == 1) {
-          items = ["redPotion", "bluePotion", "greenPotion", "dagger", "shortSword", "leatherArmor"];
-          enemies = ["rat", "spider", "kobold"];
+          items = [["redPotion", 15], ["bluePotion", 15], ["greenPotion", 15], ["dagger", 15], ["shortSword", 5], ["leatherArmor", 10]];
+          enemies = [["rat", 60], ["spider", 15], ["kobold", 50]];
           numItems = 5;
           numEnemies = 7;
+          gold = 5;
+      }else if (level == 2) {
+          items = [["redPotion", 10], ["bluePotion", 10], ["yellowPotion", 10], ["greenPotion", 10], ["dagger", 15], ["shortSword", 5], ["leatherArmor", 10]];
+          enemies = [["rat", 50], ["spider", 30], ["kobold", 50]];
+          numItems = 5;
+          numEnemies = 12;
+          gold = 8;
+      }else if (level == 3) {
+          items = [["redPotion", 8], ["bluePotion", 8], ["yellowPotion", 8], ["greenPotion", 8], ["aquaPotion", 8], ["dagger", 10], ["shortSword", 10], ["leatherArmor", 6]];
+          enemies = [["imp", 30], ["spider", 50], ["kobold", 70]];
+          numItems = 4;
+          numEnemies = 15;
+          gold = 10;
+      }else if (level == 4) {
+          items = [["redPotion", 5], ["bluePotion", 5], ["yellowPotion", 5], ["greenPotion", 6], ["aquaPotion", 5], ["purplePotion", 5], ["dagger", 10], ["shortSword", 20], ["longSword", 10], ["mace", 10], ["leatherArmor", 10], ["scaleMail", 10]];
+          enemies = [["imp", 50], ["spider", 20], ["kobold", 50]];
+          numItems = 8;
+          numEnemies = 18;
+          gold = 12;
+      }else if (level == 5) {
+          items = [["redPotion", 5], ["bluePotion", 5], ["yellowPotion", 5], ["greenPotion", 6], ["aquaPotion", 5], ["purplePotion", 5], ["whitePotion", 5], ["dagger", 10], ["shortSword", 20], ["longSword", 10], ["mace", 10], ["leatherArmor", 10], ["scaleMail", 10]];
+          enemies = [["imp", 50], ["spider", 10], ["kobold", 50], ["goblin", 40], ["zombie", 20]];
+          numItems = 8;
+          numEnemies = 23;
+          gold = 15;
       }
       
+      var list = "";
       for (var i=0;i<numItems;i++) {
+          var itemCode = items[Math.floor(Math.random() * items.length)];
+          if (this.prng.random() * 100 > itemCode[1]){ 
+              i--; 
+              continue; 
+          }
+          
           room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
           while (!room.room){
             room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
@@ -287,16 +319,22 @@ module.exports = {
               continue;
           }
           
-          var itemCode = items[Math.floor(this.prng.random() * items.length)];
+          list += itemCode[0] + ",";
           this.instances.push({
               x: x,
               y: y,
               type: 'item',
-              code: itemCode
+              code: itemCode[0]
           });
       }
       
       for (var i=0;i<numEnemies;i++) {
+          var enemyCode = enemies[Math.floor(Math.random() * enemies.length)];
+          if (this.prng.random() * 100 > enemyCode[1]){ 
+              i--; 
+              continue; 
+          }
+          
           room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
           while (!room.room){
             room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
@@ -310,14 +348,39 @@ module.exports = {
               continue;
           }
           
-          var enemyCode = enemies[Math.floor(this.prng.random() * enemies.length)];
+          list += enemyCode[0] + ",";
           this.instances.push({
               x: x,
               y: y,
               type: 'enemy',
-              code: enemyCode
+              code: enemyCode[0]
           });
       }
+      
+      for (var i=0;i<gold;i++) {
+          room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
+          while (!room.room){
+            room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
+          }
+          
+          x = room.x + 1 + Math.floor(this.prng.random() * (room.w - 2));
+          y = room.y + 1 + Math.floor(this.prng.random() * (room.h - 2));
+          
+          if (this.isSolid(x, y)){
+              i--;
+              continue;
+          }
+          
+          var amount = 10 + Math.floor(this.prng.random() * 30);
+          this.instances.push({
+              x: x,
+              y: y,
+              type: 'gold',
+              amount: amount
+          });
+      }
+      
+      console.log(list);
     },
     
     generateMap: function(level) {

@@ -112,9 +112,10 @@ class Map {
             var instance;
             if (ins.type == "item"){ 
                 instance = new Item(ins.x, ins.y, this, ItemFactory.getItem(ins.code));
-            }else
-            if (ins.type == "enemy"){ 
+            }else if (ins.type == "enemy"){ 
                 instance = new Enemy(ins.x, ins.y, this, EnemyFactory.getEnemy(ins.code));
+            }else if (ins.type == "gold"){ 
+                instance = new Item(ins.x, ins.y, this, ItemFactory.getItem("gold", ins.amount));
             }
             
             this.instances.push(instance);

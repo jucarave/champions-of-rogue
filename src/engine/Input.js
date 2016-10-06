@@ -60,6 +60,12 @@ var Input = {
         };
     },
     
+    clearListeners: function() {
+        this.kdListeners = [];
+        this.mmListeners = [];
+        this.mdListeners = [];
+    },
+    
     addKeyDownListener: function(callback) {
         this.kdListeners.push(callback);
     },
