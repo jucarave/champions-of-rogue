@@ -24,7 +24,7 @@ class MainMenu {
         }else if (keyCode == 13 && this.name.length > 0) {
             PlayerStats.name = this.name;
             this.renderer.clearRect(0, 0, 85, 30);
-            this.game.gotoLevel(5);
+            this.game.gotoLevel(1);
         }
         
         if (this.name.length > 10) {

@@ -15,7 +15,7 @@ module.exports = {
     
     class: 'ROGUE',
     
-    hp: [50, 50],
+    hp: [100, 100],
     mp: [20, 20],
     status: [],
     
@@ -49,7 +49,7 @@ module.exports = {
         
         this.class = 'ROGUE';
         
-        this.hp = [50, 50];
+        this.hp = [100, 100];
         this.mp = [20, 20];
         this.status = [];
         

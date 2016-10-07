@@ -125,8 +125,8 @@ module.exports = {
         paralysisPotion: [ ins.DICE, '1D10+10', ins.LITERAL, 'paralysis', ins.ADD_INSTANCE_STATUS, ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.RETURN_MSG, "%s0 are paralyzed" ],
         invisibilityPotion: [ ins.DICE, '3D10+15', ins.LITERAL, 'invisible', ins.ADD_INSTANCE_STATUS, ins.GET_INSTANCE_USE_NAME, ins.STORE_VAL, ins.RETURN_MSG, "%s0 are invisible" ],
         curePotion: [ ins.LITERAL, 'poison', ins.REMOVE_INSTANCE_STATUS, ins.LITERAL, 'blind', ins.REMOVE_INSTANCE_STATUS, ins.LITERAL, 'paralysis', ins.REMOVE_INSTANCE_STATUS, ins.RETURN_MSG, "Status cured" ],
-        strengthPotion: [ ins.LITERAL, 'strAdd', ins.LITERAL, 3, ins.BOOST_INSTANCE_STAT, ins.RETURN_MSG, "Strength +3" ],
-        defensePotion: [ ins.LITERAL, 'defAdd', ins.LITERAL, 3, ins.BOOST_INSTANCE_STAT, ins.RETURN_MSG, "Defense +3" ],
+        strengthPotion: [ ins.LITERAL, 'strAdd', ins.LITERAL, 2, ins.BOOST_INSTANCE_STAT, ins.RETURN_MSG, "Strength +2" ],
+        defensePotion: [ ins.LITERAL, 'defAdd', ins.LITERAL, 1, ins.BOOST_INSTANCE_STAT, ins.RETURN_MSG, "Defense +1" ],
         speedPotion: [ ins.LITERAL, 'spd', ins.LITERAL, 1, ins.BOOST_INSTANCE_STAT, ins.RETURN_MSG, "Speed +1" ]
     }
 };

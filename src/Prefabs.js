@@ -82,7 +82,17 @@ module.exports = {
         e.GOBLIN = getTile(renderer, Colors.BLACK, Colors.AQUA, Tiles.g);
         e.ZOMBIE = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.z);
         e.OGRE = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles.o);
-        e.ROGUE = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.PLAYR);
+        e.ROGUE = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.R);
+        e.BEGGAR = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles.b);
+        e.SHADOW = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.S);
+        e.THIEF = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.t);
+        e.CAOS_KNIGHT = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.K);
+        e.LIZARD_WARRIOR = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.l);
+        e.OPHIDIAN = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.O);
+        e.CAOS_SERVANT = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.C);
+        e.WYVERN_KNIGHT = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.W);
+        e.CAOS_LORD = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.L);
+        e.SODI = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.PLAYR);
         
         // Player
         this.PLAYER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.PLAYR, Effects.NONE);

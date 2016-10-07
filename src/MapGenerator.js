@@ -234,22 +234,24 @@ module.exports = {
     },
     
     createStairs: function(level) {
-      if (level > 1) {
+      if (level > 1 && level < 20) {
           this.stairsUp = {
               x: this.player.x,
               y: this.player.y
           };
       }
       
-      var room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
-      while (!room.room){
-        room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
+      if (level < 20){
+          var room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
+          while (!room.room){
+            room = this.rooms[1 + ((this.prng.random() * (this.rooms.length - 1)) << 0)];
+          }
+          
+          this.stairsDown = {
+              x: room.x + 2 + Math.floor(this.prng.random() * (room.w - 4)),
+              y: room.y + 2 + Math.floor(this.prng.random() * (room.h - 4))
+          };
       }
-      
-      this.stairsDown = {
-          x: room.x + 2 + Math.floor(this.prng.random() * (room.w - 4)),
-          y: room.y + 2 + Math.floor(this.prng.random() * (room.h - 4))
-      };
     },
     
     isSolid: function(x, y) {
@@ -270,32 +272,74 @@ module.exports = {
           items = [["redPotion", 15], ["bluePotion", 15], ["greenPotion", 15], ["dagger", 15], ["shortSword", 5], ["leatherArmor", 10]];
           enemies = [["rat", 60], ["spider", 15], ["kobold", 50]];
           numItems = 5;
-          numEnemies = 7;
-          gold = 5;
+          numEnemies = 5;
+          gold = 3;
       }else if (level == 2) {
           items = [["redPotion", 10], ["bluePotion", 10], ["yellowPotion", 10], ["greenPotion", 10], ["dagger", 15], ["shortSword", 5], ["leatherArmor", 10]];
           enemies = [["rat", 50], ["spider", 30], ["kobold", 50]];
           numItems = 5;
-          numEnemies = 12;
-          gold = 8;
+          numEnemies = 7;
+          gold = 3;
       }else if (level == 3) {
           items = [["redPotion", 8], ["bluePotion", 8], ["yellowPotion", 8], ["greenPotion", 8], ["aquaPotion", 8], ["dagger", 10], ["shortSword", 10], ["leatherArmor", 6]];
           enemies = [["imp", 30], ["spider", 50], ["kobold", 70]];
           numItems = 4;
-          numEnemies = 15;
-          gold = 10;
+          numEnemies = 8;
+          gold = 4;
       }else if (level == 4) {
           items = [["redPotion", 5], ["bluePotion", 5], ["yellowPotion", 5], ["greenPotion", 6], ["aquaPotion", 5], ["purplePotion", 5], ["dagger", 10], ["shortSword", 20], ["longSword", 10], ["mace", 10], ["leatherArmor", 10], ["scaleMail", 10]];
           enemies = [["imp", 50], ["spider", 20], ["kobold", 50]];
           numItems = 8;
-          numEnemies = 18;
-          gold = 12;
+          numEnemies = 10;
+          gold = 5;
       }else if (level == 5) {
           items = [["redPotion", 5], ["bluePotion", 5], ["yellowPotion", 5], ["greenPotion", 6], ["aquaPotion", 5], ["purplePotion", 5], ["whitePotion", 5], ["dagger", 10], ["shortSword", 20], ["longSword", 10], ["mace", 10], ["leatherArmor", 10], ["scaleMail", 10]];
           enemies = [["imp", 50], ["spider", 10], ["kobold", 50], ["goblin", 40], ["zombie", 20]];
           numItems = 8;
-          numEnemies = 23;
-          gold = 15;
+          numEnemies = 12;
+          gold = 7;
+      }else if (level == 6) {
+          items = [["redPotion", 5], ["bluePotion", 5], ["yellowPotion", 5], ["greenPotion", 6], ["aquaPotion", 5], ["purplePotion", 5], ["whitePotion", 5], ["tanPotion", 5], ["spear", 10], ["shortSword", 20], ["longSword", 10], ["mace", 10], ["leatherArmor", 10], ["scaleMail", 10]];
+          enemies = [["imp", 40], ["rogue", 10], ["kobold", 50], ["goblin", 40], ["zombie", 20]];
+          numItems = 10;
+          numEnemies = 12;
+          gold = 8;
+      }else if (level == 7) {
+          items = [["redPotion", 5], ["bluePotion", 5], ["yellowPotion", 5], ["greenPotion", 6], ["aquaPotion", 5], ["purplePotion", 5], ["whitePotion", 5], ["tanPotion", 5], ["orangePotion", 5], ["spear", 10], ["shortSword", 20], ["longSword", 10], ["mace", 10], ["leatherArmor", 10], ["scaleMail", 10]];
+          enemies = [["imp", 30], ["rogue", 20], ["beggar", 50], ["goblin", 40], ["zombie", 30]];
+          numItems = 10;
+          numEnemies = 14;
+          gold = 8;
+      }else if (level == 8) {
+          items = [["redPotion", 5], ["bluePotion", 5], ["yellowPotion", 5], ["greenPotion", 6], ["aquaPotion", 5], ["purplePotion", 5], ["whitePotion", 5], ["tanPotion", 5], ["orangePotion", 5], ["spear", 10], ["shortSword", 20], ["longSword", 10], ["mace", 10], ["axe", 10], ["chaimMail", 5], ["scaleMail", 10]];
+          enemies = [["imp", 30], ["rogue", 20], ["beggar", 50], ["goblin", 40], ["zombie", 30], ["shadow", 10], ["thief", 30]];
+          numItems = 11;
+          numEnemies = 16;
+          gold = 10;
+      }else if (level == 9) {
+          items = [["redPotion", 5], ["bluePotion", 5], ["yellowPotion", 5], ["greenPotion", 6], ["aquaPotion", 5], ["purplePotion", 5], ["whitePotion", 5], ["tanPotion", 5], ["orangePotion", 5], ["spear", 10], ["shortSword", 20], ["longSword", 10], ["mace", 10], ["axe", 10], ["chaimMail", 5], ["scaleMail", 10]];
+          enemies = [["rogue", 20], ["beggar", 50], ["goblin", 40], ["zombie", 30], ["shadow", 30], ["thief", 30]];
+          numItems = 11;
+          numEnemies = 17;
+          gold = 10;
+      }else if (level >= 10 && level <= 14) {
+          items = [["redPotion", 5], ["bluePotion", 5], ["yellowPotion", 5], ["greenPotion", 6], ["aquaPotion", 5], ["purplePotion", 5], ["whitePotion", 5], ["tanPotion", 5], ["orangePotion", 5], ["spear", 10], ["shortSword", 20], ["longSword", 10], ["mace", 10], ["axe", 10], ["chaimMail", 5], ["scaleMail", 10]];
+          enemies = [["rat", 3], ["spider", 3], ["kobold", 3], ["imp", 3], ["goblin", 5], ["zombie", 7], ["ogre", 10], ["beggar", 10], ["shadow", 20], ["thief", 20], ["rogue", 30], ["caosKnight", 30], ["lizardWarrior", 10], ["ophidian", 10], ["caosServant", 7], ["wyvernKnight", 5], ["caosLord", 3]];
+          numItems = 13;
+          numEnemies = 17 + (level - 10) * 2;
+          gold = 12;
+      }else if (level >= 15 && level <= 19) {
+          items = [["redPotion", 5], ["bluePotion", 5], ["yellowPotion", 5], ["greenPotion", 6], ["aquaPotion", 5], ["purplePotion", 5], ["whitePotion", 5], ["tanPotion", 5], ["orangePotion", 5], ["spear", 10], ["shortSword", 20], ["longSword", 10], ["mace", 10], ["axe", 10], ["chaimMail", 5], ["scaleMail", 10]];
+          enemies = [["rat", 1], ["spider", 1], ["kobold", 1], ["imp", 1], ["goblin", 3], ["zombie", 5], ["ogre", 7], ["beggar", 3], ["shadow", 10], ["thief", 30], ["rogue", 40], ["caosKnight", 40], ["lizardWarrior", 20], ["ophidian", 20], ["caosServant", 20], ["wyvernKnight", 20], ["caosLord", 20]];
+          numItems = 15;
+          numEnemies = 20 + (level - 15) * 2;
+          gold = 14;
+      }else if (level == 20) {
+          items = [];
+          enemies = [["sodi", 200]];
+          numItems = 0;
+          numEnemies = 1;
+          gold = 0;
       }
       
       var list = "";
