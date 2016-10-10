@@ -25,7 +25,7 @@ class Game {
         this.map = null;
         this.console = null;
         
-        this.panelTile = this.renderer.getTile(Colors.DARK_BLUE, Colors.WHITE, "");
+        //this.panelTile = this.renderer.getTile(Colors.DARK_BLUE, Colors.WHITE, "");
         this.itemDesc = null;
         
         this.restartGame = false;
@@ -38,6 +38,25 @@ class Game {
         
         this.createStats();
         this.newGame();
+    }
+    
+    newRenderTest() {
+        this.stats.begin();
+        
+        if (this.font.ready){
+            for (var x=0;x<85;x++) {
+                for (var y=0;y<30;y++) {
+                    var tile = this.renderer.getTile([Math.random(), Math.random(), Math.random()], [Math.random(), Math.random(), Math.random()], [Math.floor(Math.random() * 25), Math.floor(Math.random() * 4)]);
+                    this.renderer.plot(x, y, tile);
+                }
+            }
+            
+            this.renderer.render();
+        }
+        
+        this.stats.end();
+        
+        requestAnimationFrame(() => { this.newRenderTest(); });
     }
     
     newGame() {
@@ -57,10 +76,10 @@ class Game {
         this.maps = [];
         
         this.console = new Console(this);
-        this.console.addMessage("Hello adventurer! wellcome to the world of Champions of Rogue.");
-        this.console.addMessage("Press the keys 'QWEADZXC' to move", [255, 0, 0]);
+        //this.console.addMessage("Hello adventurer! wellcome to the world of Champions of Rogue.");
+        //this.console.addMessage("Press the keys 'QWEADZXC' to move", [255, 0, 0]);
         
-        this.playerStats.render(this.renderer);
+        //this.playerStats.render(this.renderer);
         
         this.loopGame();
     }
@@ -68,7 +87,7 @@ class Game {
     createStats() {
         this.stats = new Stats();
         this.stats.showPanel(1);
-        //document.body.appendChild( this.stats.dom );
+        document.body.appendChild( this.stats.dom );
     }
     
     isPointInPanel(x, y, panel) {

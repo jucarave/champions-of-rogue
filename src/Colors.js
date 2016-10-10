@@ -9,28 +9,32 @@ class Color extends Array {
         this[2] = b;
     }
     
+    toFloat32() {
+        this[0] /= 255;
+        this[1] /= 255;
+        this[2] /= 255;
+        
+        return this;
+    }
+    
     multiply(vr, vg=vr, vb=vr) {
-        var r = (this[0] * vr) << 0,
-            g = (this[1] * vg) << 0,
-            b = (this[2] * vb) << 0;
-            
-        return new Color(r, g, b);
+        return new Color(this[0] * vr, this[1] * vg, this[2] * vb);
     }
 }
 
 module.exports = {
-    BLACK: new Color(0, 0, 0),
-    WHITE: new Color(255, 255, 255),
-    RED: new Color(255, 0, 0),
-    GREEN: new Color(0, 160, 0),
-    BLUE: new Color(0, 0, 160),
-    YELLOW: new Color(160, 160, 0),
-    PURPLE: new Color(160, 0, 160),
-    AQUA: new Color(0, 80, 200),
-    GRAY: new Color(122, 122, 122),
-    TAN: new Color(205, 133, 63),
-    ORANGE: new Color(255, 100, 0),
-    GOLD: new Color(255, 215, 0),
-    DARK_BLUE: new Color(0, 0, 50),
-    BROWN: new Color(139, 69, 19)
+    BLACK: new Color(0, 0, 0).toFloat32(),
+    WHITE: new Color(255, 255, 255).toFloat32(),
+    RED: new Color(255, 0, 0).toFloat32(),
+    GREEN: new Color(0, 160, 0).toFloat32(),
+    BLUE: new Color(0, 0, 160).toFloat32(),
+    YELLOW: new Color(160, 160, 0).toFloat32(),
+    PURPLE: new Color(160, 0, 160).toFloat32(),
+    AQUA: new Color(0, 80, 200).toFloat32(),
+    GRAY: new Color(122, 122, 122).toFloat32(),
+    TAN: new Color(205, 133, 63).toFloat32(),
+    ORANGE: new Color(255, 100, 0).toFloat32(),
+    GOLD: new Color(255, 215, 0).toFloat32(),
+    DARK_BLUE: new Color(0, 0, 50).toFloat32(),
+    BROWN: new Color(139, 69, 19).toFloat32()
 };

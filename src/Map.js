@@ -28,6 +28,7 @@ class Map {
         this.mousePath = null;
         this.mouseDown = 0;
         this.mousePosition = [-1, -1];
+        this.mousePathTile = this.renderer.getTile(Colors.YELLOW, Colors.WHITE, [0, 0]);
         
         this.map = [];
         this.view = [0, 0];
@@ -207,7 +208,7 @@ class Map {
                 
                 var renderTile = tile.tile.light;
                 if (tile.visible == 0){
-                    renderTile = Prefabs.BLANK;
+                    renderTile = Prefabs.TILES.BLANK.light;
                 }else if (tile.visible == 1) {
                     renderTile = tile.tile.dark;
                     tile.visible = 1;
@@ -300,7 +301,7 @@ class Map {
             
             if (x < 0 || y < 0 || x >= this.mapPosition[2] + this.mapPosition[0] || y >= this.mapPosition[3] + this.mapPosition[1]){ continue; }
             
-            this.renderer.plotBackground(x, y, Colors.YELLOW);
+            this.renderer.plotBackground(x, y, this.mousePathTile);
         }
     }
     
