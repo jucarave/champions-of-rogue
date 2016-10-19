@@ -1,0 +1,25 @@
+{
+  "name": "champions-of-rogue",
+  "version": "0.1.0",
+  "description": "A roguelike/king Of the hill html5 game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jucarave/champions-of-rogue/"
+  },
+  "author": "Camilo Ramirez (Fedic)",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^13.1.0",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^3.0.2",
+    "gulp-util": "^3.0.7",
+    "tsify": "^2.0.2",
+    "typescript": "^2.0.3",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
+  }
+}

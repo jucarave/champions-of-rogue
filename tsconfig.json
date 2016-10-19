@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "removeComments": true,
+    "target": "es5"
+  },
+  "files": [
+    "src/index.ts",
+    "src/Game.ts",
+    "src/Prefabs.ts",
+    "src/Utils.ts",
+    "src/Console.ts",
+    "src/MainMenu.ts",
+    "src/PlayerStats.ts",
+    "src/ItemFactory.ts",
+    "src/ItemEffects.ts",
+    "src/Instance.ts",
+    "src/EnemyFactory.ts",
+    "src/MapGenerator.ts",
+    "src/Map.ts",
+    "src/Player.ts",
+    "src/Enemy.ts",
+    "src/Item.ts",
+    "src/Stairs.ts",
+    "src/Scenario.ts",
+    "src/engine/PRNG.ts",
+    "src/engine/Rendering.ts",
+    "src/engine/Input.ts",
+    "src/engine/Tile.ts",
+    "src/engine/Color.ts",
+    "src/engine/Character.ts",
+    "src/engine/Shader.ts",
+    "src/engine/Vector2.ts",
+    "src/engine/shaders/Basic.ts"
+  ]
+}
