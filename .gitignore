@@ -1,3 +1,10 @@
 build/js/game.js
 node_modules/*
 .c9/*
+bin/*
+obj/*
+web.config
+web.Debug.config
+web.Release.config
+championsOfRogue.csproj
+championsOfRogue.sln
