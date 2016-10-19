@@ -20,7 +20,11 @@ let Colors = {
     BROWN: { r: 139 / 255, g: 69 / 255, b: 19 / 255 }
 };
 
-let Tiles: any = {};
+interface TileType {
+    [index: string]: Character;
+}
+
+let Tiles: TileType = {};
 let names: Array<Array<string>> = [
     ['BLANK', 'DOT_C', 'POINT', 'COLON', 'COMMA', 'EXCLA', 'QUEST', 'STRUP', 'STRDN', 'MONEY', 'STAR', 'SLASH', 'PLUS', 'MINUS', 'UNDER', 'EQUAL', 'HASH', 'SQBRO', 'SQBRC', 'PAREO', 'PAREC', 'BRACO', 'BRACC', 'WATER', 'WATRD',],
     ['AMPER', 'PERCT', 'QUOTD', 'GRASH', 'QUOTS', 'GRASS', 'PLAYR', 'PAGEUP', 'PAGEDWN', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',],
@@ -68,16 +72,6 @@ function getTile(renderer: Renderer, backColor: Color, frontColor: Color, tile: 
     };
 }
 
-interface TilesPrefabsValues {
-    BLANK: TilePrefab;
-    WALL: TilePrefab;
-    FLOOR: TilePrefab;
-    WATER: TilePrefab;
-    WATER_DEEP: TilePrefab;
-    STAIRS_UP: TilePrefab;
-    STAIRS_DOWN: TilePrefab;
-};
-
 let TilesPrefabs = {
     TILES: <PrefabItem>{},
     ITEMS: <PrefabItem>{},
@@ -85,75 +79,75 @@ let TilesPrefabs = {
     PLAYER: <TilePrefab>null,
 
     init: function (renderer: Renderer) {
-        let t: TilesPrefabsValues = this.TILES;
+        let t = this.TILES;
         let i = this.ITEMS;
         let e = this.ENEMIES;
 
         // Blank
-        t.BLANK = getTile(renderer, Colors.BLACK, Colors.BLACK, Tiles.BLANK, null);
+        t.BLANK = getTile(renderer, Colors.BLACK, Colors.BLACK, Tiles["BLANK"], null);
 
         // Walls
-        t.WALL = getTile(renderer, Colors.GRAY, Colors.WHITE, Tiles.HASH, null, TileTypes.WALL);
+        t.WALL = getTile(renderer, Colors.GRAY, Colors.WHITE, Tiles["HASH"], null, TileTypes.WALL);
 
         // Floors
-        t.FLOOR = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.DOT_C, null);
-        t.WATER = getTile(renderer, Colors.AQUA, Colors.WHITE, Tiles.WATER, null, TileTypes.WATER);
-        t.WATER_DEEP = getTile(renderer, Colors.BLUE, Colors.WHITE, Tiles.WATRD, null, TileTypes.WATER_DEEP);
+        t.FLOOR = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles["DOT_C"], null);
+        t.WATER = getTile(renderer, Colors.AQUA, Colors.WHITE, Tiles["WATER"], null, TileTypes.WATER);
+        t.WATER_DEEP = getTile(renderer, Colors.BLUE, Colors.WHITE, Tiles["WATRD"], null, TileTypes.WATER_DEEP);
 
         // Stairs
-        t.STAIRS_UP = getTile(renderer, Colors.BLACK, Colors.YELLOW, Tiles.STRUP);
-        t.STAIRS_DOWN = getTile(renderer, Colors.BLACK, Colors.YELLOW, Tiles.STRDN);
+        t.STAIRS_UP = getTile(renderer, Colors.BLACK, Colors.YELLOW, Tiles["STRUP"]);
+        t.STAIRS_DOWN = getTile(renderer, Colors.BLACK, Colors.YELLOW, Tiles["STRDN"]);
 
         // Gold
-        i.GOLD = getTile(renderer, Colors.BLACK, Colors.GOLD, Tiles.MONEY, null);
+        i.GOLD = getTile(renderer, Colors.BLACK, Colors.GOLD, Tiles["MONEY"], null);
 
         // Items
-        i.RED_POTION = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.EXCLA);
-        i.GREEN_POTION = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.EXCLA);
-        i.BLUE_POTION = getTile(renderer, Colors.BLACK, Colors.BLUE, Tiles.EXCLA);
-        i.YELLOW_POTION = getTile(renderer, Colors.BLACK, Colors.YELLOW, Tiles.EXCLA);
-        i.AQUA_POTION = getTile(renderer, Colors.BLACK, Colors.AQUA, Tiles.EXCLA);
-        i.WHITE_POTION = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.EXCLA);
-        i.PURPLE_POTION = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.EXCLA);
-        i.TAN_POTION = getTile(renderer, Colors.BLACK, Colors.TAN, Tiles.EXCLA);
-        i.ORANGE_POTION = getTile(renderer, Colors.BLACK, Colors.ORANGE, Tiles.EXCLA);
+        i.RED_POTION = getTile(renderer, Colors.BLACK, Colors.RED, Tiles["EXCLA"]);
+        i.GREEN_POTION = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles["EXCLA"]);
+        i.BLUE_POTION = getTile(renderer, Colors.BLACK, Colors.BLUE, Tiles["EXCLA"]);
+        i.YELLOW_POTION = getTile(renderer, Colors.BLACK, Colors.YELLOW, Tiles["EXCLA"]);
+        i.AQUA_POTION = getTile(renderer, Colors.BLACK, Colors.AQUA, Tiles["EXCLA"]);
+        i.WHITE_POTION = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles["EXCLA"]);
+        i.PURPLE_POTION = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles["EXCLA"]);
+        i.TAN_POTION = getTile(renderer, Colors.BLACK, Colors.TAN, Tiles["EXCLA"]);
+        i.ORANGE_POTION = getTile(renderer, Colors.BLACK, Colors.ORANGE, Tiles["EXCLA"]);
 
         // Weapons
-        i.DAGGER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.MINUS);
-        i.SWORD = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.SLASH);
-        i.LONG_SWORD = getTile(renderer, Colors.BLACK, Colors.AQUA, Tiles.SLASH);
-        i.MACE = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.UNDER);
-        i.SPEAR = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles.SLASH);
-        i.AXE = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.MINUS);
+        i.DAGGER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles["MINUS"]);
+        i.SWORD = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles["SLASH"]);
+        i.LONG_SWORD = getTile(renderer, Colors.BLACK, Colors.AQUA, Tiles["SLASH"]);
+        i.MACE = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles["UNDER"]);
+        i.SPEAR = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles["SLASH"]);
+        i.AXE = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles["MINUS"]);
 
         // Armors
-        i.LEATHER_ARMOR = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles.SQBRO);
-        i.SCALE_MAIL = getTile(renderer, Colors.BLACK, Colors.GRAY, Tiles.SQBRO);
-        i.CHAIN_MAIL = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.SQBRO);
-        i.PLATE_ARMOR = getTile(renderer, Colors.BLACK, Colors.GOLD, Tiles.SQBRO);
+        i.LEATHER_ARMOR = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles["SQBRO"]);
+        i.SCALE_MAIL = getTile(renderer, Colors.BLACK, Colors.GRAY, Tiles["SQBRO"]);
+        i.CHAIN_MAIL = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles["SQBRO"]);
+        i.PLATE_ARMOR = getTile(renderer, Colors.BLACK, Colors.GOLD, Tiles["SQBRO"]);
 
         // Enemies
-        e.RAT = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.r);
-        e.SPIDER = getTile(renderer, Colors.BLACK, Colors.GRAY, Tiles.s);
-        e.KOBOLD = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.k);
-        e.IMP = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.i);
-        e.GOBLIN = getTile(renderer, Colors.BLACK, Colors.AQUA, Tiles.g);
-        e.ZOMBIE = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.z);
-        e.OGRE = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles.o);
-        e.ROGUE = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.R);
-        e.BEGGAR = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles.b);
-        e.SHADOW = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.S);
-        e.THIEF = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.t);
-        e.CAOS_KNIGHT = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.K);
-        e.LIZARD_WARRIOR = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.l);
-        e.OPHIDIAN = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles.O);
-        e.CAOS_SERVANT = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.C);
-        e.WYVERN_KNIGHT = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.W);
-        e.CAOS_LORD = getTile(renderer, Colors.BLACK, Colors.RED, Tiles.L);
-        e.SODI = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles.PLAYR);
+        e.RAT = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles["r"]);
+        e.SPIDER = getTile(renderer, Colors.BLACK, Colors.GRAY, Tiles["s"]);
+        e.KOBOLD = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles["k"]);
+        e.IMP = getTile(renderer, Colors.BLACK, Colors.RED, Tiles["i"]);
+        e.GOBLIN = getTile(renderer, Colors.BLACK, Colors.AQUA, Tiles["g"]);
+        e.ZOMBIE = getTile(renderer, Colors.BLACK, Colors.RED, Tiles["z"]);
+        e.OGRE = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles["o"]);
+        e.ROGUE = getTile(renderer, Colors.BLACK, Colors.RED, Tiles["R"]);
+        e.BEGGAR = getTile(renderer, Colors.BLACK, Colors.BROWN, Tiles["b"]);
+        e.SHADOW = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles["S"]);
+        e.THIEF = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles["t"]);
+        e.CAOS_KNIGHT = getTile(renderer, Colors.BLACK, Colors.RED, Tiles["K"]);
+        e.LIZARD_WARRIOR = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles["l"]);
+        e.OPHIDIAN = getTile(renderer, Colors.BLACK, Colors.GREEN, Tiles["O"]);
+        e.CAOS_SERVANT = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles["C"]);
+        e.WYVERN_KNIGHT = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles["W"]);
+        e.CAOS_LORD = getTile(renderer, Colors.BLACK, Colors.RED, Tiles["L"]);
+        e.SODI = getTile(renderer, Colors.BLACK, Colors.PURPLE, Tiles["PLAYR"]);
 
         // Player
-        this.PLAYER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles.PLAYR, null);
+        this.PLAYER = getTile(renderer, Colors.BLACK, Colors.WHITE, Tiles["PLAYR"], null);
     }
 };
 

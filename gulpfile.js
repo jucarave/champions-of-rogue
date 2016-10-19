@@ -5,7 +5,7 @@ var source = require('vinyl-source-stream');
 var gutil = require('gulp-util');
 var tsify = require('tsify');
 
-gulp.task("transpile", function () {
+gulp.task("default", function () {
     return browserify({
         basedir: '.',
         debug: true,

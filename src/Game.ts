@@ -183,8 +183,8 @@ class Game {
     renderItemPanel() {
         if (!this.itemDesc) { return; }
 
-        for (var x = 10; x < 49; x++) {
-            for (var y = 4; y < 20; y++) {
+        for (let x = 10; x < 49; x++) {
+            for (let y = 4; y < 20; y++) {
                 this.renderer.plot(x, y, this.panelTile);
             }
         }
@@ -192,7 +192,7 @@ class Game {
         let msg: string = this.itemDesc.def.desc;
         let formatted: Array<string> = Utils.formatText(msg, 38);
 
-        var title = this.itemDesc.def.name + ((this.itemDesc.amount > 1) ? " (x" + this.itemDesc.amount + ")" : "");
+        let title = this.itemDesc.def.name + ((this.itemDesc.amount > 1) ? " (x" + this.itemDesc.amount + ")" : "");
         Utils.renderText(this.renderer, (30 - title.length / 2) << 0, 5, title, Colors.WHITE, Colors.DARK_BLUE);
 
         for (let i = 0, m: string; m = formatted[i]; i++) {
