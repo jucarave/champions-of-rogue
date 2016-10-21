@@ -5,7 +5,7 @@ import { Tile } from './engine/Tile';
 import { Character } from './engine/Character';
 
 let Utils = {
-    rollDice: function (value: string): number {
+    rollDice(value: string): number {
         let array: Array<string> = value.split(/[D\+*]/),
             a: number = parseInt(array[0], 10),
             b: number = parseInt(array[1], 10),
@@ -19,7 +19,7 @@ let Utils = {
         return ret;
     },
 
-    formatText: function (text: string, width: number): Array<string> {
+    formatText(text: string, width: number): Array<string> {
         let ret: Array<string> = [],
             words: Array<string> = text.split(" "),
             line: string = "";
@@ -69,7 +69,7 @@ let Utils = {
         return renderer.getTile(backColor, color, <Character>Tiles[tile]);
     },
 
-    renderText: function (renderer: Renderer, x: number, y: number, text: string, color: Color = Colors.WHITE, backColor: Color = Colors.BLACK) {
+    renderText(renderer: Renderer, x: number, y: number, text: string, color: Color = Colors.WHITE, backColor: Color = Colors.BLACK) {
         for (let i = 0; i < text.length; i++) {
             let t: string = text[i];
 
@@ -79,6 +79,27 @@ let Utils = {
                 renderer.plot(x + i, y, this.getTile(renderer, t, color, backColor));
             }
         }
+    },
+
+    loadJSON(url: string, callback: Function) {
+        let http: XMLHttpRequest = new XMLHttpRequest();
+        http.open("GET", url, true);
+        http.onreadystatechange = () => {
+            if (http.readyState == 4) {
+                try {
+                    let data: any = JSON.parse(http.responseText);
+                    if (http.status == 200) {
+                        callback(data);
+                    } else {
+                        alert("Error while obtaining the JSON");
+                        console.error(data);
+                    }
+                } catch(error) {
+                    alert("Error while parsing the JSON: " + error.message);
+                }
+            }
+        };
+        http.send();
     }
 };
 
