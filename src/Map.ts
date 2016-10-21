@@ -385,7 +385,7 @@ class Map extends Scenario {
 
         if (discover != null && !PlayerStats.blind) {
             let text: Array<string> = Utils.formatText(discover + ".", 85);
-            for (let i = 0, line: string; line = discover[i]; i++) {
+            for (let i = 0, line: string; line = text[i]; i++) {
                 this.game.console.addMessage(line, Colors.WHITE);
             }
 

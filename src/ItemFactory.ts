@@ -107,7 +107,7 @@ let ItemFactory = {
         let item: ItemDefinition = this.items[code];
         if (!item.tile) {
             item.code = code;
-            item.tile = TilesPrefabs.ITEMS[item.code];
+            item.tile = TilesPrefabs.ITEMS[item.tileCode];
         }
 
         let ret: WorldItem = {
