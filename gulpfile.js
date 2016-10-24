@@ -4,8 +4,23 @@ var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 var gutil = require('gulp-util');
 var tsify = require('tsify');
+var fs = require('fs');
 
-gulp.task("default", function () {
+gulp.task("buildData", function() {
+    var path = 'dist/data/';
+    var enemies = require('./src/data/enemies.json');
+    var data = {
+        enemies: enemies
+    };
+
+    if (!fs.existsSync(path)){
+        fs.mkdirSync(path);
+    }
+
+    fs.writeFileSync(path + 'data.json', JSON.stringify(data), { flag: 'a' });
+});
+
+gulp.task("default", ["buildData"], function () {
     return browserify({
         basedir: '.',
         debug: true,
