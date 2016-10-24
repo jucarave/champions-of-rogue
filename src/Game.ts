@@ -7,6 +7,7 @@ import { Map } from './Map';
 import { Console } from './Console';
 import { Utils } from './Utils';
 import { ItemFactory, WorldItem } from './ItemFactory';
+import { EnemyFactory } from './EnemyFactory';
 import { MainMenu } from './MainMenu';
 import { Input } from './engine/Input';
 import { Vector2 } from './engine/Vector2';
@@ -62,8 +63,16 @@ class Game {
             itemDesc: [10, 4, 49, 20]
         };
 
-        this.createStats();
-        this.newGame();
+        this.loadData();
+    }
+
+    loadData() {
+        Utils.loadJSON("data/data.json", (data: any) => {
+            EnemyFactory.loadData(data.enemies);
+
+            this.createStats();
+            this.newGame();
+        });
     }
 
     newGame() {

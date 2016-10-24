@@ -13,6 +13,8 @@ gulp.task("buildData", function() {
         enemies: enemies
     };
 
+    fs.unlinkSync(path + 'data.json');
+
     if (!fs.existsSync(path)){
         fs.mkdirSync(path);
     }
