@@ -1,7 +1,6 @@
 ﻿declare var Graph: any;
 declare var astar: any;
 
-import { Console } from './Console';
 import { TilePrefab, TilesPrefabs, TileTypes, Colors } from './Prefabs';
 import { Player } from './Player';
 import { Item } from './Item';

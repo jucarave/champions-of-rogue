@@ -218,6 +218,9 @@ class Renderer {
     }
 
     getTile(bColor: Color = this.black.background, fColor: Color = this.black.foreground, chara: Character = {x: 0, y: 0}, effect: void = null): Tile {
+        // Enable use of effects:
+        effect;
+        
         return new Tile(bColor, fColor, chara);
     }
 

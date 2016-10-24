@@ -1,6 +1,5 @@
 ﻿import { TilePrefab, TilesPrefabs } from './Prefabs';
 import { ItemEffects } from './ItemEffects';
-import { Tile } from './engine/Tile';
 import { Instance } from './Instance';
 
 enum ItemTypes {

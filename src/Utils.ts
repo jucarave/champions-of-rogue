@@ -9,9 +9,9 @@ let Utils = {
      * Rolls a 'y' sided dice 'x' times and sum the results
      * to z
      * 
-     * @param dice String: Dice with the format "xDy+z" 
+     * @param {string} dice - Dice with the format "xDy+z" 
      * 
-     * @return Number: Result of the rolled 
+     * @return {number} 
      */
     rollDice(dice: string): number {
         let array: Array<string> = dice.split(/[D\+*]/),
@@ -31,10 +31,10 @@ let Utils = {
      * Separates a single string line into multiple lines
      * defined by a monospaced width. 
      *  
-     * @param text String: Full string that has to be splitted.
-     * @param width Number: Maximum width per line.
+     * @param {string} text - Full string that has to be splitted.
+     * @param {number} width - Maximum width per line.
      * 
-     * @return Array<String>: Array containing the string separated.
+     * @return {Array<string>}
      */
     formatText(text: string, width: number): Array<string> {
         let ret: Array<string> = [],
@@ -65,12 +65,12 @@ let Utils = {
      * its valid form ("EXCLA") and returns the tile using 
      * the correct name.
      * 
-     * @param Renderer: Renderer instance to obtain the final tile. 
-     * @param chara String: Character to represent the tile.
-     * @param Color: Foreground color of the tile.
-     * @param backColor?: Background color of the tile (Default BLACK).
+     * @param {Renderer} Renderer - Renderer instance to obtain the final tile. 
+     * @param {string} chara - Character to represent the tile.
+     * @param {Color} Color - Foreground color of the tile.
+     * @param {Color} [backColor=Colors.BLACK] - Background color of the tile (Default BLACK).
      * 
-     * @return Tile: Tile served by the rendering class.
+     * @return {Tile}
      */
     getTile: function (renderer: Renderer, chara: string, color: Color, backColor: Color = Colors.BLACK): Tile {
         var tile = chara;
@@ -101,12 +101,12 @@ let Utils = {
     /**
      * Plots a string line into the canvas.
      * 
-     * @param Renderer: Renderer instance to plot the characters.
-     * @param x Number: X position of the text.
-     * @param y Number: Y position of the text.
-     * @param text String: Text to render on the canvas.
-     * @param Color?: Foreground color of the text (Default WHITE).
-     * @param backColor?: BackgroundColor of the text (Default BLACK).
+     * @param {Renderer} Renderer - Renderer instance to plot the characters.
+     * @param {number} x - X position of the text.
+     * @param {number} y - Y position of the text.
+     * @param {string} text - Text to render on the canvas.
+     * @param {Color} [color=Colors.WHITE] - Foreground color of the text.
+     * @param {Color} [backColor=Colors.BLACK] - BackgroundColor of the text.
      */
     renderText(renderer: Renderer, x: number, y: number, text: string, color: Color = Colors.WHITE, backColor: Color = Colors.BLACK) {
         for (let i = 0; i < text.length; i++) {
@@ -124,9 +124,9 @@ let Utils = {
      * Makes a GET Http request call and tries to obtain a
      * JSON object from the response.
      * 
-     * @param url String: Absolute url to perform the call
-     * @param callback Function(jsonObject): Callback function 
-     *         to return the data 
+     * @param {string} url - Absolute url to perform the call
+     * @param {Function} callback - Function(jsonObject) Callback 
+     *         method to return the data 
      */
     loadJSON(url: string, callback: Function) {
         let http: XMLHttpRequest = new XMLHttpRequest();

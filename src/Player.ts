@@ -1,4 +1,4 @@
-﻿import { Colors, TilePrefab, TilesPrefabs } from './Prefabs';
+﻿import { Colors, TilesPrefabs } from './Prefabs';
 import { PlayerStats } from './PlayerStats';
 import { Input } from './engine/Input';
 import { Utils } from './Utils';

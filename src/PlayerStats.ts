@@ -1,5 +1,4 @@
 ﻿import { Colors } from './Prefabs';
-import { Console } from './Console';
 import { Utils } from './Utils';
 import { Game } from './Game';
 import { Vector2 } from './engine/Vector2';

@@ -34,7 +34,7 @@ class Game {
     itemDesc: WorldItem;
 
     gameSeed: number;
-    restartGame: boolean;
+    restartGame: boolean = false;
 
     panelTile: Tile;
     panels: Panels;
@@ -42,21 +42,16 @@ class Game {
     stats: any;
 
     constructor() {
-        this.renderer = new Renderer(850, 480, <HTMLDivElement>document.getElementById("divGame"));
         this.resolution = { x: 85, y: 30 };
 
+        this.renderer = new Renderer(850, 480, <HTMLDivElement>document.getElementById("divGame"));
+        
         this.font = this.renderer.setFontTexture('img/ascii-rl-font.png');
         TilesPrefabs.init(this.renderer);
         
-        this.maps = [];
-        this.map = null;
-        this.console = null;
-
         this.panelTile = this.renderer.getTile(Colors.DARK_BLUE, Colors.WHITE, {x: 0, y: 0});
-        this.itemDesc = null;
-
-        this.restartGame = false;
-
+        
+        // TODO: Refactor this to the data.json file
         this.panels = {
             map: [0, 2, 60, 25],
             inventory: [60, 0, 85, 20],

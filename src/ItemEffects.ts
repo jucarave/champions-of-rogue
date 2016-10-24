@@ -101,7 +101,7 @@ let ItemEffects = {
 
                 case Instructions.RETURN_MSG:
                     msg = copy.shift();
-                    msg = msg.replace(/\%s[0-9]+/g, function (m, v) {
+                    msg = msg.replace(/\%s[0-9]+/g, function (m: string) {
                         var ind = parseInt(m.replace("%s", ""), 10);
                         return storedVals[ind] || m;
                     });

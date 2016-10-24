@@ -1,7 +1,7 @@
 ﻿import { Instance } from './Instance';
-import { EnemyFactory, WorldEnemy } from './EnemyFactory';
+import { WorldEnemy } from './EnemyFactory';
 import { Map } from './Map';
-import { TilePrefab, TileTypes, Colors } from './Prefabs';
+import { TileTypes, Colors } from './Prefabs';
 import { Player } from './Player';
 import { Vector2 } from './engine/Vector2';
 import { PlayerStats } from './PlayerStats';
