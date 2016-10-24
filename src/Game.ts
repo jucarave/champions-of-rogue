@@ -1,4 +1,6 @@
-﻿declare var Stats: any;
+﻿// @if DEBUG = true
+    declare var Stats: any;
+// @endif
 
 import { Tile } from './engine/Tile';
 import { Renderer } from './engine/Renderer';
@@ -65,7 +67,10 @@ class Game {
         Utils.loadJSON("data/data.json", (data: any) => {
             EnemyFactory.loadData(data.enemies);
 
-            this.createStats();
+            // @if DEBUG = true
+                this.createStats();
+            // @endif
+            
             this.newGame();
         });
     }
@@ -94,11 +99,13 @@ class Game {
         this.loopGame();
     }
 
+    // @if DEBUG = true
     createStats() {
         this.stats = new Stats();
         this.stats.showPanel(1);
         document.body.appendChild(this.stats.dom);
     }
+    // @endif
 
     isPointInPanel(x: number, y: number, panel: Array<number>) {
         return (x >= panel[0] && y >= panel[1] && x < panel[2] && y < panel[3]);
@@ -209,7 +216,9 @@ class Game {
     }
 
     loopGame() {
-        this.stats.begin();
+        // @if DEBUG = true
+            this.stats.begin();
+        // @endif
 
         if (this.renderer.fontReady) {
             this.map.render();
@@ -217,7 +226,9 @@ class Game {
             this.renderer.render();
         }
 
-        this.stats.end();
+        // @if DEBUG = true
+            this.stats.end();
+        // @endif
 
         if (this.restartGame) {
             this.newGame();
