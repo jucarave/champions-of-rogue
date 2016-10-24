@@ -12,7 +12,6 @@ import { ItemFactory, WorldItem } from './ItemFactory';
 import { EnemyFactory } from './EnemyFactory';
 import { MainMenu } from './MainMenu';
 import { Input } from './engine/Input';
-import { Vector2 } from './engine/Vector2';
 import { PlayerStats } from './PlayerStats';
 import { Scenario } from './Scenario';
 
@@ -23,29 +22,48 @@ interface Panels {
 };
 
 class Game {
+    // Handles all the rendering to the canvas
     renderer: Renderer;
 
-    resolution: Vector2;
-
+    // Bitmap font used for the rendering
     font: HTMLImageElement;
     
+    // Current map the player is at
     map: Scenario;
+
+    // Memory of all the maps the player has visited
     maps: Array<Scenario>;
+
+    // Handles all the messages output to the canvas
     console: Console;
 
+    // Handles rendering a panel when viewing an inventory item description
     itemDesc: WorldItem;
 
+    // Pseudo random number that handles what maps the player will play
     gameSeed: number;
+
+    // A game restart was requested from the game
     restartGame: boolean = false;
 
+    // Tile with the background color of the panel 
     panelTile: Tile;
+
+    // Panels where the mouse can interact
     panels: Panels;
 
-    stats: any;
+    // Shows debug information about the game process
+    // @if DEBUG = true
+        stats: any;
+    // @endif
 
+    /**
+     * Creates an instance of the Game and starts 
+     * a new play
+     * 
+     * @memberOf Game
+     */
     constructor() {
-        this.resolution = { x: 85, y: 30 };
-
         this.renderer = new Renderer(850, 480, <HTMLDivElement>document.getElementById("divGame"));
         
         this.font = this.renderer.setFontTexture('img/ascii-rl-font.png');
@@ -63,6 +81,12 @@ class Game {
         this.loadData();
     }
 
+    /**
+     * Loads the all the game data from a json file and then
+     * starts the game
+     * 
+     * @memberOf Game
+     */
     loadData() {
         Utils.loadJSON("data/data.json", (data: any) => {
             EnemyFactory.loadData(data.enemies);
@@ -75,13 +99,17 @@ class Game {
         });
     }
 
+    /**
+     * Starts a new Game in the MainMenu scenario
+     * 
+     * @memberOf Game
+     */
     newGame() {
         this.restartGame = false;
 
         Input.clearListeners();
 
         this.gameSeed = Math.floor(Math.random() * 1500);
-        console.log("SEED: " + this.gameSeed);
         
         PlayerStats.initStats(this);
         PlayerStats.equipment.weapon = ItemFactory.getItem("dagger");
@@ -99,6 +127,12 @@ class Game {
         this.loopGame();
     }
 
+    /**
+     * For Debug, show an element with the performance
+     * of the game using stats.js
+     * 
+     * @memberOf Game
+     */
     // @if DEBUG = true
     createStats() {
         this.stats = new Stats();
@@ -107,10 +141,28 @@ class Game {
     }
     // @endif
 
-    isPointInPanel(x: number, y: number, panel: Array<number>) {
+    /**
+     * Returns true if a point is inside of one of the panels
+     * 
+     * @param {number} x - X coordinate of the point
+     * @param {number} y - Y coordinate of the point
+     * @param {Array<number>} panel - Panel to check the point against
+     * @returns {boolean}
+     * 
+     * @memberOf Game
+     */
+    isPointInPanel(x: number, y: number, panel: Array<number>): boolean {
         return (x >= panel[0] && y >= panel[1] && x < panel[2] && y < panel[3]);
     }
 
+    /**
+     * Handler for when the mouse is moved across the canvas
+     * 
+     * @param {number} x - X coordinate of the mouse
+     * @param {number} y - Y coordinate of the mouse
+     * 
+     * @memberOf Game
+     */
     onMouseMove(x: number, y: number) {
         if (this.itemDesc) return;
 
@@ -130,6 +182,15 @@ class Game {
         }
     }
 
+    /**
+     * Handler for when the mouse is clicked down or up
+     * 
+     * @param {number} x - X coordinate of the mouse
+     * @param {number} y - Y coordinate of the mouse
+     * @param {number} stat - 0: Mouse is up, 1: Mouse is down
+     * 
+     * @memberOf Game
+     */
     onMouseHandler(x: number, y: number, stat: number) {
         x = (x / this.renderer.pixelSize[0]) << 0;
         y = (y / this.renderer.pixelSize[1]) << 0;
@@ -154,6 +215,16 @@ class Game {
         }
     }
 
+    /**
+     * Handler after the user clicks on the item description panel
+     * 
+     * TODO: Handle this by data.json
+     * 
+     * @param {number} x - X coordinate of the click
+     * @param {number} y - Y coordinate of the click
+     * 
+     * @memberOf Game
+     */
     onItemPanelAction(x: number, y: number) {
         if (y != 14) return;
 
@@ -164,6 +235,16 @@ class Game {
         }
     }
 
+    /**
+     * Moves the player to a specific level of the dungeon
+     * Depending on the direction of the movement the instance
+     * will spawn on the stairs up or stairs down
+     * 
+     * @param {number} level - Level of the dungeon to travel to
+     * @param {number} dir - Direction 1: Down, 0: Up
+     * 
+     * @memberOf Game
+     */
     gotoLevel(level: number, dir: number) {
         let map: Map = <Map>this.map;
         map.active = false;
@@ -191,6 +272,11 @@ class Game {
         this.console.render();
     }
 
+    /**
+     * Renders the item description on the canvas
+     * 
+     * @memberOf Game
+     */
     renderItemPanel() {
         if (!this.itemDesc) { return; }
 
@@ -215,6 +301,12 @@ class Game {
         Utils.renderText(this.renderer, 36, 18, "   DROP    ", Colors.WHITE, Colors.BLUE);
     }
 
+    /**
+     * Loop function, calls the map rendering and prepares
+     * next iteration of the game and game restart
+     * 
+     * @memberOf Game
+     */
     loopGame() {
         // @if DEBUG = true
             this.stats.begin();

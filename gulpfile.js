@@ -15,6 +15,7 @@ var parameters = {
 
 function printHelp() {
     console.log("Usage: gulp [task] [arguments]");
+    console.log("       gulp --dev --debug");
 
     console.log("");
 

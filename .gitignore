@@ -1,6 +1,7 @@
 build/js/game.js
 dist/js/game.js
 dist/data/*
+src_post/*
 node_modules/*
 .c9/*
 bin/*
