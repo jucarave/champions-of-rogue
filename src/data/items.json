@@ -164,52 +164,148 @@
         {
             "name": "Health Potion",
             "desc": "Restores 2D10+10 health points when drink.",
-            "effect": "hpPotion"
+            "effect": [
+                4,
+                3,
+                5,
+                1,
+                "2D10+10",
+                3,
+                2,
+                7,
+                11,
+                "%s0 recovered %s1 health points."
+            ]
         },
         {
             "name": "Life Potion",
             "desc": "Restores all health points when drink.",
-            "effect": "lifePotion"
+            "effect": [
+                4,
+                3,
+                6,
+                7,
+                11,
+                "%s0 recovered all health points."
+            ]
         },
         {
             "name": "Poison Potion",
-            "desc": "Poisons the consumer by 1D3 for 10 turns.",
-            "effect": "poisonPotion"
+            "desc": "Poisons the con2er by 1D3 for 10 turns.",
+            "effect": [
+                0,
+                "1D3",
+                0,
+                10,
+                0,
+                "poison",
+                8,
+                4,
+                3,
+                11,
+                "%s0 are poisoned"
+            ]
         },
         {
             "name": "Blind Potion",
-            "desc": "Blinds the consumer by 2D8+15 turns.",
-            "effect": "blindPotion"
+            "desc": "Blinds the con2er by 2D8+15 turns.",
+            "effect": [
+                1,
+                "2D8+15",
+                0,
+                "blind",
+                8,
+                4,
+                3,
+                11,
+                "%s0 are blinded"
+            ]
         },
         {
             "name": "Paralysis Potion",
-            "desc": "Paralyses the consumer by 2D10+10 turns.",
-            "effect": "paralysisPotion"
+            "desc": "Paralyses the con2er by 2D10+10 turns.",
+            "effect": [
+                1,
+                "1D10+10",
+                0,
+                "paralysis",
+                8,
+                4,
+                3,
+                11,
+                "%s0 are paralyzed"
+            ]
         },
         {
             "name": "Invisibility Potion",
-            "desc": "Makes the consumer invisible by 3D10+15 except for enemies he attacks.",
-            "effect": "invisibilityPotion"
+            "desc": "Makes the con2er invisible by 3D10+15 except for enemies he attacks.",
+            "effect": [
+                1,
+                "3D10+15",
+                0,
+                "invisible",
+                8,
+                4,
+                3,
+                11,
+                "%s0 are invisible"
+            ]
         },
         {
             "name": "Cure Potion",
             "desc": "Removes all damaging effects of the status.",
-            "effect": "curePotion"
+            "effect": [
+                0,
+                "poison",
+                9,
+                0,
+                "blind",
+                9,
+                0,
+                "paralysis",
+                9,
+                11,
+                "Status cured"
+            ]
         },
         {
             "name": "Strength Potion",
             "desc": "Adds +3 Damage to the attack.",
-            "effect": "strengthPotion"
+            "effect": [
+                0,
+                "strAdd",
+                0,
+                2,
+                10,
+                11,
+                "Strength +2"
+            ]
         },
         {
             "name": "Defense Potion",
             "desc": "Adds +3 to the overall defense.",
-            "effect": "defensePotion"
+            "effect": [
+                0,
+                "defAdd",
+                0,
+                1,
+                10,
+                11,
+                "Defense +1"
+            ]
         },
         {
             "name": "Speed Potion",
             "desc": "Adds +1 to the speed.",
-            "effect": "speedPotion"
+            "effect": [
+                0,
+                "spd",
+                0,
+                1,
+                10,
+                11,
+                "Speed +1"
+            ]
         }
     ]
 }
