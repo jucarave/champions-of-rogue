@@ -1,18 +1,18 @@
 ﻿import { Utils } from './Utils';
 
 enum Instructions {
-    LITERAL = 0x00,
-    DICE = 0x01,
-    SUM = 0x02,
-    STORE_VAL = 0x03,
-    GET_INSTANCE_USE_NAME = 0x04,
-    GET_INSTANCE_HEALTH = 0x05,
-    GET_INSTANCE_FULL_HEALTH = 0x06,
-    SET_INSTANCE_HEALTH = 0x07,
-    ADD_INSTANCE_STATUS = 0x08,
-    REMOVE_INSTANCE_STATUS = 0x09,
-    BOOST_INSTANCE_STAT = 0x0A,
-    RETURN_MSG = 0x0B
+    LITERAL                             =  0,
+    DICE                                =  1,
+    SUM                                 =  2,
+    STORE_VAL                           =  3,
+    GET_INSTANCE_USE_NAME               =  4,
+    GET_INSTANCE_HEALTH                 =  5,
+    GET_INSTANCE_FULL_HEALTH            =  6,
+    SET_INSTANCE_HEALTH                 =  7,
+    ADD_INSTANCE_STATUS                 =  8,
+    REMOVE_INSTANCE_STATUS              =  9,
+    BOOST_INSTANCE_STAT                 = 10,
+    RETURN_MSG                          = 11
 };
 
 let ItemEffects = {
@@ -111,19 +111,6 @@ let ItemEffects = {
         }
 
         return msg;
-    },
-
-    items: {
-        hpPotion: [Instructions.GET_INSTANCE_USE_NAME, Instructions.STORE_VAL, Instructions.GET_INSTANCE_HEALTH, Instructions.DICE, '2D10+10', Instructions.STORE_VAL, Instructions.SUM, Instructions.SET_INSTANCE_HEALTH, Instructions.RETURN_MSG, "%s0 recovered %s1 health points."],
-        lifePotion: [Instructions.GET_INSTANCE_USE_NAME, Instructions.STORE_VAL, Instructions.GET_INSTANCE_FULL_HEALTH, Instructions.SET_INSTANCE_HEALTH, Instructions.RETURN_MSG, "%s0 recovered all health points."],
-        poisonPotion: [Instructions.LITERAL, '1D3', Instructions.LITERAL, 10, Instructions.LITERAL, 'poison', Instructions.ADD_INSTANCE_STATUS, Instructions.GET_INSTANCE_USE_NAME, Instructions.STORE_VAL, Instructions.RETURN_MSG, "%s0 are poisoned"],
-        blindPotion: [Instructions.DICE, '2D8+15', Instructions.LITERAL, 'blind', Instructions.ADD_INSTANCE_STATUS, Instructions.GET_INSTANCE_USE_NAME, Instructions.STORE_VAL, Instructions.RETURN_MSG, "%s0 are blinded"],
-        paralysisPotion: [Instructions.DICE, '1D10+10', Instructions.LITERAL, 'paralysis', Instructions.ADD_INSTANCE_STATUS, Instructions.GET_INSTANCE_USE_NAME, Instructions.STORE_VAL, Instructions.RETURN_MSG, "%s0 are paralyzed"],
-        invisibilityPotion: [Instructions.DICE, '3D10+15', Instructions.LITERAL, 'invisible', Instructions.ADD_INSTANCE_STATUS, Instructions.GET_INSTANCE_USE_NAME, Instructions.STORE_VAL, Instructions.RETURN_MSG, "%s0 are invisible"],
-        curePotion: [Instructions.LITERAL, 'poison', Instructions.REMOVE_INSTANCE_STATUS, Instructions.LITERAL, 'blind', Instructions.REMOVE_INSTANCE_STATUS, Instructions.LITERAL, 'paralysis', Instructions.REMOVE_INSTANCE_STATUS, Instructions.RETURN_MSG, "Status cured"],
-        strengthPotion: [Instructions.LITERAL, 'strAdd', Instructions.LITERAL, 2, Instructions.BOOST_INSTANCE_STAT, Instructions.RETURN_MSG, "Strength +2"],
-        defensePotion: [Instructions.LITERAL, 'defAdd', Instructions.LITERAL, 1, Instructions.BOOST_INSTANCE_STAT, Instructions.RETURN_MSG, "Defense +1"],
-        speedPotion: [Instructions.LITERAL, 'spd', Instructions.LITERAL, 1, Instructions.BOOST_INSTANCE_STAT, Instructions.RETURN_MSG, "Speed +1"]
     }
 };
 
