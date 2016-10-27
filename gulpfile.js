@@ -44,9 +44,14 @@ parseParameters();
 
 gulp.task("buildData", function() {
     var path = 'dist/data/';
+    
     var enemies = require('./src/data/enemies.json');
+    var items = require('./src/data/items.json');
+
     var data = {
-        enemies: enemies
+        enemies: enemies,
+        items: items.items,
+        potions: items.potions
     };
 
     fs.unlinkSync(path + 'data.json');

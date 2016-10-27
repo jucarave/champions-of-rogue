@@ -24,9 +24,6 @@ interface Panels {
 class Game {
     // Handles all the rendering to the canvas
     renderer: Renderer;
-
-    // Bitmap font used for the rendering
-    font: HTMLImageElement;
     
     // Current map the player is at
     map: Scenario;
@@ -66,7 +63,7 @@ class Game {
     constructor() {
         this.renderer = new Renderer(850, 480, <HTMLDivElement>document.getElementById("divGame"));
         
-        this.font = this.renderer.setFontTexture('img/ascii-rl-font.png');
+        this.renderer.setFontTexture('img/ascii-rl-font.png');
         TilesPrefabs.init(this.renderer);
         
         this.panelTile = this.renderer.getTile(Colors.DARK_BLUE, Colors.WHITE, {x: 0, y: 0});
@@ -90,6 +87,7 @@ class Game {
     loadData() {
         Utils.loadJSON("data/data.json", (data: any) => {
             EnemyFactory.loadData(data.enemies);
+            ItemFactory.loadData(data.items, data.potions);
 
             // @if DEBUG = true
                 this.createStats();

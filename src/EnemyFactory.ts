@@ -14,7 +14,7 @@ interface EnemyDefinition {
     tile: TilePrefab
 };
 
-interface Enemies {
+interface EnemiesData {
     [index: string]: EnemyDefinition
 };
 
@@ -24,7 +24,7 @@ interface WorldEnemy {
 }
 
 let EnemyFactory = {
-    enemies: <Enemies>{},
+    enemies: <EnemiesData>{},
 
     loadData(enemies: any) {
         this.enemies = {};

@@ -1,0 +1,215 @@
+{
+    "items": {
+        "redPotion": {
+            "tileCode": "RED_POTION",
+            "name": "Red potion",
+            "type": "POTION",
+            "desc": "Red potion, unknown effect",
+            "discovered": false,
+            "stackable": true
+        },
+        "greenPotion": {
+            "tileCode": "GREEN_POTION",
+            "name": "Green potion",
+            "type": "POTION",
+            "desc": "Green potion, unknown effect",
+            "discovered": false,
+            "stackable": true
+        },
+        "bluePotion": {
+            "tileCode": "BLUE_POTION",
+            "name": "Blue potion",
+            "type": "POTION",
+            "desc": "Blue potion, unknown effect",
+            "discovered": false,
+            "stackable": true
+        },
+        "yellowPotion": {
+            "tileCode": "YELLOW_POTION",
+            "name": "Yellow potion",
+            "type": "POTION",
+            "desc": "Yellow potion, unknown effect",
+            "discovered": false,
+            "stackable": true
+        },
+        "aquaPotion": {
+            "tileCode": "AQUA_POTION",
+            "name": "Aqua potion",
+            "type": "POTION",
+            "desc": "Aqua potion, unknown effect",
+            "discovered": false,
+            "stackable": true
+        },
+        "purplePotion": {
+            "tileCode": "PURPLE_POTION",
+            "name": "Purple potion",
+            "type": "POTION",
+            "desc": "Purple potion, unknown effect",
+            "discovered": false,
+            "stackable": true
+        },
+        "whitePotion": {
+            "tileCode": "WHITE_POTION",
+            "name": "White potion",
+            "type": "POTION",
+            "desc": "White potion, unknown effect",
+            "discovered": false,
+            "stackable": true
+        },
+        "tanPotion": {
+            "tileCode": "TAN_POTION",
+            "name": "Tan potion",
+            "type": "POTION",
+            "desc": "Tan potion, unknown effect",
+            "discovered": false,
+            "stackable": true
+        },
+        "orangePotion": {
+            "tileCode": "ORANGE_POTION",
+            "name": "Orange potion",
+            "type": "POTION",
+            "desc": "Orange potion, unknown effect",
+            "discovered": false,
+            "stackable": true
+        },
+        "gold": {
+            "tileCode": "GOLD",
+            "name": "Gold piece",
+            "type": "GOLD",
+            "desc": "X Gold piece",
+            "stackable": true
+        },
+        "dagger": {
+            "tileCode": "DAGGER",
+            "name": "Dagger",
+            "type": "WEAPON",
+            "desc": "Standard iron dagger, easy to handle.",
+            "str": "3D5",
+            "wear": "1D6"
+        },
+        "shortSword": {
+            "tileCode": "SWORD",
+            "name": "Short sword",
+            "type": "WEAPON",
+            "desc": "Pending description",
+            "str": "3D6",
+            "wear": "1D4"
+        },
+        "longSword": {
+            "tileCode": "LONG_SWORD",
+            "name": "Long sword",
+            "type": "WEAPON",
+            "desc": "Pending description",
+            "str": "3D10",
+            "wear": "1D5"
+        },
+        "mace": {
+            "tileCode": "MACE",
+            "name": "Mace",
+            "type": "WEAPON",
+            "desc": "Pending description",
+            "str": "4D8",
+            "wear": "1D6"
+        },
+        "spear": {
+            "tileCode": "SPEAR",
+            "name": "Spear",
+            "type": "WEAPON",
+            "desc": "Pending description",
+            "str": "3D8",
+            "wear": "1D4"
+        },
+        "axe": {
+            "tileCode": "AXE",
+            "name": "Battle axe",
+            "type": "WEAPON",
+            "desc": "Pending description",
+            "str": "5D5",
+            "wear": "1D4"
+        },
+        "leatherArmor": {
+            "tileCode": "LEATHER_ARMOR",
+            "name": "Leather armor",
+            "type": "ARMOR",
+            "desc": "It\"s light and brings medium protection.",
+            "def": "2D6",
+            "wear": "1D5"
+        },
+        "scaleMail": {
+            "tileCode": "SCALE_MAIL",
+            "name": "Scale mail",
+            "type": "ARMOR",
+            "desc": "Pending description",
+            "def": "3D6",
+            "wear": "1D5"
+        },
+        "chainMail": {
+            "tileCode": "CHAIN_MAIL",
+            "name": "Chain mail",
+            "type": "ARMOR",
+            "desc": "Pending description",
+            "def": "3D8",
+            "wear": "1D4"
+        },
+        "plateArmor": {
+            "tileCode": "PLATE_ARMOR",
+            "name": "Plate armor",
+            "type": "ARMOR",
+            "desc": "Pending description",
+            "def": "4D8",
+            "wear": "1D3"
+        }
+    },
+    "potions": [
+        {
+            "name": "Health Potion",
+            "desc": "Restores 2D10+10 health points when drink.",
+            "effect": "hpPotion"
+        },
+        {
+            "name": "Life Potion",
+            "desc": "Restores all health points when drink.",
+            "effect": "lifePotion"
+        },
+        {
+            "name": "Poison Potion",
+            "desc": "Poisons the consumer by 1D3 for 10 turns.",
+            "effect": "poisonPotion"
+        },
+        {
+            "name": "Blind Potion",
+            "desc": "Blinds the consumer by 2D8+15 turns.",
+            "effect": "blindPotion"
+        },
+        {
+            "name": "Paralysis Potion",
+            "desc": "Paralyses the consumer by 2D10+10 turns.",
+            "effect": "paralysisPotion"
+        },
+        {
+            "name": "Invisibility Potion",
+            "desc": "Makes the consumer invisible by 3D10+15 except for enemies he attacks.",
+            "effect": "invisibilityPotion"
+        },
+        {
+            "name": "Cure Potion",
+            "desc": "Removes all damaging effects of the status.",
+            "effect": "curePotion"
+        },
+        {
+            "name": "Strength Potion",
+            "desc": "Adds +3 Damage to the attack.",
+            "effect": "strengthPotion"
+        },
+        {
+            "name": "Defense Potion",
+            "desc": "Adds +3 to the overall defense.",
+            "effect": "defensePotion"
+        },
+        {
+            "name": "Speed Potion",
+            "desc": "Adds +1 to the speed.",
+            "effect": "speedPotion"
+        }
+    ]
+}
