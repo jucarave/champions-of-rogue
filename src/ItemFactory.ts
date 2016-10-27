@@ -59,9 +59,6 @@ let ItemFactory = {
         for (let i=0;i<potions.length;i++) {
             let potion = potions[i];
 
-            // TODO: Refactor this
-            potion.effect = ItemEffects.items.hpPotion;
-
             this.potions.push(potion);
         }
     },
