@@ -484,4 +484,4 @@ let PlayerStats = {
     }
 };
 
-export { PlayerStats };
+export { PlayerStats, Status };
