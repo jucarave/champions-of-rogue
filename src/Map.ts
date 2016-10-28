@@ -24,30 +24,71 @@ interface DisplayTile {
 };
 
 class Map extends Scenario {
+    // Handles all the rendering to the canvas
     renderer: Renderer;
+
+    // If the map is not active then the input stop working
+    // TODO: Refactor this to only have a player per game
     active: boolean;
+
+    // Handles the graph for path finding
     graph: any;
 
+    // TODO: Combine this mouse variables into one interface
+    // The path from the player to the mouse position
     mousePath: Array<number>;
+
+    // Status of the mouse
     mouseDown: number;
+
+    // Position of the mouse
     mousePosition: Vector2;
+
+    // Tile to render on the mouse path
     mousePathTile: Tile;
 
+    // Array of tiles containing the map information
     map: Array<Array<DisplayTile>>;
+
+    // Position of the view
     view: Vector2;
-    player: Player;
+
+    // Array of all the instances in the map (including player and stairs)
     instances: Array<Instance>;
 
+    // Instance of the player
+    player: Player;
+
+    // Instance of the stairs
     stairsUp: Stairs;
     stairsDown: Stairs;
 
+    // Map panel position
+    // TODO: Move this to data.json
     mapPosition: Array<number>;
+
+    // Detects if the FOV should be updated again
     fovUpdated: boolean;
+
+    // Max distance for the FOV
+    // TODO: Move this to data.json and to Game.js
     fovDistance: number;
 
+    // Is the player turns or the world turn
     playerTurn: boolean;
+
+    // Description of what's under the mouse
     tileDescription: string;
 
+    /**
+     * Creates an instance of Map. and generates a 
+     * random map
+     * 
+     * @param {Game} game
+     * @param {number} [level=1]
+     * 
+     * @memberOf Map
+     */
     constructor(public game: Game, public level: number = 1) {
         super();
 
@@ -59,6 +100,8 @@ class Map extends Scenario {
         this.mousePath = null;
         this.mouseDown = 0;
         this.mousePosition = { x: -1, y: - 1 };
+
+        // TODO: Get this from data.json
         this.mousePathTile = this.renderer.getTile(Colors.YELLOW, Colors.WHITE, { x: 0, y: 0 });
 
         this.map = [];
@@ -81,6 +124,12 @@ class Map extends Scenario {
         this.updateFOV(this.player.x, this.player.y);
     }
 
+    /**
+     * Generates a new pseudo random map and instantiate the instances
+     * of it.
+     * 
+     * @memberOf Map
+     */
     createMap() {
         MapGenerator.init(parseInt(this.game.gameSeed + "" + this.level, 10));
         let newMap: MapDefinition = MapGenerator.generateMap(this.level);
@@ -153,6 +202,15 @@ class Map extends Scenario {
         }
     }
 
+    /**
+     * Returns an instance at a x, y position
+     * 
+     * @param {number} x
+     * @param {number} y
+     * @returns {Instance}
+     * 
+     * @memberOf Map
+     */
     getInstanceAt(x: number, y: number): Instance {
         for (let i = 1, ins: Instance; ins = this.instances[i]; i++) {
             if (ins.x == x && ins.y == y) {
@@ -163,20 +221,58 @@ class Map extends Scenario {
         return null;
     }
 
+    /**
+     * Creates a new instance of item in the map
+     * 
+     * @param {number} x
+     * @param {number} y
+     * @param {WorldItem} item
+     * 
+     * @memberOf Map
+     */
     createItem(x: number, y: number, item: WorldItem) {
         let newItem: Item = new Item(x, y, this, item);
         newItem.playerOnTile = true;
         this.instances.push(newItem);
     }
 
-    isSolid(x: number, y: number) {
+    /**
+     * Returns if a map tile at a position is solid
+     * 
+     * @param {number} x
+     * @param {number} y
+     * @returns {boolean}
+     * 
+     * @memberOf Map
+     */
+    isSolid(x: number, y: number): boolean {
         return (this.map[y][x].tile.type == TileTypes.WALL);
     }
 
+    /**
+     * Returns a map tile at a position
+     * 
+     * @param {number} x
+     * @param {number} y
+     * @returns {TilePrefab}
+     * 
+     * @memberOf Map
+     */
     getTileAt(x: number, y: number): TilePrefab {
         return this.map[y][x].tile;
     }
 
+    /**
+     * Returns a path in the map using A*
+     * 
+     * @param {number} x1
+     * @param {number} y1
+     * @param {number} x2
+     * @param {number} y2
+     * @returns {Array<number>}
+     * 
+     * @memberOf Map
+     */
     getPath(x1: number, y1: number, x2: number, y2: number): Array<number> {
         let start = this.graph.grid[x1][y1];
         let end = this.graph.grid[x2][y2];
@@ -191,6 +287,15 @@ class Map extends Scenario {
         return ret;
     }
 
+    /**
+     * Handler for when the mouse is moved inside the map
+     * 
+     * @param {number} x
+     * @param {number} y
+     * @returns {boolean}
+     * 
+     * @memberOf Map
+     */
     onMouseMove(x: number, y: number): boolean {
         if (x == null) {
             this.mousePath = null;
@@ -211,6 +316,16 @@ class Map extends Scenario {
         return true;
     }
 
+    /**
+     * Handler for when the player clicks on the map
+     * 
+     * @param {number} x
+     * @param {number} y
+     * @param {number} stat
+     * @returns
+     * 
+     * @memberOf Map
+     */
     onMouseHandler(x: number, y: number, stat: number) {
         if (this.mouseDown == 2 && stat == 1) return;
 
@@ -227,6 +342,12 @@ class Map extends Scenario {
         }
     }
 
+    /**
+     * Copy the visible part of the map in the view
+     * to the canvas.
+     * 
+     * @memberOf Map
+     */
     copyMapIntoTexture() {
         let xs: number = this.view.x,
             ys: number = this.view.y,
@@ -260,6 +381,17 @@ class Map extends Scenario {
         this.fovUpdated = false;
     }
 
+    /**
+     * Cast a ray from a position and sets each tile
+     * it touches as light.
+     * 
+     * @param {number} x1
+     * @param {number} y1
+     * @param {number} x2
+     * @param {number} y2
+     * 
+     * @memberOf Map
+     */
     castLightRay(x1: number, y1: number, x2: number, y2: number) {
         let x: number = x2 - x1,
             y: number = y1 - y2,
@@ -294,6 +426,15 @@ class Map extends Scenario {
         }
     }
 
+    /**
+     * Updates the Field of vision from a position performing
+     * raycasting on a  square area
+     * 
+     * @param {number} x
+     * @param {number} y
+     * 
+     * @memberOf Map
+     */
     updateFOV(x: number, y: number) {
         let distance: number = this.fovDistance;
         for (let i = 0; i <= distance; i += 1) {
@@ -307,6 +448,11 @@ class Map extends Scenario {
         this.mousePath = null;
     }
 
+    /**
+     * Centers the view on the player
+     * 
+     * @memberOf Map
+     */
     updateView() {
         this.view.x = Math.max(this.player.x - 33, 0);
         this.view.y = Math.max(this.player.y - 11, 0);
@@ -320,6 +466,12 @@ class Map extends Scenario {
         }
     }
 
+    /**
+     * Draws the path from the player position to the mouse 
+     * position using a pathfinding route
+     * 
+     * @memberOf Map
+     */
     renderMousePath() {
         if (!this.mousePath) return;
         if (this.player.movePath) return;
@@ -338,6 +490,12 @@ class Map extends Scenario {
         }
     }
 
+    /**
+     * Renders the tile description of the instance under 
+     * the mouse
+     * 
+     * @memberOf Map
+     */
     renderDescription() {
         this.renderer.clearRect(0, 0, this.mapPosition[2], 2);
 
@@ -349,6 +507,12 @@ class Map extends Scenario {
         }
     }
 
+    /**
+     * Executes all the instances updates, updates the view and FOV 
+     * and renders the map
+     * 
+     * @memberOf Map
+     */
     render() {
         this.playerTurn = true;
         this.tileDescription = null;
